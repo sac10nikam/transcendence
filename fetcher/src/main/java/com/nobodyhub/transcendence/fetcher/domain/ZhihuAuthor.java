@@ -1,10 +1,12 @@
 package com.nobodyhub.transcendence.fetcher.domain;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 @Data
+@NoArgsConstructor(force = true)
 public class ZhihuAuthor {
     private String id;
     private String url_token;

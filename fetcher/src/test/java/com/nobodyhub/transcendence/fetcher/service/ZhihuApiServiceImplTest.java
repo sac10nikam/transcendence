@@ -1,9 +1,8 @@
-package com.nobodyhub.transcendence.fetcher.service.impl;
+package com.nobodyhub.transcendence.fetcher.service;
 
 import com.nobodyhub.transcendence.fetcher.IntegrationTest;
 import com.nobodyhub.transcendence.fetcher.domain.ZhihuAnswer;
 import com.nobodyhub.transcendence.fetcher.domain.ZhihuAuthor;
-import com.nobodyhub.transcendence.fetcher.service.ZhihuApiService;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
@@ -29,6 +28,13 @@ public class ZhihuApiServiceImplTest {
         List<ZhihuAnswer> answerList = this.zhihuApiService.getAnswersForQuestion("49472046");
         assertNotNull(answerList);
         assertEquals("49472046", answerList.get(0).getQuestion().getId());
+    }
+
+    @Test
+    public void getAnswersForMemberTest() {
+        List<ZhihuAnswer> answerList = this.zhihuApiService.getAnswersForMember("yun-dong-shan");
+        assertNotNull(answerList);
+        assertEquals("yun-dong-shan", answerList.get(0).getAuthor().getUrl_token());
     }
 
     @Test

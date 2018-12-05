@@ -12,6 +12,8 @@ public class ZhihuUrlConvertServiceImplV4 implements ZhihuUrlConvertService {
     @Override
     public String convert(String url) {
         Assert.notNull(url, "The URL to be converted can not be null");
-        return url.replaceFirst("^/api/v4", "");
+        return url.replaceFirst("^(https://|http://)", "") // remove protocol
+            .replaceFirst("^www\\.zhihu\\.com", "") // remove host
+            .replaceFirst("^/api/v4", ""); //remove api prefix
     }
 }
