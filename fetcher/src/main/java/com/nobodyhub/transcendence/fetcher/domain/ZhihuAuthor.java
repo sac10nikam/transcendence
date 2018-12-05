@@ -20,8 +20,9 @@ public class ZhihuAuthor {
     private String headline;
     private int gender;
     private Boolean is_advertiser;
-    private int follower_count;
-    private int answer_count;
-    private int articles_count;
+    private Long follower_count;
+    private Long answer_count;
+    private Long articles_count;
     private List<ZhihuEmployment> employments;
+    private List<ZhihuBadge> badge;
 }
