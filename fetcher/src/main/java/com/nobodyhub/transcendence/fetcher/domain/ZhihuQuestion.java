@@ -1,9 +1,16 @@
 package com.nobodyhub.transcendence.fetcher.domain;
 
+import lombok.Data;
 
+
+@Data
 public class ZhihuQuestion {
-    /**
-     * Page link
-     */
-    private String href;
+    private String type;
+    private String id;
+    private String title;
+    private String question_type;
+    private String created;
+    private String updated_time;
+    private String url;
+    private Object relationship;
 }

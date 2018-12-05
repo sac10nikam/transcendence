@@ -17,6 +17,25 @@
     <relativePath/>
   </parent>
 
+  <profiles>
+    <profile>
+      <id>unit_test</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <properties>
+        <testcase.groups>com.nobodyhub.transcendence.fetcher.UnitTest</testcase.groups>
+      </properties>
+    </profile>
+    <profile>
+      <id>integration_test</id>
+      <properties>
+        <testcase.groups>com.nobodyhub.transcendence.fetcher.IntegrationTest</testcase.groups>
+      </properties>
+    </profile>
+
+  </profiles>
+
   <dependencies>
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -24,8 +43,8 @@
     </dependency>
 
     <!--<dependency>-->
-      <!--<groupId>org.springframework.boot</groupId>-->
-      <!--<artifactId>spring-boot-starter-data-mongodb</artifactId>-->
+    <!--<groupId>org.springframework.boot</groupId>-->
+    <!--<artifactId>spring-boot-starter-data-mongodb</artifactId>-->
     <!--</dependency>-->
 
     <dependency>
@@ -58,6 +77,13 @@
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>2.11</version>
+        <configuration>
+          <groups>${testcase.groups}</groups>
+        </configuration>
       </plugin>
     </plugins>
   </build>
