@@ -1,4 +1,4 @@
-package com.nobodyhub.transcendence.zhihu_entrance_topics;
+package com.nobodyhub.transcendence.zhihu.entrance.topics;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
