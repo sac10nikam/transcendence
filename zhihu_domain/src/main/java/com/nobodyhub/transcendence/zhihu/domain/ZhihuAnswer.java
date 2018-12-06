@@ -3,7 +3,7 @@ package com.nobodyhub.transcendence.zhihu.domain;
 import lombok.Data;
 
 @Data
-public class ZhihuAnswer {
+public class ZhihuAnswer implements Mergeable {
     private String id;
     private String type;
     private ZhihuQuestion question;

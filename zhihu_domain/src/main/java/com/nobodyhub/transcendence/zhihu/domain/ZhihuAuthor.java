@@ -7,7 +7,7 @@ import java.util.List;
 
 @Data
 @NoArgsConstructor(force = true)
-public class ZhihuAuthor {
+public class ZhihuAuthor implements Mergeable {
     private int is_active;
     private String id;
     private String url_token;

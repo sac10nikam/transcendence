@@ -4,7 +4,7 @@ import lombok.Data;
 
 
 @Data
-public class ZhihuQuestion {
+public class ZhihuQuestion implements Mergeable {
     private String type;
     private String id;
     private String title;
