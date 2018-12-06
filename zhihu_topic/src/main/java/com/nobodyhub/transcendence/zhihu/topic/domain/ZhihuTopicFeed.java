@@ -1,6 +1,6 @@
 package com.nobodyhub.transcendence.zhihu.topic.domain;
 
-import com.nobodyhub.transcendence.zhihu.domain.ZhihuAnswer;
+import com.nobodyhub.transcendence.zhihu.domain.dto.ZhihuAnswer;
 import lombok.Data;
 
 @Data
