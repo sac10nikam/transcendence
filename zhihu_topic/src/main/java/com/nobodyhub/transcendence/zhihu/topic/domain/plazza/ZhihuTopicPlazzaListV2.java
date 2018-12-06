@@ -1,4 +1,4 @@
-package com.nobodyhub.transcendence.zhihu.topic.domain;
+package com.nobodyhub.transcendence.zhihu.topic.domain.plazza;
 
 import lombok.Data;
 

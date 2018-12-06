@@ -1,4 +1,4 @@
-package com.nobodyhub.transcendence.zhihu.topic.domain;
+package com.nobodyhub.transcendence.zhihu.topic.domain.feed;
 
 import com.nobodyhub.transcendence.zhihu.topic.domain.paging.ZhihuTopicPaging;
 import lombok.Data;
