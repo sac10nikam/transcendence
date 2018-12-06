@@ -5,13 +5,14 @@ import com.nobodyhub.transcendence.zhihu.topic.domain.ZhihuTopicCategory;
 import java.util.List;
 
 /**
- * Parse the topics from the topics page: https://www.zhihu.com/topics
+ * Parse pages related with Zhihu Topics
  */
 public interface ZhihuTopicsPageParseService {
     /**
-     * Get all topic categories
+     * Get all topic categories from https://www.zhihu.com/topics
      *
      * @return
      */
     List<ZhihuTopicCategory> getAllCategories();
+
 }

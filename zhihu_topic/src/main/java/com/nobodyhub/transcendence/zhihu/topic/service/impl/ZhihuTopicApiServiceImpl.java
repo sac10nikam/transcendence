@@ -1,14 +1,18 @@
 package com.nobodyhub.transcendence.zhihu.topic.service.impl;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import com.nobodyhub.transcendence.zhihu.topic.domain.ZhihuTopic;
 import com.nobodyhub.transcendence.zhihu.topic.domain.ZhihuTopicCategory;
 import com.nobodyhub.transcendence.zhihu.topic.domain.ZhihuTopicPlazzaListV2;
+import com.nobodyhub.transcendence.zhihu.topic.domain.paging.ZhihuTopicList;
+import com.nobodyhub.transcendence.zhihu.topic.repository.ZhihuTopicRepository;
 import com.nobodyhub.transcendence.zhihu.topic.service.ZhihuTopicApiService;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
@@ -19,23 +23,37 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Slf4j
 @Service
 public class ZhihuTopicApiServiceImpl implements ZhihuTopicApiService {
     private final RestTemplate restTemplate;
+    private final ZhihuTopicRepository topicRepository;
 
-    public ZhihuTopicApiServiceImpl(RestTemplate restTemplate) {
+    @Autowired
+    public ZhihuTopicApiServiceImpl(RestTemplate restTemplate, ZhihuTopicRepository topicRepository) {
         this.restTemplate = restTemplate;
+        this.topicRepository = topicRepository;
     }
 
     @Override
     public Optional<ZhihuTopic> getTopic(String topicId) {
-        final String topicUrl = "/topics/{id}";
+        final String topicUrl = "/api/v4/topics/{id}";
+        final String topicParentUrl = "/api/v3/topics/{id}/parent";
+        final String topicChildUrl = "/api/v3/topics/{id}/children";
         try {
-            log.info("Accessing : [{}]",
+            Set<ZhihuTopic> parents = getByPaging(topicParentUrl, topicId);
+            Set<ZhihuTopic> children = getByPaging(topicChildUrl, topicId);
+
+            log.debug("Accessing : [{}]",
                 this.restTemplate.getUriTemplateHandler().expand(topicUrl, topicId));
-            return Optional.ofNullable(this.restTemplate.getForObject(topicUrl, ZhihuTopic.class, topicId));
+            Optional<ZhihuTopic> topic = Optional.ofNullable(this.restTemplate.getForObject(topicUrl, ZhihuTopic.class, topicId));
+            if (topic.isPresent()) {
+                topic.get().setParentTopics(parents);
+                topic.get().setChildTopics(children);
+            }
+            return topic;
         } catch (HttpClientErrorException | HttpServerErrorException e) {
             log.error("Error when access URL: [{}]",
                 this.restTemplate.getUriTemplateHandler().expand(topicUrl, topicId));
@@ -52,7 +70,7 @@ public class ZhihuTopicApiServiceImpl implements ZhihuTopicApiService {
             Optional<ZhihuTopic> topic = getTopic(id);
             if (topic.isPresent()) {
                 topic.get().addCategory(category);
-                topics.add(topic.get());
+                topics.add(this.topicRepository.save(topic.get()));
             }
         }
         return topics;
@@ -100,5 +118,33 @@ public class ZhihuTopicApiServiceImpl implements ZhihuTopicApiService {
             topicUrls.addAll(getTopicIdList(categoryId, offset + topicUrls.size()));
         }
         return topicUrls;
+    }
+
+    /**
+     * handle the paging data for parent/children topics
+     *
+     * @param url
+     * @param topicId
+     * @return
+     */
+    private Set<ZhihuTopic> getByPaging(String url, String topicId) {
+        Set<ZhihuTopic> topics = Sets.newHashSet();
+        ZhihuTopicList topicList = null;
+        try {
+            log.debug("Accessing : [{}]",
+                this.restTemplate.getUriTemplateHandler().expand(url, topicId));
+            topicList = this.restTemplate.getForObject(url, ZhihuTopicList.class, topicId);
+        } catch (HttpClientErrorException | HttpServerErrorException e) {
+            log.error("Error when access URL: [{}]",
+                this.restTemplate.getUriTemplateHandler().expand(url, topicId));
+            log.error(e.getMessage());
+        }
+        if (topicList != null
+            && !topicList.getData().isEmpty()
+            && !topicList.getPaging().getIs_end()) {
+            topics.addAll(getByPaging(topicList.getPaging().getNext(), topicId));
+            topics.addAll(topicList.getData());
+        }
+        return topics;
     }
 }

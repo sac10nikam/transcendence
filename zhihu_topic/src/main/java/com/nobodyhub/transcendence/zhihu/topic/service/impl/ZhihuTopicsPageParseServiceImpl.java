@@ -2,14 +2,12 @@ package com.nobodyhub.transcendence.zhihu.topic.service.impl;
 
 import com.google.common.collect.Lists;
 import com.nobodyhub.transcendence.zhihu.topic.domain.ZhihuTopicCategory;
-import com.nobodyhub.transcendence.zhihu.topic.service.ZhihuTopicApiService;
 import com.nobodyhub.transcendence.zhihu.topic.service.ZhihuTopicsPageParseService;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -18,12 +16,6 @@ import java.util.List;
 @Slf4j
 @Service
 public class ZhihuTopicsPageParseServiceImpl implements ZhihuTopicsPageParseService {
-    private final ZhihuTopicApiService topicApiService;
-
-    @Autowired
-    public ZhihuTopicsPageParseServiceImpl(ZhihuTopicApiService topicApiService) {
-        this.topicApiService = topicApiService;
-    }
 
     @Override
     public List<ZhihuTopicCategory> getAllCategories() {

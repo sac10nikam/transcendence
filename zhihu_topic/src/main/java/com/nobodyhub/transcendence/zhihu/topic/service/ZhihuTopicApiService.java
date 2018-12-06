@@ -9,7 +9,7 @@ import java.util.Optional;
 public interface ZhihuTopicApiService {
 
     /**
-     * Get Topic by id
+     * Get Topic by id, include children/parent
      *
      * @param topicId
      * @return

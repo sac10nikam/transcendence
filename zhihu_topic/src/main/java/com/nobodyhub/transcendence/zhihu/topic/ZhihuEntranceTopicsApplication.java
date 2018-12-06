@@ -15,6 +15,6 @@ public class ZhihuEntranceTopicsApplication {
 
     @Bean
     public RestTemplate restTemplate(RestTemplateBuilder builder) {
-        return builder.rootUri("https://www.zhihu.com/api/v4/").build();
+        return builder.rootUri("https://www.zhihu.com").build();
     }
 }
