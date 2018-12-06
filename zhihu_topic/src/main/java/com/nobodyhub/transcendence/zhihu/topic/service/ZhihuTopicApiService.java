@@ -1,5 +1,6 @@
 package com.nobodyhub.transcendence.zhihu.topic.service;
 
+import com.nobodyhub.transcendence.zhihu.domain.dto.ZhihuAnswer;
 import com.nobodyhub.transcendence.zhihu.topic.domain.ZhihuTopic;
 import com.nobodyhub.transcendence.zhihu.topic.domain.ZhihuTopicCategory;
 
@@ -23,4 +24,12 @@ public interface ZhihuTopicApiService {
      * @return
      */
     List<ZhihuTopic> getTopicsByCategory(ZhihuTopicCategory category);
+
+    /**
+     * Get the answers of given Topic
+     *
+     * @param topicId id of the topic
+     * @return
+     */
+    List<ZhihuAnswer> getAnswerByTopic(String topicId);
 }

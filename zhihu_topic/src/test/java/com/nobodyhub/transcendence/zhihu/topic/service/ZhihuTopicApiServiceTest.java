@@ -1,5 +1,6 @@
 package com.nobodyhub.transcendence.zhihu.topic.service;
 
+import com.nobodyhub.transcendence.zhihu.domain.dto.ZhihuAnswer;
 import com.nobodyhub.transcendence.zhihu.topic.domain.ZhihuTopic;
 import com.nobodyhub.transcendence.zhihu.topic.domain.ZhihuTopicCategory;
 import org.junit.Test;
@@ -23,5 +24,11 @@ public class ZhihuTopicApiServiceTest {
         List<ZhihuTopic> topics = apiService.getTopicsByCategory(
             new ZhihuTopicCategory(1761, "生活方式"));
         assertTrue(topics.size() > 420);
+    }
+
+    @Test
+    public void getAnswerByTopicTest() {
+        List<ZhihuAnswer> answers = apiService.getAnswerByTopic("19551556");
+        assertTrue(answers.size() > 100);
     }
 }
