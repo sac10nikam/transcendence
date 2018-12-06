@@ -1,6 +1,7 @@
 package com.nobodyhub.transcendence.zhihu.topic.domain;
 
 import com.google.common.collect.Sets;
+import com.nobodyhub.transcendence.zhihu.domain.common.Mergeable;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.data.annotation.Id;
@@ -15,7 +16,7 @@ import java.util.Set;
 @Document
 @Data
 @EqualsAndHashCode(of = "id")
-public class ZhihuTopic {
+public class ZhihuTopic implements Mergeable {
     @Id
     private String id;
     private String name;

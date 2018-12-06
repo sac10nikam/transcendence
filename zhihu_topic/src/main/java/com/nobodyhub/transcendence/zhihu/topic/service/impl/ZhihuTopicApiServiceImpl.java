@@ -2,6 +2,7 @@ package com.nobodyhub.transcendence.zhihu.topic.service.impl;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import com.nobodyhub.transcendence.zhihu.domain.MergeUtils;
 import com.nobodyhub.transcendence.zhihu.topic.domain.ZhihuTopic;
 import com.nobodyhub.transcendence.zhihu.topic.domain.ZhihuTopicCategory;
 import com.nobodyhub.transcendence.zhihu.topic.domain.ZhihuTopicPlazzaListV2;
@@ -67,10 +68,17 @@ public class ZhihuTopicApiServiceImpl implements ZhihuTopicApiService {
         List<String> topicIds = getTopicIdList(category.getDataId(), 0);
         List<ZhihuTopic> topics = Lists.newArrayList();
         for (String id : topicIds) {
-            Optional<ZhihuTopic> topic = getTopic(id);
-            if (topic.isPresent()) {
-                topic.get().addCategory(category);
-                topics.add(this.topicRepository.save(topic.get()));
+            Optional<ZhihuTopic> newTopic = getTopic(id);
+            if (newTopic.isPresent()) {
+                newTopic.get().addCategory(category);
+                Optional<ZhihuTopic> oldTopic = this.topicRepository.findById(id);
+                if (oldTopic.isPresent()) {
+                    //if old exist, update exist with the merged topic
+                    topics.add(this.topicRepository.save(MergeUtils.merge(newTopic.get(), oldTopic.get())));
+                } else {
+                    //if non-exist, save the new topic
+                    topics.add(this.topicRepository.save(newTopic.get()));
+                }
             }
         }
         return topics;
