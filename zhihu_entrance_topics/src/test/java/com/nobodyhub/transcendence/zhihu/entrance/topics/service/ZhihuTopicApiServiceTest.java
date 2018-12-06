@@ -14,21 +14,14 @@ import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class ZhihuTopicsParseServiceTest {
+public class ZhihuTopicApiServiceTest {
     @Autowired
-    private ZhihuTopicsParseService parseService;
-
-    @Test
-    public void getAllCategoriesTest() {
-        List<ZhihuTopicCategory> categories = parseService.getAllCategories();
-        assertTrue(!categories.isEmpty());
-    }
+    private ZhihuTopicApiService apiService;
 
     @Test
     public void getAllTopicsOfCategoryTest() {
-        List<ZhihuTopic> topics = parseService.getAllTopicsOfCategory(
+        List<ZhihuTopic> topics = apiService.getTopicsByCategory(
             new ZhihuTopicCategory(1761, "生活方式"));
         assertTrue(topics.size() > 420);
     }
-
 }
