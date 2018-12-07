@@ -11,11 +11,11 @@ import java.util.Set;
 
 @RestController
 @RequestMapping("/members")
-public class MemberController {
+public class ZhihuMemberController {
 
     private final ZhihuMemberService memberService;
 
-    public MemberController(ZhihuMemberService memberService) {
+    public ZhihuMemberController(ZhihuMemberService memberService) {
         this.memberService = memberService;
     }
 
