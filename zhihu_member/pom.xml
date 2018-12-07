@@ -16,10 +16,6 @@
   <name>Zhihu Member</name>
   <description>Zhihu Member API</description>
 
-  <properties>
-    <java.version>1.8</java.version>
-  </properties>
-
   <build>
     <plugins>
       <plugin>

@@ -11,6 +11,7 @@ import com.nobodyhub.transcendence.zhihu.topic.domain.feed.ZhihuTopicFeedList;
 import com.nobodyhub.transcendence.zhihu.topic.domain.paging.ZhihuTopicList;
 import com.nobodyhub.transcendence.zhihu.topic.domain.plazza.ZhihuTopicPlazzaListV2;
 import com.nobodyhub.transcendence.zhihu.topic.repository.ZhihuTopicRepository;
+import com.nobodyhub.transcendence.zhihu.topic.service.ZhihuAuthorClient;
 import com.nobodyhub.transcendence.zhihu.topic.service.ZhihuTopicApiService;
 import com.nobodyhub.transcendence.zhihu.topic.util.UrlUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -35,11 +36,15 @@ import java.util.Set;
 public class ZhihuTopicApiServiceImpl implements ZhihuTopicApiService {
     private final RestTemplate restTemplate;
     private final ZhihuTopicRepository topicRepository;
+    private final ZhihuAuthorClient authorClient;
 
     @Autowired
-    public ZhihuTopicApiServiceImpl(RestTemplate restTemplate, ZhihuTopicRepository topicRepository) {
+    public ZhihuTopicApiServiceImpl(RestTemplate restTemplate,
+                                    ZhihuTopicRepository topicRepository,
+                                    ZhihuAuthorClient authorClient) {
         this.restTemplate = restTemplate;
         this.topicRepository = topicRepository;
+        this.authorClient = authorClient;
     }
 
     @Override
@@ -90,11 +95,17 @@ public class ZhihuTopicApiServiceImpl implements ZhihuTopicApiService {
 
     @Override
     public List<ZhihuAnswer> getAnswerByTopic(String topicId) {
-        //TODO: save the answers to the DB
-        return Lists.newArrayList(
+        List<ZhihuAnswer> answers = Lists.newArrayList(
             getAnswersByPaging("/api/v4/topics/{topicId}/feeds/essence?include=data[?(target.type=topic_sticky_module)].target.data[?(target.type=answer)].target.content,relationship.is_authorized,is_author,voting,is_thanked,is_nothelp;data[?(target.type=topic_sticky_module)].target.data[?(target.type=answer)].target.is_normal,comment_count,voteup_count,content,relevant_info,excerpt.author.badge[?(type=best_answerer)].topics;data[?(target.type=topic_sticky_module)].target.data[?(target.type=article)].target.content,voteup_count,comment_count,voting,author.badge[?(type=best_answerer)].topics;data[?(target.type=topic_sticky_module)].target.data[?(target.type=people)].target.answer_count,articles_count,gender,follower_count,is_followed,is_following,badge[?(type=best_answerer)].topics;data[?(target.type=answer)].target.annotation_detail,content,hermes_label,is_labeled,relationship.is_authorized,is_author,voting,is_thanked,is_nothelp;data[?(target.type=answer)].target.author.badge[?(type=best_answerer)].topics;data[?(target.type=article)].target.annotation_detail,content,hermes_label,is_labeled,author.badge[?(type=best_answerer)].topics;data[?(target.type=question)].target.annotation_detail,comment_count;&limit=10",
                 topicId)
         );
+        answers.forEach(answer -> {
+            //TODO: save answer
+            //TODO: save question
+            //TODO: save author
+            authorClient.save(answer.getAuthor());
+        });
+        return answers;
     }
 
     /**
