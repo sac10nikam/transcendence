@@ -1,7 +1,6 @@
-package com.nobodyhub.transcendence.zhihu.domain;
+package com.nobodyhub.transcendence.zhihu.domain.merge;
 
 import com.google.common.collect.Lists;
-import com.nobodyhub.transcendence.zhihu.domain.common.Mergeable;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.Assert;
 

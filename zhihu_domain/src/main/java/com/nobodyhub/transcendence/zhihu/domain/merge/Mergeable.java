@@ -1,4 +1,4 @@
-package com.nobodyhub.transcendence.zhihu.domain.common;
+package com.nobodyhub.transcendence.zhihu.domain.merge;
 
 /**
  * Mark target class as Zhihu Object for further

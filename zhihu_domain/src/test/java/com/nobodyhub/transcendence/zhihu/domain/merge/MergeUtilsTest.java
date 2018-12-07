@@ -1,8 +1,7 @@
-package com.nobodyhub.transcendence.zhihu.domain;
+package com.nobodyhub.transcendence.zhihu.domain.merge;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.nobodyhub.transcendence.zhihu.domain.common.Mergeable;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

@@ -1,6 +1,6 @@
 package com.nobodyhub.transcendence.zhihu.domain.dto;
 
-import com.nobodyhub.transcendence.zhihu.domain.common.Mergeable;
+import com.nobodyhub.transcendence.zhihu.domain.merge.Mergeable;
 import lombok.Data;
 
 /**
