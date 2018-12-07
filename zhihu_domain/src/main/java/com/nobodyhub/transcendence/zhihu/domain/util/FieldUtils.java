@@ -15,7 +15,7 @@ public final class FieldUtils {
      * @param object   the object to be filterred
      * @param includes the field names to be included
      */
-    public static void filter(Object object, Set<String> includes) {
+    public static <T> T filter(T object, Set<String> includes) {
         ReflectionUtils.getAllFields(object.getClass()).forEach(field -> {
             if (!includes.contains(field.getName())) {
                 try {
@@ -27,5 +27,6 @@ public final class FieldUtils {
                 }
             }
         });
+        return object;
     }
 }
