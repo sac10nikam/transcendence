@@ -13,7 +13,6 @@ public final class ReflectionUtils {
      * Get all fields of given class
      *
      * @param clz
-     * @param <T>
      * @return
      */
     public static List<Field> getAllFields(Class<?> clz) {
