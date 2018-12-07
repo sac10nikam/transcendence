@@ -1,17 +1,32 @@
 package com.nobodyhub.transcendence.zhihu.domain.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.nobodyhub.transcendence.zhihu.domain.merge.Mergeable;
 import lombok.Data;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 
+@Document
 @Data
 public class ZhihuQuestion implements Mergeable {
-    private String type;
+
+    @Id
+    @JsonProperty("id")
     private String id;
+
+    @JsonProperty("type")
+    private String type;
+    @JsonProperty("title")
     private String title;
-    private String question_type;
+    @JsonProperty("question_type")
+    private String questionType;
+    @JsonProperty("created")
     private String created;
-    private String updated_time;
+    @JsonProperty("updated_time")
+    private String updatedTime;
+    @JsonProperty("url")
     private String url;
+    @JsonProperty("relationship")
     private Object relationship;
 }
