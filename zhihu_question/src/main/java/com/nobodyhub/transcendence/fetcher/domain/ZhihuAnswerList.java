@@ -1,7 +1,6 @@
 package com.nobodyhub.transcendence.fetcher.domain;
 
 import lombok.Data;
-import lombok.Getter;
 
 import java.util.List;
 
