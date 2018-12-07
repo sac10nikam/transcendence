@@ -7,19 +7,12 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.junit.Test;
 
-import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 
 public class MergeUtilsTest {
-
-    @Test
-    public void getAllFieldsTest() {
-        List<Field> fields = MergeUtils.getAllFields(A.class);
-        assertEquals(7, fields.size());
-    }
 
     @Test
     public void mergeTest() {
@@ -90,8 +83,6 @@ public class MergeUtilsTest {
         private String c1;
         private Long c2;
     }
-
-
 }
 
 

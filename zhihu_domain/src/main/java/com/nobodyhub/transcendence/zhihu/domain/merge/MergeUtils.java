@@ -1,6 +1,6 @@
 package com.nobodyhub.transcendence.zhihu.domain.merge;
 
-import com.google.common.collect.Lists;
+import com.nobodyhub.transcendence.zhihu.domain.util.ReflectionUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.Assert;
 
@@ -28,7 +28,7 @@ public final class MergeUtils {
         Assert.notNull(oldObject, "Old Object can not be null!");
         @SuppressWarnings("unchecked")
         Class<T> clz = (Class<T>) newObject.getClass();
-        List<Field> fields = getAllFields(clz);
+        List<Field> fields = ReflectionUtils.getAllFields(clz);
         // update based on the old object
         T result = oldObject;
         try {
@@ -56,23 +56,5 @@ public final class MergeUtils {
         return result;
     }
 
-    /**
-     * Get all fields of given class
-     *
-     * @param clz
-     * @param <T>
-     * @return
-     */
-    protected static <T extends Mergeable> List<Field> getAllFields(Class<T> clz) {
-        List<Field> fields = Lists.newArrayList();
-        Class curClz = clz;
-        while (!curClz.equals(Object.class)) {
-            for (Field field : curClz.getDeclaredFields()) {
-                field.setAccessible(true);
-                fields.add(field);
-            }
-            curClz = curClz.getSuperclass();
-        }
-        return fields;
-    }
+
 }
