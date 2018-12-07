@@ -12,6 +12,7 @@ import com.nobodyhub.transcendence.zhihu.topic.domain.paging.ZhihuTopicList;
 import com.nobodyhub.transcendence.zhihu.topic.domain.plazza.ZhihuTopicPlazzaListV2;
 import com.nobodyhub.transcendence.zhihu.topic.repository.ZhihuTopicRepository;
 import com.nobodyhub.transcendence.zhihu.topic.service.ZhihuTopicApiService;
+import com.nobodyhub.transcendence.zhihu.topic.util.UrlUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
@@ -190,8 +191,7 @@ public class ZhihuTopicApiServiceImpl implements ZhihuTopicApiService {
         if (feedList != null
             && !feedList.getData().isEmpty()
             && !feedList.getPaging().getIs_end()) {
-//            answers.addAll(getAnswersByPaging(UriUtils.decode(feedList.getPaging().getNext(), UTF_8), topicId));
-            answers.addAll(getAnswersByPaging(feedList.getPaging().getNext(), topicId));
+            answers.addAll(getAnswersByPaging(UrlUtils.convert(feedList.getPaging().getNext()), topicId));
             for (ZhihuTopicFeed feed : feedList.getData()) {
                 answers.add(feed.getTarget());
             }
