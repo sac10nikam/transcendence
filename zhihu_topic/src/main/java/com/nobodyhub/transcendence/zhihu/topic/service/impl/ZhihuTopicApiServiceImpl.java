@@ -11,7 +11,7 @@ import com.nobodyhub.transcendence.zhihu.topic.domain.feed.ZhihuTopicFeedList;
 import com.nobodyhub.transcendence.zhihu.topic.domain.paging.ZhihuTopicList;
 import com.nobodyhub.transcendence.zhihu.topic.domain.plazza.ZhihuTopicPlazzaListV2;
 import com.nobodyhub.transcendence.zhihu.topic.repository.ZhihuTopicRepository;
-import com.nobodyhub.transcendence.zhihu.topic.service.ZhihuAuthorClient;
+import com.nobodyhub.transcendence.zhihu.topic.service.ZhihuMemberClient;
 import com.nobodyhub.transcendence.zhihu.topic.service.ZhihuTopicApiService;
 import com.nobodyhub.transcendence.zhihu.topic.util.UrlUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -36,15 +36,15 @@ import java.util.Set;
 public class ZhihuTopicApiServiceImpl implements ZhihuTopicApiService {
     private final RestTemplate restTemplate;
     private final ZhihuTopicRepository topicRepository;
-    private final ZhihuAuthorClient authorClient;
+    private final ZhihuMemberClient zhihuMemberClient;
 
     @Autowired
     public ZhihuTopicApiServiceImpl(RestTemplate restTemplate,
                                     ZhihuTopicRepository topicRepository,
-                                    ZhihuAuthorClient authorClient) {
+                                    ZhihuMemberClient zhihuMemberClient) {
         this.restTemplate = restTemplate;
         this.topicRepository = topicRepository;
-        this.authorClient = authorClient;
+        this.zhihuMemberClient = zhihuMemberClient;
     }
 
     @Override
@@ -103,7 +103,7 @@ public class ZhihuTopicApiServiceImpl implements ZhihuTopicApiService {
             //TODO: save answer
             //TODO: save question
             //TODO: save author
-            authorClient.save(answer.getAuthor());
+            zhihuMemberClient.save(answer.getAuthor());
         });
         return answers;
     }

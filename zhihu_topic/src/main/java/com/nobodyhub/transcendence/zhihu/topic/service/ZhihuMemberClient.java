@@ -1,15 +1,15 @@
 package com.nobodyhub.transcendence.zhihu.topic.service;
 
-import com.nobodyhub.transcendence.zhihu.domain.dto.ZhihuAuthor;
-import org.springframework.cloud.netflix.feign.FeignClient;
+import com.nobodyhub.transcendence.zhihu.domain.dto.ZhihuMember;
+import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 /**
  * https://dzone.com/articles/microservices-communication-feign-as-rest-client
  */
-@FeignClient(name = "zhihu_author", url = "localhost")
-public interface ZhihuAuthorClient {
+@FeignClient(name = "localhost:8080")
+public interface ZhihuMemberClient {
     @PostMapping
-    ZhihuAuthor save(@RequestBody ZhihuAuthor author);
+    ZhihuMember save(@RequestBody ZhihuMember author);
 }

@@ -7,7 +7,7 @@ public class ZhihuAnswer {
     private String id;
     private String type;
     private ZhihuQuestion question;
-    private ZhihuAuthor author;
+    private ZhihuMember author;
     private String url;
     private long created_time;
     private long updated_time;

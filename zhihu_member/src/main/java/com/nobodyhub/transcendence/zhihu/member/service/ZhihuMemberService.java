@@ -1,6 +1,6 @@
 package com.nobodyhub.transcendence.zhihu.member.service;
 
-import com.nobodyhub.transcendence.zhihu.domain.dto.ZhihuAuthor;
+import com.nobodyhub.transcendence.zhihu.domain.dto.ZhihuMember;
 
 import java.util.Optional;
 
@@ -14,7 +14,7 @@ public interface ZhihuMemberService {
      * @param urlToken
      * @return
      */
-    Optional<ZhihuAuthor> findByUrlToken(String urlToken);
+    Optional<ZhihuMember> findByUrlToken(String urlToken);
 
     /**
      * Find the Zhihu member by the id
@@ -22,7 +22,7 @@ public interface ZhihuMemberService {
      * @param id
      * @return
      */
-    Optional<ZhihuAuthor> findById(String id);
+    Optional<ZhihuMember> findById(String id);
 
     /**
      * save the given Zhihu author
@@ -30,5 +30,5 @@ public interface ZhihuMemberService {
      * @param author
      * @return
      */
-    ZhihuAuthor save(ZhihuAuthor author);
+    ZhihuMember save(ZhihuMember author);
 }

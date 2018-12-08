@@ -2,7 +2,7 @@ package com.nobodyhub.transcendence.fetcher.service;
 
 
 import com.nobodyhub.transcendence.fetcher.domain.ZhihuAnswer;
-import com.nobodyhub.transcendence.fetcher.domain.ZhihuAuthor;
+import com.nobodyhub.transcendence.fetcher.domain.ZhihuMember;
 
 import java.util.List;
 
@@ -29,5 +29,5 @@ public interface ZhihuApiService {
      * @param urlToken unique token in the url
      * @return
      */
-    ZhihuAuthor getAuthor(String urlToken);
+    ZhihuMember getAuthor(String urlToken);
 }

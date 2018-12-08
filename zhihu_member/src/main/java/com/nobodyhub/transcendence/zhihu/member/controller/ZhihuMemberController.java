@@ -1,7 +1,7 @@
 package com.nobodyhub.transcendence.zhihu.member.controller;
 
 import com.google.common.collect.Sets;
-import com.nobodyhub.transcendence.zhihu.domain.dto.ZhihuAuthor;
+import com.nobodyhub.transcendence.zhihu.domain.dto.ZhihuMember;
 import com.nobodyhub.transcendence.zhihu.domain.util.FieldUtils;
 import com.nobodyhub.transcendence.zhihu.member.service.ZhihuMemberService;
 import org.springframework.web.bind.annotation.*;
@@ -20,23 +20,23 @@ public class ZhihuMemberController {
     }
 
     @GetMapping("/url_token/{urlToken}")
-    ZhihuAuthor getByUrlToken(@PathVariable("urlToken") String urlToken,
+    ZhihuMember getByUrlToken(@PathVariable("urlToken") String urlToken,
                               @RequestParam(value = "includes", required = false, defaultValue = "") String includes) {
-        Optional<ZhihuAuthor> author = memberService.findByUrlToken(urlToken);
+        Optional<ZhihuMember> author = memberService.findByUrlToken(urlToken);
         return author.map(a -> FieldUtils.filter(author.get(), splitByComma(includes)))
-            .orElseGet(ZhihuAuthor::new);
+            .orElseGet(ZhihuMember::new);
     }
 
     @GetMapping("/id/{id}")
-    ZhihuAuthor getById(@PathVariable("id") String urlToken,
+    ZhihuMember getById(@PathVariable("id") String urlToken,
                         @RequestParam(value = "includes", required = false, defaultValue = "") String includes) {
-        Optional<ZhihuAuthor> author = memberService.findById(urlToken);
+        Optional<ZhihuMember> author = memberService.findById(urlToken);
         return author.map(a -> FieldUtils.filter(author.get(), splitByComma(includes)))
-            .orElseGet(ZhihuAuthor::new);
+            .orElseGet(ZhihuMember::new);
     }
 
     @PostMapping
-    ZhihuAuthor save(@RequestBody ZhihuAuthor author) {
+    ZhihuMember save(@RequestBody ZhihuMember author) {
         return this.memberService.save(author);
     }
 

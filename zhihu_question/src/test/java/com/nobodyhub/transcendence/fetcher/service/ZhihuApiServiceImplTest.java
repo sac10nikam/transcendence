@@ -2,7 +2,7 @@ package com.nobodyhub.transcendence.fetcher.service;
 
 import com.nobodyhub.transcendence.fetcher.IntegrationTest;
 import com.nobodyhub.transcendence.fetcher.domain.ZhihuAnswer;
-import com.nobodyhub.transcendence.fetcher.domain.ZhihuAuthor;
+import com.nobodyhub.transcendence.fetcher.domain.ZhihuMember;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
@@ -39,7 +39,7 @@ public class ZhihuApiServiceImplTest {
 
     @Test
     public void getAuthorTest() {
-        ZhihuAuthor author = zhihuApiService.getAuthor("zhang-wei-21-56-86");
+        ZhihuMember author = zhihuApiService.getAuthor("zhang-wei-21-56-86");
         assertNotNull(author);
         assertEquals("zhang-wei-21-56-86", author.getUrl_token());
     }
