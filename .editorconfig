@@ -9,7 +9,7 @@ end_of_line = crlf
 insert_final_newline = true
 trim_trailing_whitespace = true
 
-[*.{xml, ts, json}]
+[*.{xml, ts, json, yml}]
 indent_size = 2
 
 [*.md]
