@@ -13,7 +13,7 @@ import java.util.List;
 @Document
 @Data
 @NoArgsConstructor(force = true)
-public class ZhihuAuthor implements Mergeable {
+public class ZhihuMember implements Mergeable {
     @Id
     @JsonProperty("id")
     private String id;

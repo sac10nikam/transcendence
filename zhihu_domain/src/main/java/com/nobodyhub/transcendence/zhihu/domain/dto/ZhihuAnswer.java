@@ -18,7 +18,7 @@ public class ZhihuAnswer implements Mergeable {
     @JsonProperty("question")
     private ZhihuQuestion question;
     @JsonProperty("author")
-    private ZhihuAuthor author;
+    private ZhihuMember author;
     @JsonProperty("url")
     private String url;
     @JsonProperty("created_time")
