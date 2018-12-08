@@ -1,0 +1,21 @@
+serverr:
+    port:9100
+zuul:
+    ignored-services: '*'
+    prefix: /api
+    routes:
+        zhihu-members:
+            path: /zhihu-members/**
+            serviceId: zhihu-members
+            strip-prefix: false
+
+eureka:
+    client:
+        service-url:
+            default-zone: http://localhost:8761/eureka/
+
+endpoints:
+    routes:
+        sensitive: false
+
+
