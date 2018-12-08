@@ -1,5 +1,5 @@
-serverr:
-    port:9100
+server:
+    port: 9100
 zuul:
     ignored-services: '*'
     prefix: /api
@@ -17,5 +17,3 @@ eureka:
 endpoints:
     routes:
         sensitive: false
-
-
