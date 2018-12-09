@@ -1,4 +1,4 @@
-package com.nobodyhub.transcendence.zhihu.topic.service;
+package com.nobodyhub.transcendence.zhihu.topic.client;
 
 import com.nobodyhub.transcendence.zhihu.domain.dto.ZhihuMember;
 import org.springframework.cloud.openfeign.FeignClient;
