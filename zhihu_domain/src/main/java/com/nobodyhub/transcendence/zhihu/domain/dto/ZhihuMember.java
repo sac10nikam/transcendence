@@ -10,6 +10,10 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
 
+/**
+ * Member of Zhihu, returned by member/ interface.
+ * Knowned as Author as well
+ */
 @Document
 @Data
 @NoArgsConstructor(force = true)

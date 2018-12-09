@@ -5,8 +5,8 @@ zuul:
   ignored-services: '*'
   prefix: /api
   routes:
-    zhihu-members-endpoints:
-      path: /zhihu-members/**
+    zhihu-member-endpoints:
+      path: /zhihu-member/**
       serviceId: zhihu-members
 eureka:
   client:
