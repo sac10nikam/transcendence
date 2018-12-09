@@ -2,7 +2,7 @@ package com.nobodyhub.transcendence.zhihu.topic.service.impl;
 
 import com.google.common.collect.Lists;
 import com.nobodyhub.transcendence.zhihu.topic.domain.ZhihuTopicCategory;
-import com.nobodyhub.transcendence.zhihu.topic.service.ZhihuTopicsPageParseService;
+import com.nobodyhub.transcendence.zhihu.topic.service.ZhihuTopicPageParseService;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -15,7 +15,7 @@ import java.util.List;
 
 @Slf4j
 @Service
-public class ZhihuTopicsPageParseServiceImpl implements ZhihuTopicsPageParseService {
+public class ZhihuTopicPageParseServiceImpl implements ZhihuTopicPageParseService {
 
     @Override
     public List<ZhihuTopicCategory> getAllCategories() {

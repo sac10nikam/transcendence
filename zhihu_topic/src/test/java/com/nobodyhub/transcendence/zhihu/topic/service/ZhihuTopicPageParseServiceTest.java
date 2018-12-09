@@ -13,9 +13,9 @@ import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class ZhihuTopicsPageParseServiceTest {
+public class ZhihuTopicPageParseServiceTest {
     @Autowired
-    private ZhihuTopicsPageParseService parseService;
+    private ZhihuTopicPageParseService parseService;
 
     @Test
     public void getAllCategoriesTest() {

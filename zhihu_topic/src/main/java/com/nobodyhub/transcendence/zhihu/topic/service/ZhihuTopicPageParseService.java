@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * Parse pages related with Zhihu Topics
  */
-public interface ZhihuTopicsPageParseService {
+public interface ZhihuTopicPageParseService {
     /**
      * Get all topic categories from https://www.zhihu.com/topics
      *
