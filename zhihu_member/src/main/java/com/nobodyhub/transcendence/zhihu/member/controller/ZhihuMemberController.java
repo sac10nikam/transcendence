@@ -36,8 +36,8 @@ public class ZhihuMemberController {
     }
 
     @PostMapping
-    ZhihuMember save(@RequestBody ZhihuMember author) {
-        return this.memberService.save(author);
+    ZhihuMember save(@RequestBody ZhihuMember member) {
+        return this.memberService.save(member);
     }
 
     /**

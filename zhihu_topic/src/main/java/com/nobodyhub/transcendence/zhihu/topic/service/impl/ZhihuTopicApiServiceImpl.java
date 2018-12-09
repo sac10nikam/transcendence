@@ -102,7 +102,7 @@ public class ZhihuTopicApiServiceImpl implements ZhihuTopicApiService {
         answers.forEach(answer -> {
             //TODO: save answer
             //TODO: save question
-            //TODO: save author
+            //TODO: save member
             zhihuMemberClient.save(answer.getAuthor());
         });
         return answers;

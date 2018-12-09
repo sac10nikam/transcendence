@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 /**
  * https://dzone.com/articles/microservices-communication-feign-as-rest-client
  */
-@FeignClient(name = "localhost:8080")
+@FeignClient(name = "zhihu-member", path = "/members")
 public interface ZhihuMemberClient {
     @PostMapping
-    ZhihuMember save(@RequestBody ZhihuMember author);
+    ZhihuMember save(@RequestBody ZhihuMember member);
 }
