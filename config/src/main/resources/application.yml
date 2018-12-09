@@ -1,0 +1,8 @@
+server:
+    port: 9101
+spring:
+    cloud:
+        config:
+            server:
+                git:
+                    uri: git@bitbucket.org:yan_h/transcendence-config.git
