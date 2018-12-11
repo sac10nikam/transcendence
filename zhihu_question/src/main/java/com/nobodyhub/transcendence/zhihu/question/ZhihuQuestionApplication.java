@@ -2,11 +2,13 @@ package com.nobodyhub.transcendence.zhihu.question;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 
+@EnableEurekaClient
 @SpringBootApplication
-public class FetcherApplication {
+public class ZhihuQuestionApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(FetcherApplication.class, args);
+        SpringApplication.run(ZhihuQuestionApplication.class, args);
     }
 }
