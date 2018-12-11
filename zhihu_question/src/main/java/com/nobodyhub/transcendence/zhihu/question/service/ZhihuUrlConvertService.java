@@ -1,4 +1,4 @@
-package com.nobodyhub.transcendence.fetcher.service;
+package com.nobodyhub.transcendence.zhihu.question.service;
 
 public interface ZhihuUrlConvertService {
     /**

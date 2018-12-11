@@ -1,11 +1,11 @@
-package com.nobodyhub.transcendence.fetcher.service.impl;
+package com.nobodyhub.transcendence.zhihu.question.service.impl;
 
 import com.google.common.collect.Lists;
-import com.nobodyhub.transcendence.fetcher.domain.ZhihuAnswer;
-import com.nobodyhub.transcendence.fetcher.domain.ZhihuAnswerList;
-import com.nobodyhub.transcendence.fetcher.domain.ZhihuMember;
-import com.nobodyhub.transcendence.fetcher.service.ZhihuApiService;
-import com.nobodyhub.transcendence.fetcher.service.ZhihuUrlConvertService;
+import com.nobodyhub.transcendence.zhihu.question.domain.ZhihuAnswer;
+import com.nobodyhub.transcendence.zhihu.question.domain.ZhihuAnswerList;
+import com.nobodyhub.transcendence.zhihu.question.domain.ZhihuMember;
+import com.nobodyhub.transcendence.zhihu.question.service.ZhihuApiService;
+import com.nobodyhub.transcendence.zhihu.question.service.ZhihuUrlConvertService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

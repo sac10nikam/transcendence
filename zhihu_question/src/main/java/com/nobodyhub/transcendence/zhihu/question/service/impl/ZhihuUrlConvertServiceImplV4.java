@@ -1,6 +1,6 @@
-package com.nobodyhub.transcendence.fetcher.service.impl;
+package com.nobodyhub.transcendence.zhihu.question.service.impl;
 
-import com.nobodyhub.transcendence.fetcher.service.ZhihuUrlConvertService;
+import com.nobodyhub.transcendence.zhihu.question.service.ZhihuUrlConvertService;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;

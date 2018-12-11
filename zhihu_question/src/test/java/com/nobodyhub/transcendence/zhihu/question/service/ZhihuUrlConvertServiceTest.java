@@ -1,4 +1,4 @@
-package com.nobodyhub.transcendence.fetcher.service;
+package com.nobodyhub.transcendence.zhihu.question.service;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

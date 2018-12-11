@@ -1,8 +1,8 @@
-package com.nobodyhub.transcendence.fetcher.service;
+package com.nobodyhub.transcendence.zhihu.question.service;
 
-import com.nobodyhub.transcendence.fetcher.IntegrationTest;
-import com.nobodyhub.transcendence.fetcher.domain.ZhihuAnswer;
-import com.nobodyhub.transcendence.fetcher.domain.ZhihuMember;
+import com.nobodyhub.transcendence.zhihu.question.IntegrationTest;
+import com.nobodyhub.transcendence.zhihu.question.domain.ZhihuAnswer;
+import com.nobodyhub.transcendence.zhihu.question.domain.ZhihuMember;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;

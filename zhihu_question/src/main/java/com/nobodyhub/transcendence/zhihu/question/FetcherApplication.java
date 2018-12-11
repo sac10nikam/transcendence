@@ -1,4 +1,4 @@
-package com.nobodyhub.transcendence.fetcher;
+package com.nobodyhub.transcendence.zhihu.question;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

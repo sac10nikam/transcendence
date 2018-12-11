@@ -1,4 +1,4 @@
-package com.nobodyhub.transcendence.fetcher.configuration;
+package com.nobodyhub.transcendence.zhihu.question.configuration;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.web.client.RestTemplateBuilder;

@@ -1,4 +1,4 @@
-package com.nobodyhub.transcendence.fetcher.domain;
+package com.nobodyhub.transcendence.zhihu.question.domain;
 
 import lombok.Data;
 
