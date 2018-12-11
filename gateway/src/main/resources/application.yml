@@ -7,7 +7,7 @@ zuul:
   routes:
     zhihu-member-endpoints:
       path: /zhihu-member/**
-      serviceId: zhihu-member
+      serviceId: zhihu_member
     zhihu-topic-endpoints:
       path: /zhihu-topic/**
       serviceId: zhihu-topic
