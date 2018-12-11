@@ -4,7 +4,7 @@ import com.google.common.collect.Lists;
 import com.nobodyhub.transcendence.zhihu.domain.dto.ZhihuAnswer;
 import com.nobodyhub.transcendence.zhihu.domain.dto.ZhihuMember;
 import com.nobodyhub.transcendence.zhihu.question.domain.ZhihuAnswerList;
-import com.nobodyhub.transcendence.zhihu.question.service.ZhihuApiService;
+import com.nobodyhub.transcendence.zhihu.question.service.ZhihuQuestionApiService;
 import com.nobodyhub.transcendence.zhihu.question.service.ZhihuUrlConvertService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,17 +23,17 @@ import java.util.Optional;
 @ConditionalOnProperty(name = "zhihu.api.version", havingValue = "4")
 @Service
 @Slf4j
-public class ZhihuApiServiceImplV4 implements ZhihuApiService {
+public class ZhihuQuestionApiServiceImplV4 implements ZhihuQuestionApiService {
     private final int limit;
     private final String sortBy;
     private final RestTemplate restTemplate;
     private final ZhihuUrlConvertService zhihuUrlConvertService;
 
     @Autowired
-    public ZhihuApiServiceImplV4(RestTemplate restTemplate,
-                                 ZhihuUrlConvertService zhihuUrlConvertService,
-                                 @Value("${zhihu.api.limit}") int limit,
-                                 @Value("${zhihu.api.sortBy}") String sortBy) {
+    public ZhihuQuestionApiServiceImplV4(RestTemplate restTemplate,
+                                         ZhihuUrlConvertService zhihuUrlConvertService,
+                                         @Value("${zhihu.api.limit}") int limit,
+                                         @Value("${zhihu.api.sortBy}") String sortBy) {
         this.limit = limit;
         this.sortBy = sortBy;
         this.restTemplate = restTemplate;

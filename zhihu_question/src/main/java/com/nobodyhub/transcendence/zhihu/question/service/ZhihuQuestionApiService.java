@@ -6,7 +6,7 @@ import com.nobodyhub.transcendence.zhihu.domain.dto.ZhihuMember;
 
 import java.util.List;
 
-public interface ZhihuApiService {
+public interface ZhihuQuestionApiService {
     /**
      * Get the answer list for question with given id
      *
