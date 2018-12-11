@@ -5,7 +5,8 @@ spring:
     config:
       server:
         git:
-          uri: git@bitbucket.org:yan_h/transcendence-config.git
+          uri: git@bitbucket.org:yan_h/transcendence.git
           clone-on-start: true
           force-pull: true
           delete-untracked-branches: true
+          search-paths: config
