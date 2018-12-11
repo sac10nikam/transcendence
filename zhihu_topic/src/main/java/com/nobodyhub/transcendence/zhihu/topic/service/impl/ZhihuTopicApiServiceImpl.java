@@ -5,6 +5,7 @@ import com.google.common.collect.Sets;
 import com.nobodyhub.transcendence.zhihu.domain.dto.ZhihuAnswer;
 import com.nobodyhub.transcendence.zhihu.domain.merge.MergeUtils;
 import com.nobodyhub.transcendence.zhihu.topic.client.ZhihuMemberClient;
+import com.nobodyhub.transcendence.zhihu.topic.client.ZhihuQuestionClient;
 import com.nobodyhub.transcendence.zhihu.topic.domain.ZhihuTopic;
 import com.nobodyhub.transcendence.zhihu.topic.domain.ZhihuTopicCategory;
 import com.nobodyhub.transcendence.zhihu.topic.domain.feed.ZhihuTopicFeed;
@@ -37,14 +38,16 @@ public class ZhihuTopicApiServiceImpl implements ZhihuTopicApiService {
     private final RestTemplate restTemplate;
     private final ZhihuTopicRepository topicRepository;
     private final ZhihuMemberClient zhihuMemberClient;
+    private final ZhihuQuestionClient zhihuQuestionClient;
 
     @Autowired
     public ZhihuTopicApiServiceImpl(RestTemplate restTemplate,
                                     ZhihuTopicRepository topicRepository,
-                                    ZhihuMemberClient zhihuMemberClient) {
+                                    ZhihuMemberClient zhihuMemberClient, ZhihuQuestionClient zhihuQuestionClient) {
         this.restTemplate = restTemplate;
         this.topicRepository = topicRepository;
         this.zhihuMemberClient = zhihuMemberClient;
+        this.zhihuQuestionClient = zhihuQuestionClient;
     }
 
     @Override
@@ -101,8 +104,7 @@ public class ZhihuTopicApiServiceImpl implements ZhihuTopicApiService {
         );
         answers.forEach(answer -> {
             //TODO: save answer
-            //TODO: save question
-            //TODO: save member
+            zhihuQuestionClient.save(answer.getQuestion());
             zhihuMemberClient.save(answer.getAuthor());
         });
         return answers;
