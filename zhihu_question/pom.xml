@@ -56,6 +56,11 @@
       <artifactId>jsoup</artifactId>
       <version>1.10.2</version>
     </dependency>
+
+    <dependency>
+      <groupId>com.nobodyhub.transcendence</groupId>
+      <artifactId>zhihu_domain</artifactId>
+    </dependency>
   </dependencies>
 
   <build>

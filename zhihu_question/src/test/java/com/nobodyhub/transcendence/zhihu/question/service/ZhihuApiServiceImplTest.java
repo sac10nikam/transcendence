@@ -1,8 +1,8 @@
 package com.nobodyhub.transcendence.zhihu.question.service;
 
+import com.nobodyhub.transcendence.zhihu.domain.dto.ZhihuAnswer;
+import com.nobodyhub.transcendence.zhihu.domain.dto.ZhihuMember;
 import com.nobodyhub.transcendence.zhihu.question.IntegrationTest;
-import com.nobodyhub.transcendence.zhihu.question.domain.ZhihuAnswer;
-import com.nobodyhub.transcendence.zhihu.question.domain.ZhihuMember;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
@@ -12,7 +12,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static junit.framework.TestCase.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 @RunWith(SpringRunner.class)
@@ -34,13 +34,13 @@ public class ZhihuApiServiceImplTest {
     public void getAnswersForMemberTest() {
         List<ZhihuAnswer> answerList = this.zhihuApiService.getAnswersForMember("yun-dong-shan");
         assertNotNull(answerList);
-        assertEquals("yun-dong-shan", answerList.get(0).getAuthor().getUrl_token());
+        assertEquals("yun-dong-shan", answerList.get(0).getAuthor().getUrlToken());
     }
 
     @Test
     public void getAuthorTest() {
         ZhihuMember author = zhihuApiService.getAuthor("zhang-wei-21-56-86");
         assertNotNull(author);
-        assertEquals("zhang-wei-21-56-86", author.getUrl_token());
+        assertEquals("zhang-wei-21-56-86", author.getUrlToken());
     }
 }

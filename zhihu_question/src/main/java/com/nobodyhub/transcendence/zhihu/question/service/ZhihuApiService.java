@@ -1,8 +1,8 @@
 package com.nobodyhub.transcendence.zhihu.question.service;
 
 
-import com.nobodyhub.transcendence.zhihu.question.domain.ZhihuAnswer;
-import com.nobodyhub.transcendence.zhihu.question.domain.ZhihuMember;
+import com.nobodyhub.transcendence.zhihu.domain.dto.ZhihuAnswer;
+import com.nobodyhub.transcendence.zhihu.domain.dto.ZhihuMember;
 
 import java.util.List;
 
