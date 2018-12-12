@@ -3,7 +3,7 @@ package com.nobodyhub.transcendence.zhihu.topic.service.impl;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.nobodyhub.transcendence.common.merge.MergeUtils;
-import com.nobodyhub.transcendence.zhihu.api.domain.ZhihuAnswer;
+import com.nobodyhub.transcendence.zhihu.api.domain.ZhihuApiAnswer;
 import com.nobodyhub.transcendence.zhihu.topic.client.ZhihuMemberClient;
 import com.nobodyhub.transcendence.zhihu.topic.client.ZhihuQuestionClient;
 import com.nobodyhub.transcendence.zhihu.topic.domain.ZhihuTopic;
@@ -97,8 +97,8 @@ public class ZhihuTopicApiServiceImpl implements ZhihuTopicApiService {
     }
 
     @Override
-    public List<ZhihuAnswer> getAnswerByTopic(String topicId) {
-        List<ZhihuAnswer> answers = Lists.newArrayList(
+    public List<ZhihuApiAnswer> getAnswerByTopic(String topicId) {
+        List<ZhihuApiAnswer> answers = Lists.newArrayList(
             getAnswersByPaging("/api/v4/topics/{topicId}/feeds/essence?include=data[?(target.type=topic_sticky_module)].target.data[?(target.type=answer)].target.content,relationship.is_authorized,is_author,voting,is_thanked,is_nothelp;data[?(target.type=topic_sticky_module)].target.data[?(target.type=answer)].target.is_normal,comment_count,voteup_count,content,relevant_info,excerpt.author.badge[?(type=best_answerer)].topics;data[?(target.type=topic_sticky_module)].target.data[?(target.type=article)].target.content,voteup_count,comment_count,voting,author.badge[?(type=best_answerer)].topics;data[?(target.type=topic_sticky_module)].target.data[?(target.type=people)].target.answer_count,articles_count,gender,follower_count,is_followed,is_following,badge[?(type=best_answerer)].topics;data[?(target.type=answer)].target.annotation_detail,content,hermes_label,is_labeled,relationship.is_authorized,is_author,voting,is_thanked,is_nothelp;data[?(target.type=answer)].target.author.badge[?(type=best_answerer)].topics;data[?(target.type=article)].target.annotation_detail,content,hermes_label,is_labeled,author.badge[?(type=best_answerer)].topics;data[?(target.type=question)].target.annotation_detail,comment_count;&limit=10",
                 topicId)
         );
@@ -189,8 +189,8 @@ public class ZhihuTopicApiServiceImpl implements ZhihuTopicApiService {
      * @param topicId the belonging topic
      * @return
      */
-    private Set<ZhihuAnswer> getAnswersByPaging(String url, String topicId) {
-        Set<ZhihuAnswer> answers = Sets.newHashSet();
+    private Set<ZhihuApiAnswer> getAnswersByPaging(String url, String topicId) {
+        Set<ZhihuApiAnswer> answers = Sets.newHashSet();
         ZhihuTopicFeedList feedList = null;
         try {
             log.info("Accessing : [{}]",

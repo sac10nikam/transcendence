@@ -1,8 +1,8 @@
 package com.nobodyhub.transcendence.zhihu.question.service;
 
 
-import com.nobodyhub.transcendence.zhihu.api.domain.ZhihuAnswer;
-import com.nobodyhub.transcendence.zhihu.api.domain.ZhihuMember;
+import com.nobodyhub.transcendence.zhihu.api.domain.ZhihuApiAnswer;
+import com.nobodyhub.transcendence.zhihu.api.domain.ZhihuApiMember;
 
 import java.util.List;
 
@@ -13,7 +13,7 @@ public interface ZhihuQuestionApiService {
      * @param questionId question id
      * @return
      */
-    List<ZhihuAnswer> getAnswersForQuestion(String questionId);
+    List<ZhihuApiAnswer> getAnswersForQuestion(String questionId);
 
     /**
      * Get the answer list for member with given token
@@ -21,7 +21,7 @@ public interface ZhihuQuestionApiService {
      * @param token member url token
      * @return
      */
-    List<ZhihuAnswer> getAnswersForMember(String token);
+    List<ZhihuApiAnswer> getAnswersForMember(String token);
 
     /**
      * Get Author information
@@ -29,5 +29,5 @@ public interface ZhihuQuestionApiService {
      * @param urlToken unique token in the url
      * @return
      */
-    ZhihuMember getAuthor(String urlToken);
+    ZhihuApiMember getAuthor(String urlToken);
 }

@@ -1,7 +1,7 @@
 package com.nobodyhub.transcendence.zhihu.member.service.impl;
 
 import com.nobodyhub.transcendence.common.merge.MergeUtils;
-import com.nobodyhub.transcendence.zhihu.api.domain.ZhihuMember;
+import com.nobodyhub.transcendence.zhihu.api.domain.ZhihuApiMember;
 import com.nobodyhub.transcendence.zhihu.member.repository.ZhihuMemberRepository;
 import com.nobodyhub.transcendence.zhihu.member.service.ZhihuMemberService;
 import lombok.extern.slf4j.Slf4j;
@@ -20,20 +20,20 @@ public class ZhihuMemberServiceImpl implements ZhihuMemberService {
     }
 
     @Override
-    public Optional<ZhihuMember> findByUrlToken(String urlToken) {
+    public Optional<ZhihuApiMember> findByUrlToken(String urlToken) {
         return repository.findByUrlToken(urlToken);
     }
 
     @Override
-    public Optional<ZhihuMember> findById(String id) {
+    public Optional<ZhihuApiMember> findById(String id) {
         return repository.findById(id);
     }
 
     @Override
-    public ZhihuMember save(ZhihuMember author) {
+    public ZhihuApiMember save(ZhihuApiMember author) {
         Assert.notNull(author, "Author to be saved can not be null!");
         Assert.notNull(author.getId(), "Author need to have a non-null id field!");
-        Optional<ZhihuMember> existed = repository.findById(author.getId());
+        Optional<ZhihuApiMember> existed = repository.findById(author.getId());
         if (existed.isPresent()) {
             //merge the old one and new one
             return MergeUtils.merge(author, existed.get());

@@ -1,7 +1,7 @@
 package com.nobodyhub.transcendence.zhihu.question.service;
 
-import com.nobodyhub.transcendence.zhihu.api.domain.ZhihuAnswer;
-import com.nobodyhub.transcendence.zhihu.api.domain.ZhihuMember;
+import com.nobodyhub.transcendence.zhihu.api.domain.ZhihuApiAnswer;
+import com.nobodyhub.transcendence.zhihu.api.domain.ZhihuApiMember;
 import com.nobodyhub.transcendence.zhihu.question.IntegrationTest;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -25,21 +25,21 @@ public class ZhihuQuestionApiServiceImplTest {
 
     @Test
     public void getAnswersForQuestionTest() {
-        List<ZhihuAnswer> answerList = this.zhihuQuestionApiService.getAnswersForQuestion("49472046");
+        List<ZhihuApiAnswer> answerList = this.zhihuQuestionApiService.getAnswersForQuestion("49472046");
         assertNotNull(answerList);
         assertEquals("49472046", answerList.get(0).getQuestion().getId());
     }
 
     @Test
     public void getAnswersForMemberTest() {
-        List<ZhihuAnswer> answerList = this.zhihuQuestionApiService.getAnswersForMember("yun-dong-shan");
+        List<ZhihuApiAnswer> answerList = this.zhihuQuestionApiService.getAnswersForMember("yun-dong-shan");
         assertNotNull(answerList);
         assertEquals("yun-dong-shan", answerList.get(0).getAuthor().getUrlToken());
     }
 
     @Test
     public void getAuthorTest() {
-        ZhihuMember author = zhihuQuestionApiService.getAuthor("zhang-wei-21-56-86");
+        ZhihuApiMember author = zhihuQuestionApiService.getAuthor("zhang-wei-21-56-86");
         assertNotNull(author);
         assertEquals("zhang-wei-21-56-86", author.getUrlToken());
     }

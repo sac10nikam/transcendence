@@ -1,10 +1,10 @@
 package com.nobodyhub.transcendence.zhihu.member.repository;
 
-import com.nobodyhub.transcendence.zhihu.api.domain.ZhihuMember;
+import com.nobodyhub.transcendence.zhihu.api.domain.ZhihuApiMember;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.Optional;
 
-public interface ZhihuMemberRepository extends CrudRepository<ZhihuMember, String> {
-    Optional<ZhihuMember> findByUrlToken(String urlToken);
+public interface ZhihuMemberRepository extends CrudRepository<ZhihuApiMember, String> {
+    Optional<ZhihuApiMember> findByUrlToken(String urlToken);
 }

@@ -2,7 +2,7 @@ package com.nobodyhub.transcendence.zhihu.member.controller;
 
 import com.google.common.collect.Sets;
 import com.nobodyhub.transcendence.common.util.FieldUtils;
-import com.nobodyhub.transcendence.zhihu.api.domain.ZhihuMember;
+import com.nobodyhub.transcendence.zhihu.api.domain.ZhihuApiMember;
 import com.nobodyhub.transcendence.zhihu.member.service.ZhihuMemberService;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,23 +20,23 @@ public class ZhihuMemberController {
     }
 
     @GetMapping("/url_token/{urlToken}")
-    ZhihuMember getByUrlToken(@PathVariable("urlToken") String urlToken,
-                              @RequestParam(value = "includes", required = false, defaultValue = "") String includes) {
-        Optional<ZhihuMember> author = memberService.findByUrlToken(urlToken);
+    ZhihuApiMember getByUrlToken(@PathVariable("urlToken") String urlToken,
+                                 @RequestParam(value = "includes", required = false, defaultValue = "") String includes) {
+        Optional<ZhihuApiMember> author = memberService.findByUrlToken(urlToken);
         return author.map(a -> FieldUtils.filter(author.get(), splitByComma(includes)))
-            .orElseGet(ZhihuMember::new);
+            .orElseGet(ZhihuApiMember::new);
     }
 
     @GetMapping("/id/{id}")
-    ZhihuMember getById(@PathVariable("id") String urlToken,
-                        @RequestParam(value = "includes", required = false, defaultValue = "") String includes) {
-        Optional<ZhihuMember> author = memberService.findById(urlToken);
+    ZhihuApiMember getById(@PathVariable("id") String urlToken,
+                           @RequestParam(value = "includes", required = false, defaultValue = "") String includes) {
+        Optional<ZhihuApiMember> author = memberService.findById(urlToken);
         return author.map(a -> FieldUtils.filter(author.get(), splitByComma(includes)))
-            .orElseGet(ZhihuMember::new);
+            .orElseGet(ZhihuApiMember::new);
     }
 
     @PostMapping
-    ZhihuMember save(@RequestBody ZhihuMember member) {
+    ZhihuApiMember save(@RequestBody ZhihuApiMember member) {
         return this.memberService.save(member);
     }
 

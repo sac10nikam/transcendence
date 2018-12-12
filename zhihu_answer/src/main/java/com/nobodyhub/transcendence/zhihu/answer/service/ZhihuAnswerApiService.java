@@ -1,6 +1,6 @@
 package com.nobodyhub.transcendence.zhihu.answer.service;
 
-import com.nobodyhub.transcendence.zhihu.api.domain.ZhihuAnswer;
+import com.nobodyhub.transcendence.zhihu.api.domain.ZhihuApiAnswer;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,7 +13,7 @@ public interface ZhihuAnswerApiService {
      * @param answerId
      * @return
      */
-    Optional<ZhihuAnswer> getById(String answerId);
+    Optional<ZhihuApiAnswer> getById(String answerId);
 
     /**
      * Get the answers of given member
@@ -22,7 +22,7 @@ public interface ZhihuAnswerApiService {
      * @param memberToken
      * @return
      */
-    List<ZhihuAnswer> getByMember(String memberToken);
+    List<ZhihuApiAnswer> getByMember(String memberToken);
 
     /**
      * Get the answer of given question
@@ -31,5 +31,5 @@ public interface ZhihuAnswerApiService {
      * @param questionId
      * @return
      */
-    List<ZhihuAnswer> getByQuestion(String questionId);
+    List<ZhihuApiAnswer> getByQuestion(String questionId);
 }

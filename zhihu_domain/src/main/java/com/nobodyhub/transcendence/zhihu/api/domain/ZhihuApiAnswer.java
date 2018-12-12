@@ -8,29 +8,29 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document
 @Data
-public class ZhihuAnswer implements Mergeable {
+public class ZhihuApiAnswer implements Mergeable {
     @Id
     @JsonProperty("id")
-    private String id;
+    protected String id;
 
     @JsonProperty("type")
-    private String type;
+    protected String type;
     @JsonProperty("question")
-    private ZhihuQuestion question;
+    protected ZhihuApiQuestion question;
     @JsonProperty("author")
-    private ZhihuMember author;
+    protected ZhihuApiMember author;
     @JsonProperty("url")
-    private String url;
+    protected String url;
     @JsonProperty("created_time")
-    private long createdTime;
+    protected long createdTime;
     @JsonProperty("updated_time")
-    private long updatedTime;
+    protected long updatedTime;
     @JsonProperty("voteup_count")
-    private long voteupCount;
+    protected long voteupCount;
     @JsonProperty("comment_count")
-    private long commentCount;
+    protected long commentCount;
     @JsonProperty("content")
-    private String content;
+    protected String content;
     @JsonProperty("excerpt")
-    private String excerpt;
+    protected String excerpt;
 }

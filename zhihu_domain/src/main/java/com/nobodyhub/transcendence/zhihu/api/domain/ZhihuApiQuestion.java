@@ -9,24 +9,24 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document
 @Data
-public class ZhihuQuestion implements Mergeable {
+public class ZhihuApiQuestion implements Mergeable {
 
     @Id
     @JsonProperty("id")
-    private String id;
+    protected String id;
 
     @JsonProperty("type")
-    private String type;
+    protected String type;
     @JsonProperty("title")
-    private String title;
+    protected String title;
     @JsonProperty("question_type")
-    private String questionType;
+    protected String questionType;
     @JsonProperty("created")
-    private String created;
+    protected String created;
     @JsonProperty("updated_time")
-    private String updatedTime;
+    protected String updatedTime;
     @JsonProperty("url")
-    private String url;
+    protected String url;
     @JsonProperty("relationship")
-    private Object relationship;
+    protected Object relationship;
 }

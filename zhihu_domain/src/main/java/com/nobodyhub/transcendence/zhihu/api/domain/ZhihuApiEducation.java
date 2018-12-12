@@ -5,11 +5,11 @@ import com.nobodyhub.transcendence.common.merge.Mergeable;
 import lombok.Data;
 
 @Data
-public class ZhihuEducation implements Mergeable {
+public class ZhihuApiEducation implements Mergeable {
     @JsonProperty("major")
-    private ZhihuTopic major;
+    protected ZhihuApiTopic major;
     @JsonProperty("school")
-    private ZhihuTopic school;
+    protected ZhihuApiTopic school;
     @JsonProperty("diploma")
-    private int diploma;
+    protected int diploma;
 }

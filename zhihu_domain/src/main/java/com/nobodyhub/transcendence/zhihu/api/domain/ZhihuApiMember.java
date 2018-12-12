@@ -17,77 +17,77 @@ import java.util.List;
 @Document
 @Data
 @NoArgsConstructor(force = true)
-public class ZhihuMember implements Mergeable {
+public class ZhihuApiMember implements Mergeable {
     @Id
     @JsonProperty("id")
-    private String id;
+    protected String id;
 
     @Indexed(unique = true)
     @JsonProperty("url_token")
-    private String urlToken;
+    protected String urlToken;
 
     @JsonProperty("name")
-    private String name;
+    protected String name;
     @JsonProperty("description")
-    private String description;
+    protected String description;
     @JsonProperty("is_active")
-    private Integer isActive;
+    protected Integer isActive;
     @JsonProperty("avatar_url")
-    private String avatarUrl;
+    protected String avatarUrl;
     @JsonProperty("avatar_url_template")
-    private String avatarUrlTemplate;
+    protected String avatarUrlTemplate;
     @JsonProperty("is_org")
-    private Boolean isOrg;
+    protected Boolean isOrg;
     @JsonProperty("type")
-    private String type;
+    protected String type;
     @JsonProperty("url")
-    private String url;
+    protected String url;
     @JsonProperty("user_type")
-    private String userType;
+    protected String userType;
     @JsonProperty("headline")
-    private String headline;
+    protected String headline;
     @JsonProperty("gender")
-    private Integer gender;
+    protected Integer gender;
     @JsonProperty("is_advertiser")
-    private Boolean isAdvertiser;
+    protected Boolean isAdvertiser;
     @JsonProperty("follower_count")
-    private Long followerCount;
+    protected Long followerCount;
     @JsonProperty("following_count")
-    private Long followingCount;
+    protected Long followingCount;
     @JsonProperty("answer_count")
-    private Long answerCount;
+    protected Long answerCount;
     @JsonProperty("articles_count")
-    private Long articlesCount;
+    protected Long articlesCount;
     @JsonProperty("voteup_count")
-    private Long voteupCount;
+    protected Long voteupCount;
     @JsonProperty("vote_to_count")
-    private Long voteToCount;
+    protected Long voteToCount;
     @JsonProperty("commercial_question_count")
-    private Long commercialQuestionCount;
+    protected Long commercialQuestionCount;
     @JsonProperty("question_count")
-    private Long questionCount;
+    protected Long questionCount;
     @JsonProperty("following_question_count")
-    private Long followingQuestionCount;
+    protected Long followingQuestionCount;
     @JsonProperty("participated_live_count")
-    private Long participatedLiveCount;
+    protected Long participatedLiveCount;
     @JsonProperty("following_favlists_count")
-    private Long followingFavlistsCount;
+    protected Long followingFavlistsCount;
     @JsonProperty("favorited_count")
-    private Long favoritedCount;
+    protected Long favoritedCount;
     @JsonProperty("following_topic_count")
-    private Long followingTopicCount;
+    protected Long followingTopicCount;
     @JsonProperty("thank_to_count")
-    private Long thankToCount;
+    protected Long thankToCount;
     @JsonProperty("thank_from_count")
-    private Long thankFromCount;
+    protected Long thankFromCount;
     @JsonProperty("thanked_count")
-    private Long thankedCount;
+    protected Long thankedCount;
     @JsonProperty("business")
-    private ZhihuTopic business;
+    protected ZhihuApiTopic business;
     @JsonProperty("employments")
-    private List<ZhihuEmployment> employments;
+    protected List<ZhihuApiEmployment> employments;
     @JsonProperty("educations")
-    private List<ZhihuEducation> educations;
+    protected List<ZhihuApiEducation> educations;
     @JsonProperty("locations")
-    private List<ZhihuTopic> locations;
+    protected List<ZhihuApiTopic> locations;
 }

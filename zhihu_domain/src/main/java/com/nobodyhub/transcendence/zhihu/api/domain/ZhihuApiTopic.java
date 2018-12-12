@@ -8,19 +8,19 @@ import lombok.Data;
  * A generic datastructure to represent topic, like job, company. and etc.
  */
 @Data
-public class ZhihuTopic implements Mergeable {
+public class ZhihuApiTopic implements Mergeable {
     @JsonProperty("introduction")
-    private String introduction;
+    protected String introduction;
     @JsonProperty("avatar_url")
-    private String avatarUrl;
+    protected String avatarUrl;
     @JsonProperty("name")
-    private String name;
+    protected String name;
     @JsonProperty("url")
-    private String url;
+    protected String url;
     @JsonProperty("type")
-    private String type;
+    protected String type;
     @JsonProperty("excerpt")
-    private String excerpt;
+    protected String excerpt;
     @JsonProperty("id")
-    private String id;
+    protected String id;
 }

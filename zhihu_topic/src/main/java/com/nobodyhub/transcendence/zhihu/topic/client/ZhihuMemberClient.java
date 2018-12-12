@@ -1,6 +1,6 @@
 package com.nobodyhub.transcendence.zhihu.topic.client;
 
-import com.nobodyhub.transcendence.zhihu.api.domain.ZhihuMember;
+import com.nobodyhub.transcendence.zhihu.api.domain.ZhihuApiMember;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -8,5 +8,5 @@ import org.springframework.web.bind.annotation.RequestBody;
 @FeignClient(name = "zhihu-member", path = "/members")
 public interface ZhihuMemberClient {
     @PostMapping
-    ZhihuMember save(@RequestBody ZhihuMember member);
+    ZhihuApiMember save(@RequestBody ZhihuApiMember member);
 }
