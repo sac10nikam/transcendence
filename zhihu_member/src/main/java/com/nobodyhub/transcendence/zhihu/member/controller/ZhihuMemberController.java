@@ -2,7 +2,7 @@ package com.nobodyhub.transcendence.zhihu.member.controller;
 
 import com.google.common.collect.Sets;
 import com.nobodyhub.transcendence.common.util.FieldUtils;
-import com.nobodyhub.transcendence.zhihu.domain.dto.ZhihuMember;
+import com.nobodyhub.transcendence.zhihu.api.domain.ZhihuMember;
 import com.nobodyhub.transcendence.zhihu.member.service.ZhihuMemberService;
 import org.springframework.web.bind.annotation.*;
 

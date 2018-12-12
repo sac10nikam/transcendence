@@ -1,6 +1,6 @@
 package com.nobodyhub.transcendence.zhihu.topic.client;
 
-import com.nobodyhub.transcendence.zhihu.domain.dto.ZhihuQuestion;
+import com.nobodyhub.transcendence.zhihu.api.domain.ZhihuQuestion;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

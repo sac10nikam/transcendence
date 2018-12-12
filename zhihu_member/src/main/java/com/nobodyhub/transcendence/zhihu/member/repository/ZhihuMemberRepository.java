@@ -1,6 +1,6 @@
 package com.nobodyhub.transcendence.zhihu.member.repository;
 
-import com.nobodyhub.transcendence.zhihu.domain.dto.ZhihuMember;
+import com.nobodyhub.transcendence.zhihu.api.domain.ZhihuMember;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.Optional;

@@ -1,4 +1,4 @@
-package com.nobodyhub.transcendence.zhihu.domain.dto;
+package com.nobodyhub.transcendence.zhihu.api.domain;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.nobodyhub.transcendence.common.merge.Mergeable;

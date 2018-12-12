@@ -1,7 +1,7 @@
 package com.nobodyhub.transcendence.zhihu.question.service;
 
-import com.nobodyhub.transcendence.zhihu.domain.dto.ZhihuAnswer;
-import com.nobodyhub.transcendence.zhihu.domain.dto.ZhihuMember;
+import com.nobodyhub.transcendence.zhihu.api.domain.ZhihuAnswer;
+import com.nobodyhub.transcendence.zhihu.api.domain.ZhihuMember;
 import com.nobodyhub.transcendence.zhihu.question.IntegrationTest;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;

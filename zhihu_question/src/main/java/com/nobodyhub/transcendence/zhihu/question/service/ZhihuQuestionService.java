@@ -1,6 +1,6 @@
 package com.nobodyhub.transcendence.zhihu.question.service;
 
-import com.nobodyhub.transcendence.zhihu.domain.dto.ZhihuQuestion;
+import com.nobodyhub.transcendence.zhihu.api.domain.ZhihuQuestion;
 
 import java.util.Optional;
 
