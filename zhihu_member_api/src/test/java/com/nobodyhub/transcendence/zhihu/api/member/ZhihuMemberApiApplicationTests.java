@@ -1,4 +1,4 @@
-package com.nobodyhub.transcendence.zhihu.member.api;
+package com.nobodyhub.transcendence.zhihu.api.member;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

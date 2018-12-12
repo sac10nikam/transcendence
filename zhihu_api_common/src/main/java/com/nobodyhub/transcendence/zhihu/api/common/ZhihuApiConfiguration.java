@@ -1,6 +1,6 @@
-package com.nobodyhub.transcendence.zhihu.api.common.configuration;
+package com.nobodyhub.transcendence.zhihu.api.common;
 
-import com.nobodyhub.transcendence.zhihu.api.common.configuration.converter.ZhihuUrlConverter;
+import com.nobodyhub.transcendence.zhihu.api.common.converter.ZhihuUrlConverter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;

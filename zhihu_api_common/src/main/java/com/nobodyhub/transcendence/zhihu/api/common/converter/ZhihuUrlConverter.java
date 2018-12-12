@@ -1,4 +1,4 @@
-package com.nobodyhub.transcendence.zhihu.api.common.configuration.converter;
+package com.nobodyhub.transcendence.zhihu.api.common.converter;
 
 public interface ZhihuUrlConverter {
     /**
