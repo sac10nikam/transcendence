@@ -1,4 +1,4 @@
-package com.nobodyhub.transcendence.zhihu.domain.merge;
+package com.nobodyhub.transcendence.common.merge;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;

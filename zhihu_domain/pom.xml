@@ -14,8 +14,8 @@
   <version>${transcendence.version}</version>
   <packaging>jar</packaging>
 
-  <name>Zhihu Common Domain Objects</name>
-  <description>Zhihu Common Domain Objects for Querying</description>
+  <name>Zhihu Domain Objects</name>
+  <description>Zhihu Common Domain Objects returned by Zhihu API</description>
 
   <dependencies>
     <dependency>
@@ -32,6 +32,11 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
       <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>com.nobodyhub.transcendence</groupId>
+      <artifactId>common_utils</artifactId>
     </dependency>
   </dependencies>
 

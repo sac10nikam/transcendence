@@ -51,6 +51,11 @@
 
   <dependencyManagement>
     <dependencies>
+      <dependency>
+        <groupId>com.nobodyhub.transcendence</groupId>
+        <artifactId>common_utils</artifactId>
+        <version>${transcendence.version}</version>
+      </dependency>
       <!--Zhihu-->
       <dependency>
         <groupId>com.nobodyhub.transcendence</groupId>

@@ -1,7 +1,7 @@
 package com.nobodyhub.transcendence.zhihu.topic.domain;
 
 import com.google.common.collect.Sets;
-import com.nobodyhub.transcendence.zhihu.domain.merge.Mergeable;
+import com.nobodyhub.transcendence.common.merge.Mergeable;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.data.annotation.Id;

@@ -1,7 +1,7 @@
 package com.nobodyhub.transcendence.zhihu.domain.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.nobodyhub.transcendence.zhihu.domain.merge.Mergeable;
+import com.nobodyhub.transcendence.common.merge.Mergeable;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;

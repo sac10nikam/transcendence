@@ -1,4 +1,4 @@
-package com.nobodyhub.transcendence.zhihu.domain.util;
+package com.nobodyhub.transcendence.common.util;
 
 import lombok.extern.slf4j.Slf4j;
 

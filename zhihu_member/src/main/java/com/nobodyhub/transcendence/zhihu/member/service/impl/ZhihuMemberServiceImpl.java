@@ -1,7 +1,7 @@
 package com.nobodyhub.transcendence.zhihu.member.service.impl;
 
+import com.nobodyhub.transcendence.common.merge.MergeUtils;
 import com.nobodyhub.transcendence.zhihu.domain.dto.ZhihuMember;
-import com.nobodyhub.transcendence.zhihu.domain.merge.MergeUtils;
 import com.nobodyhub.transcendence.zhihu.member.repository.ZhihuMemberRepository;
 import com.nobodyhub.transcendence.zhihu.member.service.ZhihuMemberService;
 import lombok.extern.slf4j.Slf4j;

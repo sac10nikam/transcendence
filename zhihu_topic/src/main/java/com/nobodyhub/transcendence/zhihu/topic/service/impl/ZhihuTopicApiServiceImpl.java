@@ -2,8 +2,8 @@ package com.nobodyhub.transcendence.zhihu.topic.service.impl;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import com.nobodyhub.transcendence.common.merge.MergeUtils;
 import com.nobodyhub.transcendence.zhihu.domain.dto.ZhihuAnswer;
-import com.nobodyhub.transcendence.zhihu.domain.merge.MergeUtils;
 import com.nobodyhub.transcendence.zhihu.topic.client.ZhihuMemberClient;
 import com.nobodyhub.transcendence.zhihu.topic.client.ZhihuQuestionClient;
 import com.nobodyhub.transcendence.zhihu.topic.domain.ZhihuTopic;

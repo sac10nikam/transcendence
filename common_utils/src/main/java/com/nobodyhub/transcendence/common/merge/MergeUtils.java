@@ -1,6 +1,6 @@
-package com.nobodyhub.transcendence.zhihu.domain.merge;
+package com.nobodyhub.transcendence.common.merge;
 
-import com.nobodyhub.transcendence.zhihu.domain.util.ReflectionUtils;
+import com.nobodyhub.transcendence.common.util.ReflectionUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.Assert;
 
