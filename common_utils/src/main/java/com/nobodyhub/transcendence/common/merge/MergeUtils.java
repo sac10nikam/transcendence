@@ -1,8 +1,7 @@
-package com.nobodyhub.transcendence.mongodb.domain.merge;
+package com.nobodyhub.transcendence.common.merge;
 
 import com.nobodyhub.transcendence.common.util.ReflectionUtils;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.util.Assert;
 
 import java.lang.reflect.Field;
 import java.util.List;
@@ -18,14 +17,12 @@ public final class MergeUtils {
      * - if field is Mergeable, merge the value and use the merged value
      * - otherwise, use the new value.
      *
-     * @param newObject new Object
-     * @param oldObject old Ojbect
+     * @param newObject new Object, not null
+     * @param oldObject old Ojbect, not null
      * @param <T>       subclass of {@link Mergeable}
      * @return the merged object(based on the old object)
      */
     public static <T extends Mergeable> T merge(T newObject, T oldObject) {
-        Assert.notNull(newObject, "New Object can not be null!");
-        Assert.notNull(oldObject, "Old Object can not be null!");
         @SuppressWarnings("unchecked")
         Class<T> clz = (Class<T>) newObject.getClass();
         List<Field> fields = ReflectionUtils.getAllFields(clz);

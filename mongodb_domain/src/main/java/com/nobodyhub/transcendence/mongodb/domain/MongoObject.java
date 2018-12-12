@@ -1,6 +1,6 @@
 package com.nobodyhub.transcendence.mongodb.domain;
 
-import com.nobodyhub.transcendence.mongodb.domain.merge.Mergeable;
+import com.nobodyhub.transcendence.common.merge.Mergeable;
 import org.bson.types.ObjectId;
 import org.joda.time.DateTime;
 import org.springframework.data.annotation.Id;

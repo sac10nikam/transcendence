@@ -1,4 +1,4 @@
-package com.nobodyhub.transcendence.mongodb.domain.merge;
+package com.nobodyhub.transcendence.common.merge;
 
 /**
  * Mark target class as Zhihu Object for further

@@ -1,4 +1,4 @@
-package com.nobodyhub.transcendence.mongodb.domain.merge;
+package com.nobodyhub.transcendence.common.merge;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -59,6 +59,7 @@ public class MergeUtilsTest {
     }
 
     @Data
+    @EqualsAndHashCode(callSuper = true)
     static class A extends S {
         private String a1;
         private Integer a2;
