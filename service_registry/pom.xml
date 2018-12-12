@@ -8,7 +8,7 @@
     <version>1.0</version>
   </parent>
 
-  <artifactId>service-registry</artifactId>
+  <artifactId>service_registry</artifactId>
   <version>${transcendence.version}</version>
   <packaging>jar</packaging>
 
