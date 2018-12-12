@@ -5,7 +5,7 @@ import com.nobodyhub.transcendence.common.merge.Mergeable;
 import lombok.Data;
 
 /**
- * A generic datastructure to represent topic, like job, company. and etc.
+ * A generic data structure to represent topic, like job, company. and etc.
  */
 @Data
 public class ZhihuApiTopic implements Mergeable {

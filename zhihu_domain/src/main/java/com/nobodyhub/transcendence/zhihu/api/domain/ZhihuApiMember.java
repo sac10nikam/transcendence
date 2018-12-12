@@ -3,29 +3,19 @@ package com.nobodyhub.transcendence.zhihu.api.domain;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.nobodyhub.transcendence.common.merge.Mergeable;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
 
 /**
  * Member of Zhihu, returned by member/ interface.
- * Knowned as Author as well
+ * Known as Author as well
  */
-@Document
 @Data
-@NoArgsConstructor(force = true)
 public class ZhihuApiMember implements Mergeable {
-    @Id
     @JsonProperty("id")
     protected String id;
-
-    @Indexed(unique = true)
     @JsonProperty("url_token")
     protected String urlToken;
-
     @JsonProperty("name")
     protected String name;
     @JsonProperty("description")
