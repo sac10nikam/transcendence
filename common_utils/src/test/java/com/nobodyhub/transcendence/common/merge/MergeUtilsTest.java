@@ -51,6 +51,14 @@ public class MergeUtilsTest {
         assertEquals(true, result.getBMap().isEmpty());
         assertEquals(new C("cNew", 2L), result.getC());
 
+        result = MergeUtils.merge(newA, null);
+        assertEquals(newA, result);
+
+        result = MergeUtils.merge(null, oldA);
+        assertEquals(oldA, result);
+
+        result = MergeUtils.merge(null, null);
+        assertEquals(null, result);
     }
 
     @Data

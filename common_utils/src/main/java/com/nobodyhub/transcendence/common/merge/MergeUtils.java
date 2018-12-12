@@ -23,6 +23,13 @@ public final class MergeUtils {
      * @return the merged object(based on the old object)
      */
     public static <T extends Mergeable> T merge(T newObject, T oldObject) {
+        if (newObject == null) {
+            return oldObject;
+        }
+        if (oldObject == null) {
+            return newObject;
+        }
+
         @SuppressWarnings("unchecked")
         Class<T> clz = (Class<T>) newObject.getClass();
         List<Field> fields = ReflectionUtils.getAllFields(clz);
