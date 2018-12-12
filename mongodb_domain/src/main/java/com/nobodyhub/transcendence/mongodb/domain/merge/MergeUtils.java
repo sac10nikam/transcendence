@@ -1,4 +1,4 @@
-package com.nobodyhub.transcendence.common.merge;
+package com.nobodyhub.transcendence.mongodb.domain.merge;
 
 import com.nobodyhub.transcendence.common.util.ReflectionUtils;
 import lombok.extern.slf4j.Slf4j;
