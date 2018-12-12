@@ -1,6 +1,8 @@
 package com.nobodyhub.transcendence.mongodb.domain;
 
 import com.nobodyhub.transcendence.common.merge.Mergeable;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.bson.types.ObjectId;
 import org.joda.time.DateTime;
 import org.springframework.data.annotation.Id;
@@ -9,6 +11,8 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document
+@Data
+@EqualsAndHashCode
 public abstract class MongoObject<T extends Mergeable> {
     /**
      * mongodb object id, primary key

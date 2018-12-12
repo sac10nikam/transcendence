@@ -3,6 +3,7 @@ package com.nobodyhub.transcendence.zhihu.api.domain;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.nobodyhub.transcendence.common.merge.Mergeable;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.List;
 
@@ -11,6 +12,7 @@ import java.util.List;
  * Known as Author as well
  */
 @Data
+@EqualsAndHashCode
 public class ZhihuApiMember implements Mergeable {
     @JsonProperty("id")
     protected String id;
