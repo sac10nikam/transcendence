@@ -1,21 +1,19 @@
 package com.nobodyhub.transcendence.zhihu.member.message;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
+@AllArgsConstructor
 public class ApiRequestMessage {
 
     /**
-     * type of request, decide which api to call
+     * the url to request
+     * TODO: add cookies support
      */
-    private String type;
+    private String url;
     /**
-     * the variables used in the url template
+     * qualifier for the response handler
      */
-    private Object[] urlVariables;
-
-    public ApiRequestMessage(String type, Object... urlVariables) {
-        this.type = type;
-        this.urlVariables = urlVariables;
-    }
+    private String destId;
 }
