@@ -1,0 +1,2 @@
+# interval between the request in ms
+transcendence.api.throttle.interval: 200
