@@ -1,6 +1,6 @@
 package com.nobodyhub.transcendence.api.throttle.message;
 
-import com.nobodyhub.transcendence.api.throttle.Client.ApiServiceClient;
+import com.nobodyhub.transcendence.api.throttle.client.ApiServiceClient;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.stream.annotation.EnableBinding;

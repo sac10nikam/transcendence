@@ -1,4 +1,4 @@
-package com.nobodyhub.transcendence.api.throttle.Client;
+package com.nobodyhub.transcendence.api.throttle.client;
 
 import com.nobodyhub.transcendence.api.throttle.message.ApiRequestMessage;
 import org.springframework.cloud.openfeign.FeignClient;

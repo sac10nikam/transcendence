@@ -7,15 +7,12 @@
     <artifactId>transcendence</artifactId>
     <version>1.0</version>
   </parent>
-  <groupId>com.nobodyhub.transcendence</groupId>
+
   <artifactId>api_throttle</artifactId>
   <version>${transcendence.version}</version>
-  <name>api_throttle</name>
-  <description>Throttle to Handle the Outbound API Request</description>
 
-  <properties>
-    <java.version>1.8</java.version>
-  </properties>
+  <name>API Throttle</name>
+  <description>Throttle to Handle the Outbound API Request</description>
 
   <dependencies>
     <dependency>
