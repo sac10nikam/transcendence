@@ -5,7 +5,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@FeignClient(name = "zhihu-member", path = "/members")
+@FeignClient(name = "zhihu_member", path = "/members")
 public interface ZhihuMemberClient {
     @PostMapping
     ZhihuApiMember save(@RequestBody ZhihuApiMember member);
