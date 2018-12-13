@@ -1,0 +1,23 @@
+# Server configuraion
+server:
+  port: 9110
+# Database Configuration
+spring:
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: transcendence
+      #username:
+      #password:
+  cloud:
+    stream:
+      bindings:
+        output:
+          destination: memberReqTopic
+          content-type: application/json
+      kafka:
+        binder:
+          brokers: localhost
+
+
