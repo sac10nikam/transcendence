@@ -20,7 +20,7 @@ public final class ReflectionUtils {
     public static List<Field> getAllFields(Class<?> clz) {
         List<Field> fields = Lists.newArrayList();
         Class curClz = clz;
-        while (!curClz.equals(Object.class)) {
+        while (curClz != null && !Object.class.equals(curClz)) {
             for (Field field : curClz.getDeclaredFields()) {
                 field.setAccessible(true);
                 fields.add(field);
@@ -31,20 +31,23 @@ public final class ReflectionUtils {
     }
 
     /**
-     * Get all <b>public</b> methods with given annotation
+     * Get all <b>public</b> methods with any of given annotation
      *
      * @param clz
-     * @param anno
+     * @param annos a list of annotation
      * @return
      */
-    public static List<Method> getAllMethod(Class<?> clz, Class<? extends Annotation> anno) {
+    public static List<Method> getAllMethod(Class<?> clz, Class<? extends Annotation>... annos) {
         List<Method> methods = Lists.newArrayList();
         Class curClz = clz;
-        while (!curClz.equals(Object.class)) {
+        while (curClz != null && !Object.class.equals(curClz)) {
             for (Method method : curClz.getMethods()) {
-                if (method.getAnnotation(anno) != null) {
-                    method.setAccessible(true);
-                    methods.add(method);
+                for (Class<? extends Annotation> anno : annos) {
+                    if (method.getAnnotation(anno) != null) {
+                        method.setAccessible(true);
+                        methods.add(method);
+                        break;
+                    }
                 }
             }
             curClz = curClz.getSuperclass();
