@@ -1,5 +1,6 @@
 package com.nobodyhub.transcendence.api.executor.controller;
 
+import com.nobodyhub.transcendence.api.executor.service.ApiExecutorService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.ToString;
@@ -9,12 +10,18 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/")
 public class ApiExecutorController {
+
+    private final ApiExecutorService apiExecutorService;
+
+    public ApiExecutorController(ApiExecutorService apiExecutorService) {
+        this.apiExecutorService = apiExecutorService;
+    }
+
+
     @PostMapping
     @ResponseStatus(value = HttpStatus.OK)
     void doRequest(@RequestBody ApiRequestMessage request) {
-        //TODO execute in thread pool and return immdidately
-        //TODO request the URL in request.getUrl()
-        //TODO forward the response by request.getDestId()
+        apiExecutorService.fetchAndDispatch(request.getTopic(), request.getUrl());
     }
 
     @Data
@@ -27,8 +34,8 @@ public class ApiExecutorController {
          */
         private String url;
         /**
-         * qualifier for the response handler
+         * the topic to which the callback will be sent
          */
-        private String destId;
+        private String topic;
     }
 }
