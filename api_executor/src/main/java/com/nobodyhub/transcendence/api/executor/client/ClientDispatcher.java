@@ -18,6 +18,9 @@ import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @see <a href="https://docs.spring.io/spring-cloud-stream/docs/Elmhurst.SR2/reference/htmlsingle/">Using Dynamically Bound Destinations</a>
+ */
 @Slf4j
 @Component
 public class ClientDispatcher {
