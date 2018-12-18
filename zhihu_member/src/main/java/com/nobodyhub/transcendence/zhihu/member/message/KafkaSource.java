@@ -1,20 +1,30 @@
 package com.nobodyhub.transcendence.zhihu.member.message;
 
+import com.nobodyhub.transcendence.zhihu.api.domain.ZhihuApiMember;
 import com.nobodyhub.transcendence.zhihu.member.api.UrlConverter;
+import com.nobodyhub.transcendence.zhihu.member.service.ZhihuMemberService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cloud.stream.annotation.EnableBinding;
+import org.springframework.cloud.stream.annotation.Input;
+import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.cloud.stream.messaging.Source;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
+@EnableBinding(ZhihuMemberApi.class)
 public class KafkaSource {
     private final Source source;
     private final UrlConverter urlConverter;
+    private final ZhihuMemberService memberService;
 
-    public KafkaSource(Source source, UrlConverter urlConverter) {
+    public KafkaSource(Source source,
+                       UrlConverter urlConverter,
+                       ZhihuMemberService memberService) {
         this.source = source;
         this.urlConverter = urlConverter;
+        this.memberService = memberService;
     }
 
     public void getByUrlToken(String urlToken) {
@@ -23,5 +33,10 @@ public class KafkaSource {
             urlToken);
         ApiRequestMessage message = new ApiRequestMessage(url, "client#method");
         this.source.output().send(MessageBuilder.withPayload(message).build());
+    }
+
+    @StreamListener
+    public void handleResponse(@Input(ZhihuMemberApi.ZHIHU_MEMBER) ZhihuApiMember member) {
+        this.memberService.save(member);
     }
 }
