@@ -5,7 +5,6 @@ import com.nobodyhub.transcendence.zhihu.member.api.UrlConverter;
 import com.nobodyhub.transcendence.zhihu.member.service.ZhihuMemberService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.stream.annotation.EnableBinding;
-import org.springframework.cloud.stream.annotation.Input;
 import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.cloud.stream.messaging.Source;
 import org.springframework.messaging.support.MessageBuilder;
@@ -35,8 +34,8 @@ public class KafkaSource {
         this.source.output().send(MessageBuilder.withPayload(message).build());
     }
 
-    @StreamListener
-    public void handleResponse(@Input(ZhihuMemberApi.ZHIHU_MEMBER) ZhihuApiMember member) {
+    @StreamListener(ZhihuMemberApi.ZHIHU_MEMBER)
+    public void handleResponse(ZhihuApiMember member) {
         this.memberService.save(member);
     }
 }

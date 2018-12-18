@@ -17,5 +17,5 @@ public class ApiRequestMessage {
     /**
      * qualifier for the response handler
      */
-    private String destId;
+    private String topic;
 }

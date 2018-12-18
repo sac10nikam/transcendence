@@ -1,11 +1,12 @@
 spring.application.name: api-executor
+server.port: 9900
 spring:
-    cloud:
-        stream:
-            bindings:
-                output:
-                    destination: memberReqTopic
-                    content-type: application/json
-            kafka:
-                binder:
-                    brokers: localhost
+  cloud:
+    stream:
+      bindings:
+        output:
+          destination: memberReqTopic
+          content-type: application/json
+      kafka:
+        binder:
+          brokers: localhost

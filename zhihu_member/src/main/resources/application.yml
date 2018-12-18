@@ -18,6 +18,10 @@ spring:
           content-type: application/json
       kafka:
         binder:
-          brokers: localhost
+          brokers: javis-server
+          defaultBrokerPort: 9092
+          zkNode: javis-server
+          defaultZkPort: 2181
+
 
 
