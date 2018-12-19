@@ -18,6 +18,7 @@ RUN wget -q https://archive.apache.org/dist/kafka/"$KAFKA_VERSION"/kafka_"$SCALA
     rm /tmp/kafka_"$SCALA_VERSION"-"$KAFKA_VERSION".tgz
 
 ADD scripts/start-kafka.sh /usr/bin/start-kafka.sh
+RUN chmod o+x /usr/bin/start-kafka.sh
 
 # Supervisor config
 ADD supervisor/kafka.conf supervisor/zookeeper.conf /etc/supervisor/conf.d/
@@ -25,6 +26,4 @@ ADD supervisor/kafka.conf supervisor/zookeeper.conf /etc/supervisor/conf.d/
 # 2181 is zookeeper, 9092 is kafka
 EXPOSE 2181 9092
 
-#CMD ["supervisord", "-n"]
-CMD ["/usr/share/zookeeper/bin/zkServer.sh", "start-foreground"]
-CMD ["/usr/bin/start-kafka.sh"]
+CMD ["supervisord", "-n"]
