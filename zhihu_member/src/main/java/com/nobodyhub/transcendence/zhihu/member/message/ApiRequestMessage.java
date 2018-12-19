@@ -13,7 +13,7 @@ public class ApiRequestMessage {
      */
     private String url;
     /**
-     * qualifier for the response handler
+     * topic to cache the response
      */
-    private String destId;
+    private String topic;
 }

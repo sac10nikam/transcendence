@@ -9,6 +9,6 @@ import org.springframework.web.client.RestTemplate;
 public class RestConfiguration {
     @Bean
     public RestTemplate restTemplate(RestTemplateBuilder builder) {
-        return builder.rootUri("https://www.zhihu.com").build();
+        return builder.rootUri("https://www.zhihu.com/api").build();
     }
 }
