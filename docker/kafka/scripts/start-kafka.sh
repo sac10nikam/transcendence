@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Optional ENV variables:
 # * ADVERTISED_HOST: the external ip for the container, e.g. `docker-machine ip \`docker-machine active\``
