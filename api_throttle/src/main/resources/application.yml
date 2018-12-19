@@ -11,4 +11,4 @@ spring:
           content-type: application/json
       kafka:
         binder:
-          brokers: javis-server
+          brokers: localhost
