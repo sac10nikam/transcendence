@@ -1,4 +1,3 @@
-spring.application.name: api-throttle
 server.port: 9800
 # interval between the request in ms
 transcendence.api.throttle.interval: 5000

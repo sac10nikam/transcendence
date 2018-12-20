@@ -26,6 +26,7 @@ public class KafkaSink {
      */
     @StreamListener(Sink.INPUT)
     public void receiveRequest(ApiRequestMessage message) {
+        //TODO: Change this call to asynchonize
         apiServiceClient.doRequest(message);
         try {
             Thread.sleep(interval);
