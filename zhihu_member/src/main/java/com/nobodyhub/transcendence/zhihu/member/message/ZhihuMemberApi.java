@@ -4,7 +4,7 @@ import org.springframework.cloud.stream.annotation.Input;
 import org.springframework.messaging.SubscribableChannel;
 
 public interface ZhihuMemberApi {
-    String ZHIHU_MEMBER = "zhihu-member";
+    String ZHIHU_MEMBER = "zhihu-member-callback";
 
     @Input(ZHIHU_MEMBER)
     SubscribableChannel zhihuMembers();
