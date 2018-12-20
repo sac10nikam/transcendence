@@ -10,11 +10,6 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutput;
-import java.io.ObjectOutputStream;
-
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.http.MediaType.IMAGE_JPEG;
 
@@ -32,8 +27,8 @@ public class ApiExecutorService {
 
     @Async
     public void fetchAndDispatch(String topic, String url) {
-        ResponseEntity<Object> entity = this.restTemplate.getForEntity(url, Object.class);
-        Object body = entity.getBody();
+        ResponseEntity<byte[]> entity = this.restTemplate.getForEntity(url, byte[].class);
+        byte[] body = entity.getBody();
         if (body == null) {
             log.info("Received Empty Response Body. Skipped!");
             return;
@@ -46,15 +41,7 @@ public class ApiExecutorService {
             log.info("The Response contents should be one of following types: {}",
                 Joiner.on(",").join(APPLICATION_JSON, IMAGE_JPEG));
         }
-        // serialize object to byte[] message and send
-        try (ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
-            //https://stackoverflow.com/questions/2836646/java-serializable-object-to-byte-array
-            ObjectOutput out = new ObjectOutputStream(bos);
-            out.writeObject(body);
-            byte[] message = bos.toByteArray();
-            responseDispatcher.dispatch(message, topic, mediaType);
-        } catch (IOException e) {
-            log.error("Error happends when convert Object to byte[].", e);
-        }
+        // write message as byte[] into the queue
+        responseDispatcher.dispatch(body, topic, mediaType);
     }
 }
