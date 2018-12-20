@@ -3,6 +3,7 @@ package com.nobodyhub.transcendence.api.executor.controller;
 import com.nobodyhub.transcendence.api.executor.service.ApiExecutorService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +27,7 @@ public class ApiExecutorController {
 
     @Data
     @AllArgsConstructor
+    @NoArgsConstructor
     @ToString
     static class ApiRequestMessage {
         /**

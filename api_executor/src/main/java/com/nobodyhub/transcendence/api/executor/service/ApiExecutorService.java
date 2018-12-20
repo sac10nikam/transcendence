@@ -10,6 +10,11 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutput;
+import java.io.ObjectOutputStream;
+
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.http.MediaType.IMAGE_JPEG;
 
@@ -41,7 +46,17 @@ public class ApiExecutorService {
             log.info("The Response contents should be one of following types: {}",
                 Joiner.on(",").join(APPLICATION_JSON, IMAGE_JPEG));
         }
+        byte[] message = null;
+        try (ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
+            //https://stackoverflow.com/questions/2836646/java-serializable-object-to-byte-array
+            ObjectOutput out = new ObjectOutputStream(bos);
+            out.writeObject(body);
+            message = bos.toByteArray();
+        } catch (IOException e) {
+            log.error("Error happends when serializing response to byte[].", e);
+        }
         // write message as byte[] into the queue
-        responseDispatcher.dispatch(body, topic, mediaType);
+        log.info("Sending message to topic [{}]", topic);
+        responseDispatcher.dispatch(message, topic, mediaType);
     }
 }
