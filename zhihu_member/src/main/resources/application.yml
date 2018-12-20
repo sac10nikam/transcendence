@@ -1,3 +1,4 @@
+zhihu-member.callback.topic: zhihu-member-callback
 # Server configuraion
 server:
   port: 9110
@@ -19,7 +20,3 @@ spring:
       kafka:
         binder:
           brokers: localhost
-          defaultBrokerPort: 9092
-
-
-
