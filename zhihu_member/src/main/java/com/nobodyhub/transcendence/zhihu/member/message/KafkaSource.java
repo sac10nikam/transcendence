@@ -5,9 +5,9 @@ import com.nobodyhub.transcendence.zhihu.api.domain.ZhihuApiMember;
 import com.nobodyhub.transcendence.zhihu.member.api.UrlConverter;
 import com.nobodyhub.transcendence.zhihu.member.service.ZhihuMemberService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.cloud.stream.messaging.Source;
+import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Component;
 
@@ -18,7 +18,6 @@ import java.io.ObjectInputStream;
 
 @Slf4j
 @Component
-@EnableBinding(ZhihuMemberApi.class)
 public class KafkaSource {
     private final Source source;
     private final UrlConverter urlConverter;
@@ -44,13 +43,16 @@ public class KafkaSource {
     }
 
     @StreamListener(ZhihuMemberApi.ZHIHU_MEMBER)
-    public void handleResponse(byte[] message) {
+    public void handleResponse(@Payload byte[] message) {
+        log.info("Message received from chennel: {}.", ZhihuMemberApi.ZHIHU_MEMBER);
         try (ByteArrayInputStream ios = new ByteArrayInputStream(message)) {
             //https://stackoverflow.com/questions/2836646/java-serializable-object-to-byte-array
             ObjectInput in = new ObjectInputStream(ios);
             byte[] object = (byte[]) in.readObject();
             ZhihuApiMember member = objectMapper.readValue(object, ZhihuApiMember.class);
+            log.info("Saving member[{}]...", member.getUrlToken());
             this.memberService.save(member);
+            log.info("Save successfully!");
         } catch (IOException | ClassNotFoundException e) {
             log.error("Error happends when reading message.", e);
         }

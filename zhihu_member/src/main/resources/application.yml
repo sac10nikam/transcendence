@@ -16,6 +16,8 @@ spring:
         output:
           destination: memberReqTopic
           content-type: application/json
+        zhihu-member-callback:
+          group: zhihu-member
       kafka:
         binder:
           brokers: localhost
