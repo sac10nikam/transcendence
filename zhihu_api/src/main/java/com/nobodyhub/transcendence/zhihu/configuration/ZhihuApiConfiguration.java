@@ -1,4 +1,4 @@
-package com.nobodyhub.transcendence.zhihu.common;
+package com.nobodyhub.transcendence.zhihu.configuration;
 
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;

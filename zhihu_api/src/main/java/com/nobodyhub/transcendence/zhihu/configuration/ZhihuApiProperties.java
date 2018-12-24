@@ -1,4 +1,4 @@
-package com.nobodyhub.transcendence.zhihu.common;
+package com.nobodyhub.transcendence.zhihu.configuration;
 
 import lombok.Getter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
