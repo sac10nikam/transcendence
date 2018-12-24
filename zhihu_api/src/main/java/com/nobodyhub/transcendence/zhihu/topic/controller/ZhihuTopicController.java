@@ -2,7 +2,10 @@ package com.nobodyhub.transcendence.zhihu.topic.controller;
 
 import com.nobodyhub.transcendence.zhihu.topic.domain.ZhihuTopic;
 import com.nobodyhub.transcendence.zhihu.topic.service.ZhihuTopicService;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -23,10 +26,5 @@ public class ZhihuTopicController {
     @GetMapping(path = "/name/{name}")
     List<ZhihuTopic> getTopicByName(@PathVariable("name") String name) {
         return topicService.getByName(name);
-    }
-
-    @PostMapping
-    ZhihuTopic save(@RequestBody ZhihuTopic topic) {
-        return this.topicService.save(topic);
     }
 }
