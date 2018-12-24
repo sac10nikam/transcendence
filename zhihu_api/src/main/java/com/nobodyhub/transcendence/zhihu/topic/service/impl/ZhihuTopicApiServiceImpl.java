@@ -3,9 +3,10 @@ package com.nobodyhub.transcendence.zhihu.topic.service.impl;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.nobodyhub.transcendence.common.merge.MergeUtils;
+import com.nobodyhub.transcendence.zhihu.api.converter.ZhihuUrlConverter;
 import com.nobodyhub.transcendence.zhihu.api.domain.ZhihuApiAnswer;
-import com.nobodyhub.transcendence.zhihu.topic.client.ZhihuMemberClient;
-import com.nobodyhub.transcendence.zhihu.topic.client.ZhihuQuestionClient;
+import com.nobodyhub.transcendence.zhihu.member.service.ZhihuMemberService;
+import com.nobodyhub.transcendence.zhihu.question.service.ZhihuQuestionService;
 import com.nobodyhub.transcendence.zhihu.topic.domain.ZhihuTopic;
 import com.nobodyhub.transcendence.zhihu.topic.domain.ZhihuTopicCategory;
 import com.nobodyhub.transcendence.zhihu.topic.domain.feed.ZhihuTopicFeed;
@@ -14,7 +15,6 @@ import com.nobodyhub.transcendence.zhihu.topic.domain.paging.ZhihuTopicList;
 import com.nobodyhub.transcendence.zhihu.topic.domain.plazza.ZhihuTopicPlazzaListV2;
 import com.nobodyhub.transcendence.zhihu.topic.repository.ZhihuTopicRepository;
 import com.nobodyhub.transcendence.zhihu.topic.service.ZhihuTopicApiService;
-import com.nobodyhub.transcendence.zhihu.topic.util.UrlUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
@@ -37,17 +37,21 @@ import java.util.Set;
 public class ZhihuTopicApiServiceImpl implements ZhihuTopicApiService {
     private final RestTemplate restTemplate;
     private final ZhihuTopicRepository topicRepository;
-    private final ZhihuMemberClient zhihuMemberClient;
-    private final ZhihuQuestionClient zhihuQuestionClient;
+    private final ZhihuMemberService zhihuMemberService;
+    private final ZhihuQuestionService zhihuQuestionService;
+    private final ZhihuUrlConverter urlConverter;
 
     @Autowired
     public ZhihuTopicApiServiceImpl(RestTemplate restTemplate,
                                     ZhihuTopicRepository topicRepository,
-                                    ZhihuMemberClient zhihuMemberClient, ZhihuQuestionClient zhihuQuestionClient) {
+                                    ZhihuMemberService zhihuMemberService,
+                                    ZhihuQuestionService zhihuQuestionService,
+                                    ZhihuUrlConverter urlConverter) {
         this.restTemplate = restTemplate;
         this.topicRepository = topicRepository;
-        this.zhihuMemberClient = zhihuMemberClient;
-        this.zhihuQuestionClient = zhihuQuestionClient;
+        this.zhihuMemberService = zhihuMemberService;
+        this.zhihuQuestionService = zhihuQuestionService;
+        this.urlConverter = urlConverter;
     }
 
     @Override
@@ -104,8 +108,8 @@ public class ZhihuTopicApiServiceImpl implements ZhihuTopicApiService {
         );
         answers.forEach(answer -> {
             //TODO: save answer
-            zhihuQuestionClient.save(answer.getQuestion());
-            zhihuMemberClient.save(answer.getAuthor());
+            zhihuQuestionService.save(answer.getQuestion());
+            zhihuMemberService.save(answer.getAuthor());
         });
         return answers;
     }
@@ -204,7 +208,7 @@ public class ZhihuTopicApiServiceImpl implements ZhihuTopicApiService {
         if (feedList != null
             && !feedList.getData().isEmpty()
             && !feedList.getPaging().getIs_end()) {
-            answers.addAll(getAnswersByPaging(UrlUtils.convert(feedList.getPaging().getNext()), topicId));
+            answers.addAll(getAnswersByPaging(urlConverter.convert(feedList.getPaging().getNext()), topicId));
             for (ZhihuTopicFeed feed : feedList.getData()) {
                 answers.add(feed.getTarget());
             }
