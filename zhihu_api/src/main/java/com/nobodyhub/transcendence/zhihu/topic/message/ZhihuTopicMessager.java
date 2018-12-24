@@ -20,6 +20,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.integration.annotation.ServiceActivator;
 import org.springframework.messaging.Message;
+import org.springframework.messaging.handler.annotation.Headers;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Component;
@@ -27,6 +28,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import static com.nobodyhub.transcendence.zhihu.topic.message.ZhihuApiChannel.*;
@@ -66,7 +68,7 @@ public class ZhihuTopicMessager {
             for (Element c : categories) {
                 ZhihuTopicCategory topicCategory = new ZhihuTopicCategory(Integer.valueOf(c.attr("data-id")), c.text());
                 //TODO: Store topic Category
-                getTopicIdsByCategory(topicCategory, 0);
+                getTopicIdsByCategory(topicCategory.getDataId(), 0);
             }
         }
     }
@@ -74,9 +76,10 @@ public class ZhihuTopicMessager {
     /**
      * Send request to get topic ids belong to given category
      *
-     * @param category
+     * @param dataId the data id to query the topics
+     * @param offset offset of the result list
      */
-    public void getTopicIdsByCategory(ZhihuTopicCategory category, int offset) {
+    public void getTopicIdsByCategory(Integer dataId, int offset) {
         String url = "https://www.zhihu.com/node/TopicsPlazzaListV2";
         // header
         HttpHeaders headers = new HttpHeaders();
@@ -85,14 +88,14 @@ public class ZhihuTopicMessager {
         MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
         map.add("method", "next");
         map.add("params", String.format("{\"topic_id\":%d,\"offset\":%d,\"hash_id\":\"\"}",
-            category.getDataId(), offset));
+            dataId, offset));
         ApiRequestMessage message = new ApiRequestMessage(url, ZhihuApiChannel.IN_ZHIHU_TOPIC_CALLBACK_PLAZZA_LIST);
         message.setHeaders(headers);
-        //TODO: handle offset
+        channel.topicRequest().send(MessageBuilder.withPayload(message).build());
     }
 
     @StreamListener(ZhihuApiChannel.IN_ZHIHU_TOPIC_CALLBACK_PLAZZA_LIST)
-    public void receiveTopicPLazzaList(@Payload byte[] message) {
+    public void receiveTopicPLazzaList(@Payload byte[] message, @Headers Map<String, Object> headers) {
         Optional<ZhihuTopicPlazzaList> plazzaList = converter.convert(message, ZhihuTopicPlazzaList.class);
         if (plazzaList.isPresent()) {
             List<String> htmls = plazzaList.get().getMsg();
@@ -105,6 +108,16 @@ public class ZhihuTopicMessager {
                     // request for topic feeds(answer)
                     getTopicFeeds(topicId);
                 }
+            }
+            if (!htmls.isEmpty()) {
+                //TODO: handle offset
+                ApiRequestMessage originMsg = (ApiRequestMessage) headers.get("origin-request");
+                // get header
+                // get parames
+                // get offset/dataId
+                // make new request
+                getTopicIdsByCategory()
+
             }
         }
     }
