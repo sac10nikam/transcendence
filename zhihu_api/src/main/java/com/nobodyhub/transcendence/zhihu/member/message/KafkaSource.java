@@ -3,6 +3,7 @@ package com.nobodyhub.transcendence.zhihu.member.message;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nobodyhub.transcendence.zhihu.common.converter.ZhihuUrlConverter;
 import com.nobodyhub.transcendence.zhihu.common.domain.ZhihuApiMember;
+import com.nobodyhub.transcendence.zhihu.common.message.ApiRequestMessage;
 import com.nobodyhub.transcendence.zhihu.member.service.ZhihuMemberService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.stream.annotation.StreamListener;

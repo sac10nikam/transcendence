@@ -1,4 +1,4 @@
-package com.nobodyhub.transcendence.zhihu.member.message;
+package com.nobodyhub.transcendence.zhihu.common.message;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
