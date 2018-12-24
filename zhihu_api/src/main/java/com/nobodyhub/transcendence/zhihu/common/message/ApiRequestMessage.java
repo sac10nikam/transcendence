@@ -1,21 +1,39 @@
 package com.nobodyhub.transcendence.zhihu.common.message;
 
-import lombok.AllArgsConstructor;
+import com.google.common.collect.Maps;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpMethod;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+
+import java.util.Map;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
+@RequiredArgsConstructor
 public class ApiRequestMessage {
+    /**
+     * Request Method
+     */
+    private HttpMethod method = HttpMethod.GET;
 
     /**
-     * the url to request
-     * TODO: add cookies support
+     * Request headers
      */
-    private String url;
+    private MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
+
+    /**
+     * Request URL
+     */
+    private final String url;
+
+    /**
+     * Cookies
+     */
+    private Map<String, String> cookies = Maps.newHashMap();
+
     /**
      * topic to cache the response
      */
-    private String topic;
+    private final String topic;
 }
