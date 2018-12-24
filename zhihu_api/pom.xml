@@ -10,10 +10,10 @@
   </parent>
 
   <groupId>com.nobodyhub.transcendence.zhihu</groupId>
-  <artifactId>zhihu</artifactId>
+  <artifactId>zhihu_api</artifactId>
 
   <version>${transcendence.version}</version>
-  <name>Zhihu</name>
+  <name>Zhihu API</name>
   <description>Collect Data from Zhihu(www.zhihu.com)</description>
 
   <dependencies>
