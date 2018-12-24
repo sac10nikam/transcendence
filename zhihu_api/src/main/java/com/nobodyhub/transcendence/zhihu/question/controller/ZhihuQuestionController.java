@@ -1,6 +1,6 @@
 package com.nobodyhub.transcendence.zhihu.question.controller;
 
-import com.nobodyhub.transcendence.zhihu.api.domain.ZhihuApiQuestion;
+import com.nobodyhub.transcendence.zhihu.common.domain.ZhihuApiQuestion;
 import com.nobodyhub.transcendence.zhihu.question.service.ZhihuQuestionService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

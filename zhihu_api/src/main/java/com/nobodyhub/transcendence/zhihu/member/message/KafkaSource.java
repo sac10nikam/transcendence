@@ -1,7 +1,7 @@
 package com.nobodyhub.transcendence.zhihu.member.message;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.nobodyhub.transcendence.zhihu.api.domain.ZhihuApiMember;
+import com.nobodyhub.transcendence.zhihu.common.domain.ZhihuApiMember;
 import com.nobodyhub.transcendence.zhihu.member.api.UrlConverter;
 import com.nobodyhub.transcendence.zhihu.member.service.ZhihuMemberService;
 import lombok.extern.slf4j.Slf4j;

@@ -1,6 +1,6 @@
 package com.nobodyhub.transcendence.zhihu;
 
-import com.nobodyhub.transcendence.zhihu.configuration.ZhihuApiProperties;
+import com.nobodyhub.transcendence.zhihu.common.ZhihuApiProperties;
 import com.nobodyhub.transcendence.zhihu.member.message.ZhihuMemberApi;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

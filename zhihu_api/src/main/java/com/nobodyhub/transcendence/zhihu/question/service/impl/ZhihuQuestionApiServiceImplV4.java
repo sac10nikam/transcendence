@@ -1,8 +1,8 @@
 package com.nobodyhub.transcendence.zhihu.question.service.impl;
 
 import com.google.common.collect.Lists;
-import com.nobodyhub.transcendence.zhihu.api.domain.ZhihuApiAnswer;
-import com.nobodyhub.transcendence.zhihu.api.domain.ZhihuApiMember;
+import com.nobodyhub.transcendence.zhihu.common.domain.ZhihuApiAnswer;
+import com.nobodyhub.transcendence.zhihu.common.domain.ZhihuApiMember;
 import com.nobodyhub.transcendence.zhihu.question.domain.ZhihuAnswerList;
 import com.nobodyhub.transcendence.zhihu.question.service.ZhihuQuestionApiService;
 import com.nobodyhub.transcendence.zhihu.question.service.ZhihuUrlConvertService;

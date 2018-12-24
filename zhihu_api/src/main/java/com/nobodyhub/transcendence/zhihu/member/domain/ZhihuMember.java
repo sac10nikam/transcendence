@@ -1,7 +1,7 @@
 package com.nobodyhub.transcendence.zhihu.member.domain;
 
 import com.nobodyhub.transcendence.mongodb.domain.MongoObject;
-import com.nobodyhub.transcendence.zhihu.api.domain.ZhihuApiMember;
+import com.nobodyhub.transcendence.zhihu.common.domain.ZhihuApiMember;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;

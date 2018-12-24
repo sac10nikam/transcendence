@@ -1,7 +1,7 @@
 package com.nobodyhub.transcendence.zhihu.question.service.impl;
 
 import com.nobodyhub.transcendence.common.merge.MergeUtils;
-import com.nobodyhub.transcendence.zhihu.api.domain.ZhihuApiQuestion;
+import com.nobodyhub.transcendence.zhihu.common.domain.ZhihuApiQuestion;
 import com.nobodyhub.transcendence.zhihu.question.repository.ZhihuQuestionRepository;
 import com.nobodyhub.transcendence.zhihu.question.service.ZhihuQuestionService;
 import org.springframework.stereotype.Service;

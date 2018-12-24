@@ -1,6 +1,6 @@
 package com.nobodyhub.transcendence.zhihu.topic.service;
 
-import com.nobodyhub.transcendence.zhihu.api.domain.ZhihuApiAnswer;
+import com.nobodyhub.transcendence.zhihu.common.domain.ZhihuApiAnswer;
 import com.nobodyhub.transcendence.zhihu.topic.domain.ZhihuTopic;
 import com.nobodyhub.transcendence.zhihu.topic.domain.ZhihuTopicCategory;
 

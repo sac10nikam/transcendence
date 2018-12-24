@@ -1,4 +1,4 @@
-package com.nobodyhub.transcendence.zhihu.api.request;
+package com.nobodyhub.transcendence.zhihu.common.request;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

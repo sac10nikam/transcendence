@@ -1,7 +1,7 @@
 package com.nobodyhub.transcendence.zhihu.question.service;
 
-import com.nobodyhub.transcendence.zhihu.api.domain.ZhihuApiAnswer;
-import com.nobodyhub.transcendence.zhihu.api.domain.ZhihuApiMember;
+import com.nobodyhub.transcendence.zhihu.common.domain.ZhihuApiAnswer;
+import com.nobodyhub.transcendence.zhihu.common.domain.ZhihuApiMember;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

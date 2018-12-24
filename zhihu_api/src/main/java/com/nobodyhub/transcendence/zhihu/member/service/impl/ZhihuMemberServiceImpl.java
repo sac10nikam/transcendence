@@ -1,7 +1,7 @@
 package com.nobodyhub.transcendence.zhihu.member.service.impl;
 
 import com.nobodyhub.transcendence.common.merge.MergeUtils;
-import com.nobodyhub.transcendence.zhihu.api.domain.ZhihuApiMember;
+import com.nobodyhub.transcendence.zhihu.common.domain.ZhihuApiMember;
 import com.nobodyhub.transcendence.zhihu.member.domain.ZhihuMember;
 import com.nobodyhub.transcendence.zhihu.member.repository.ZhihuMemberRepository;
 import com.nobodyhub.transcendence.zhihu.member.service.ZhihuMemberService;
