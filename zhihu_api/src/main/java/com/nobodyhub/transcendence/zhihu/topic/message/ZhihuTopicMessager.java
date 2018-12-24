@@ -1,5 +1,8 @@
 package com.nobodyhub.transcendence.zhihu.topic.message;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nobodyhub.transcendence.zhihu.common.converter.ZhihuUrlConverter;
 import com.nobodyhub.transcendence.zhihu.common.message.ApiRequestMessage;
 import com.nobodyhub.transcendence.zhihu.common.message.ApiResponseConverter;
@@ -9,6 +12,8 @@ import com.nobodyhub.transcendence.zhihu.topic.domain.feed.ZhihuTopicFeed;
 import com.nobodyhub.transcendence.zhihu.topic.domain.feed.ZhihuTopicFeedList;
 import com.nobodyhub.transcendence.zhihu.topic.domain.paging.ZhihuTopicList;
 import com.nobodyhub.transcendence.zhihu.topic.domain.plazza.ZhihuTopicPlazzaList;
+import lombok.Data;
+import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -27,6 +32,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -40,14 +46,17 @@ public class ZhihuTopicMessager {
     private final ZhihuApiChannel channel;
     private final ApiResponseConverter converter;
     private final ZhihuUrlConverter urlConverter;
+    private final ObjectMapper objectMapper;
 
 
     public ZhihuTopicMessager(ZhihuApiChannel channel,
                               ApiResponseConverter converter,
-                              ZhihuUrlConverter urlConverter) {
+                              ZhihuUrlConverter urlConverter,
+                              ObjectMapper objectMapper) {
         this.channel = channel;
         this.converter = converter;
         this.urlConverter = urlConverter;
+        this.objectMapper = objectMapper;
     }
 
     /**
@@ -87,11 +96,31 @@ public class ZhihuTopicMessager {
         // form data
         MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
         map.add("method", "next");
-        map.add("params", String.format("{\"topic_id\":%d,\"offset\":%d,\"hash_id\":\"\"}",
-            dataId, offset));
+        TopicsPlazzaListParam params = new TopicsPlazzaListParam();
+        params.setTopicId(dataId);
+        params.setOffset(offset);
+        try {
+            map.add("params", objectMapper.writeValueAsString(params));
+        } catch (JsonProcessingException e) {
+            log.error("Fail to serialize TopicsPlazzaListParam[{}] with error[{}]", params, e);
+            // use string interpolation instead
+            map.add("params", String.format("{\"topic_id\":%d,\"offset\":%d,\"hash_id\":\"\"}",
+                dataId, offset));
+        }
         ApiRequestMessage message = new ApiRequestMessage(url, ZhihuApiChannel.IN_ZHIHU_TOPIC_CALLBACK_PLAZZA_LIST);
         message.setHeaders(headers);
         channel.topicRequest().send(MessageBuilder.withPayload(message).build());
+    }
+
+    @ToString
+    @Data
+    private static class TopicsPlazzaListParam {
+        @JsonProperty("topic_id")
+        private Integer topicId;
+        @JsonProperty("offset")
+        private Integer offset;
+        @JsonProperty("hash_id")
+        private Integer hashId;
     }
 
     @StreamListener(ZhihuApiChannel.IN_ZHIHU_TOPIC_CALLBACK_PLAZZA_LIST)
@@ -110,14 +139,16 @@ public class ZhihuTopicMessager {
                 }
             }
             if (!htmls.isEmpty()) {
-                //TODO: handle offset
                 ApiRequestMessage originMsg = (ApiRequestMessage) headers.get("origin-request");
-                // get header
-                // get parames
-                // get offset/dataId
-                // make new request
-                getTopicIdsByCategory()
-
+                List<String> params = originMsg.getHeaders().get("params");
+                if (params != null && params.size() == 1) {
+                    try {
+                        TopicsPlazzaListParam param = this.objectMapper.readValue(params.get(0), TopicsPlazzaListParam.class);
+                        getTopicIdsByCategory(param.getTopicId(), param.getOffset() + htmls.size());
+                    } catch (IOException e) {
+                        log.error("Fail to eserialize [{}] with error [{}]", params.get(0), e);
+                    }
+                }
             }
         }
     }
