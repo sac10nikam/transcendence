@@ -1,6 +1,7 @@
 package com.nobodyhub.transcendence.zhihu.topic.controller;
 
 import com.nobodyhub.transcendence.zhihu.topic.domain.ZhihuTopic;
+import com.nobodyhub.transcendence.zhihu.topic.message.ZhihuTopicMessager;
 import com.nobodyhub.transcendence.zhihu.topic.service.ZhihuTopicService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -11,9 +12,12 @@ import java.util.List;
 @RequestMapping("topics")
 public class ZhihuTopicController {
     private final ZhihuTopicService topicService;
+    private final ZhihuTopicMessager topicMessager;
 
-    public ZhihuTopicController(ZhihuTopicService topicService) {
+    public ZhihuTopicController(ZhihuTopicService topicService,
+                                ZhihuTopicMessager topicMessager) {
         this.topicService = topicService;
+        this.topicMessager = topicMessager;
     }
 
     @GetMapping(path = "/id/{id}")
@@ -29,7 +33,6 @@ public class ZhihuTopicController {
     @GetMapping(path = "/control/refresh")
     @ResponseStatus(HttpStatus.OK)
     void refreshTopics() {
-        // get all topic categories
-        // get topics by categories
+        topicMessager.getTopicCategories();
     }
 }
