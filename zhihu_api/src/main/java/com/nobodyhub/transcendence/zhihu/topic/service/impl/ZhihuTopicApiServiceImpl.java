@@ -12,7 +12,8 @@ import com.nobodyhub.transcendence.zhihu.topic.domain.ZhihuTopicCategory;
 import com.nobodyhub.transcendence.zhihu.topic.domain.feed.ZhihuTopicFeed;
 import com.nobodyhub.transcendence.zhihu.topic.domain.feed.ZhihuTopicFeedList;
 import com.nobodyhub.transcendence.zhihu.topic.domain.paging.ZhihuTopicList;
-import com.nobodyhub.transcendence.zhihu.topic.domain.plazza.ZhihuTopicPlazzaListV2;
+import com.nobodyhub.transcendence.zhihu.topic.domain.plazza.ZhihuTopicPlazzaList;
+import com.nobodyhub.transcendence.zhihu.topic.message.ZhihuTopicMessager;
 import com.nobodyhub.transcendence.zhihu.topic.repository.ZhihuTopicRepository;
 import com.nobodyhub.transcendence.zhihu.topic.service.ZhihuTopicApiService;
 import lombok.extern.slf4j.Slf4j;
@@ -32,8 +33,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+/**
+ * @deprecated use {@link ZhihuTopicMessager} instead
+ */
 @Slf4j
 @Service
+@Deprecated
 public class ZhihuTopicApiServiceImpl implements ZhihuTopicApiService {
     private final RestTemplate restTemplate;
     private final ZhihuTopicRepository topicRepository;
@@ -57,8 +62,8 @@ public class ZhihuTopicApiServiceImpl implements ZhihuTopicApiService {
     @Override
     public Optional<ZhihuTopic> getTopic(String topicId) {
         final String topicUrl = "/api/v4/topics/{id}";
-        final String topicParentUrl = "/api/v3/topics/{id}/parent";
-        final String topicChildUrl = "/api/v3/topics/{id}/children";
+        final String topicParentUrl = "/api/v4/topics/{id}/parent";
+        final String topicChildUrl = "/api/v4/topics/{id}/children";
         try {
             Set<ZhihuTopic> parents = getTopicsByPaging(topicParentUrl, topicId);
             Set<ZhihuTopic> children = getTopicsByPaging(topicChildUrl, topicId);
@@ -136,8 +141,8 @@ public class ZhihuTopicApiServiceImpl implements ZhihuTopicApiService {
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
         try {
             log.debug("Access URL: [{}]", topicPlazzaUrl);
-            ResponseEntity<ZhihuTopicPlazzaListV2> response = this.restTemplate.postForEntity(
-                topicPlazzaUrl, request, ZhihuTopicPlazzaListV2.class);
+            ResponseEntity<ZhihuTopicPlazzaList> response = this.restTemplate.postForEntity(
+                topicPlazzaUrl, request, ZhihuTopicPlazzaList.class);
             if (response.getStatusCode() == HttpStatus.OK && response.getBody() != null) {
                 List<String> htmls = response.getBody().getMsg();
                 for (String html : htmls) {
@@ -179,7 +184,7 @@ public class ZhihuTopicApiServiceImpl implements ZhihuTopicApiService {
         }
         if (topicList != null
             && !topicList.getData().isEmpty()
-            && !topicList.getPaging().getIs_end()) {
+            && !topicList.getPaging().getIsEnd()) {
             topics.addAll(getTopicsByPaging(topicList.getPaging().getNext(), topicId));
             topics.addAll(topicList.getData());
         }
@@ -207,7 +212,7 @@ public class ZhihuTopicApiServiceImpl implements ZhihuTopicApiService {
         }
         if (feedList != null
             && !feedList.getData().isEmpty()
-            && !feedList.getPaging().getIs_end()) {
+            && !feedList.getPaging().getIsEnd()) {
             answers.addAll(getAnswersByPaging(urlConverter.convert(feedList.getPaging().getNext()), topicId));
             for (ZhihuTopicFeed feed : feedList.getData()) {
                 answers.add(feed.getTarget());
