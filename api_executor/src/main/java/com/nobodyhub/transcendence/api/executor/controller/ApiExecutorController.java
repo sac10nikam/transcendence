@@ -1,11 +1,12 @@
 package com.nobodyhub.transcendence.api.executor.controller;
 
 import com.nobodyhub.transcendence.api.executor.service.ApiExecutorService;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -22,22 +23,46 @@ public class ApiExecutorController {
     @PostMapping
     @ResponseStatus(value = HttpStatus.OK)
     void doRequest(@RequestBody ApiRequestMessage request) {
-        apiExecutorService.fetchAndDispatch(request.getTopic(), request.getUrl());
+        apiExecutorService.fetchAndDispatch(request);
     }
 
-    @Data
-    @AllArgsConstructor
-    @NoArgsConstructor
     @ToString
-    static class ApiRequestMessage {
+    @Data
+    public class ApiRequestMessage {
         /**
-         * the url to request
-         * TODO: add cookies support
+         * Request Method
+         */
+        private HttpMethod method = HttpMethod.GET;
+
+        /**
+         * Request headers
+         */
+        private MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
+
+        /**
+         * Request URL
          */
         private String url;
+
         /**
-         * the topic to which the callback will be sent
+         * Request body
+         */
+        private String body;
+
+        /**
+         * topic to cache the response
          */
         private String topic;
+
+        /**
+         * Used by Json serializer
+         */
+        public ApiRequestMessage() {
+        }
+
+        public ApiRequestMessage(String url, String topic) {
+            this.url = url;
+            this.topic = topic;
+        }
     }
 }

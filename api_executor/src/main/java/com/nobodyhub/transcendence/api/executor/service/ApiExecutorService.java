@@ -1,11 +1,14 @@
 package com.nobodyhub.transcendence.api.executor.service;
 
 
-import com.google.common.base.Joiner;
-import com.nobodyhub.transcendence.api.executor.client.ResponseDispatcher;
+import com.google.common.collect.Maps;
+import com.nobodyhub.transcendence.api.executor.controller.ApiExecutorController;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.MediaType;
+import org.springframework.cloud.stream.binding.BinderAwareChannelResolver;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.MessageHeaders;
+import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -14,49 +17,56 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
-
-import static org.springframework.http.MediaType.APPLICATION_JSON;
-import static org.springframework.http.MediaType.IMAGE_JPEG;
+import java.util.Map;
 
 
 @Slf4j
 @Service
 public class ApiExecutorService {
     private final RestTemplate restTemplate;
-    private final ResponseDispatcher responseDispatcher;
+    private final BinderAwareChannelResolver resolver;
 
-    public ApiExecutorService(RestTemplate restTemplate, ResponseDispatcher responseDispatcher) {
+    public ApiExecutorService(RestTemplate restTemplate,
+                              BinderAwareChannelResolver resolver) {
         this.restTemplate = restTemplate;
-        this.responseDispatcher = responseDispatcher;
+        this.resolver = resolver;
     }
 
     @Async
-    public void fetchAndDispatch(String topic, String url) {
-        ResponseEntity<byte[]> entity = this.restTemplate.getForEntity(url, byte[].class);
-        byte[] body = entity.getBody();
+    public void fetchAndDispatch(ApiExecutorController.ApiRequestMessage requestMessage) {
+        // make http request
+        HttpEntity<String> entity = new HttpEntity<>(requestMessage.getBody(), requestMessage.getHeaders());
+        ResponseEntity<byte[]> responseEntity = this.restTemplate.exchange(
+            requestMessage.getUrl(),
+            requestMessage.getMethod(),
+            entity,
+            byte[].class);
+        byte[] body = responseEntity.getBody();
         if (body == null) {
             log.info("Received Empty Response Body. Skipped!");
             return;
         }
-        MediaType mediaType = entity.getHeaders().getContentType();
-        if (mediaType == null
-            || (!mediaType.includes(APPLICATION_JSON)
-            && !mediaType.includes(IMAGE_JPEG))) {
-            //TODO: add more content types
-            log.info("The Response contents should be one of following types: {}",
-                Joiner.on(",").join(APPLICATION_JSON, IMAGE_JPEG));
-        }
+        // serialize the response body
         byte[] message = null;
         try (ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
-            //https://stackoverflow.com/questions/2836646/java-serializable-object-to-byte-array
             ObjectOutput out = new ObjectOutputStream(bos);
             out.writeObject(body);
             message = bos.toByteArray();
         } catch (IOException e) {
             log.error("Error happends when serializing response to byte[].", e);
+            return;
         }
+        // prepare message header
+        Map<String, Object> headers = Maps.newHashMap();
+        headers.put("reponse-headers", responseEntity.getHeaders());
+        headers.put("origin-request", requestMessage);
         // write message as byte[] into the queue
-        log.info("Sending message to topic [{}]", topic);
-        responseDispatcher.dispatch(message, topic, mediaType);
+        log.info("Sending message to topic [{}]", requestMessage.getTopic());
+        this.resolver.resolveDestination(requestMessage.getTopic()).send(
+            MessageBuilder.createMessage(
+                message,
+                new MessageHeaders(headers)
+            )
+        );
     }
 }
