@@ -65,7 +65,7 @@ public class ZhihuTopicMessager {
     public void getTopicCategories() {
         String url = "https://www.zhihu.com/topics";
         ApiRequestMessage message = new ApiRequestMessage(url, ZhihuApiChannel.IN_ZHIHU_TOPIC_CALLBACK_TOPIC_PAGE);
-        channel.topicRequest().send(MessageBuilder.withPayload(message).build());
+        channel.sendTopicRequest().send(MessageBuilder.withPayload(message).build());
     }
 
     @StreamListener(ZhihuApiChannel.IN_ZHIHU_TOPIC_CALLBACK_TOPIC_PAGE)
@@ -109,7 +109,7 @@ public class ZhihuTopicMessager {
         }
         ApiRequestMessage message = new ApiRequestMessage(url, ZhihuApiChannel.IN_ZHIHU_TOPIC_CALLBACK_PLAZZA_LIST);
         message.setHeaders(headers);
-        channel.topicRequest().send(MessageBuilder.withPayload(message).build());
+        channel.sendTopicRequest().send(MessageBuilder.withPayload(message).build());
     }
 
     @ToString
@@ -163,19 +163,19 @@ public class ZhihuTopicMessager {
         final String topicUrl = this.urlConverter.expand(
             "/api/v4/topics/{id}",
             topicId);
-        channel.topicRequest().send(MessageBuilder.withPayload(
+        channel.sendTopicRequest().send(MessageBuilder.withPayload(
             new ApiRequestMessage(topicUrl, ZhihuApiChannel.IN_ZHIHU_TOPIC_CALLBACK_TOPIC)
         ).build());
         // request for parent topic detail
         final String topicParentUrl = this.urlConverter.expand("/api/v4/topics/{id}/parent",
             topicId);
-        channel.topicRequest().send(MessageBuilder.withPayload(
+        channel.sendTopicRequest().send(MessageBuilder.withPayload(
             new ApiRequestMessage(topicParentUrl, ZhihuApiChannel.IN_ZHIHU_TOPIC_CALLBACK_TOPIC_LIST)
         ).build());
         // request for children topic detail
         final String topicChildUrl = this.urlConverter.expand("/api/v4/topics/{id}/children",
             topicId);
-        channel.topicRequest().send(MessageBuilder.withPayload(
+        channel.sendTopicRequest().send(MessageBuilder.withPayload(
             new ApiRequestMessage(topicChildUrl, ZhihuApiChannel.IN_ZHIHU_TOPIC_CALLBACK_TOPIC_LIST)
         ).build());
     }
@@ -199,7 +199,7 @@ public class ZhihuTopicMessager {
                 }
                 // request for more data
                 if (!list.getPaging().getIsEnd()) {
-                    channel.topicRequest().send(MessageBuilder.withPayload(
+                    channel.sendTopicRequest().send(MessageBuilder.withPayload(
                         new ApiRequestMessage(list.getPaging().getNext(), ZhihuApiChannel.IN_ZHIHU_TOPIC_CALLBACK_TOPIC_LIST)
                     ).build());
                 }
@@ -211,7 +211,7 @@ public class ZhihuTopicMessager {
         String url = this.urlConverter.expand("/api/v4/topics/{topicId}/feeds/essence?include=data[?(target.type=topic_sticky_module)].target.data[?(target.type=answer)].target.content,relationship.is_authorized,is_author,voting,is_thanked,is_nothelp;data[?(target.type=topic_sticky_module)].target.data[?(target.type=answer)].target.is_normal,comment_count,voteup_count,content,relevant_info,excerpt.author.badge[?(type=best_answerer)].topics;data[?(target.type=topic_sticky_module)].target.data[?(target.type=article)].target.content,voteup_count,comment_count,voting,author.badge[?(type=best_answerer)].topics;data[?(target.type=topic_sticky_module)].target.data[?(target.type=people)].target.answer_count,articles_count,gender,follower_count,is_followed,is_following,badge[?(type=best_answerer)].topics;data[?(target.type=answer)].target.annotation_detail,content,hermes_label,is_labeled,relationship.is_authorized,is_author,voting,is_thanked,is_nothelp;data[?(target.type=answer)].target.author.badge[?(type=best_answerer)].topics;data[?(target.type=article)].target.annotation_detail,content,hermes_label,is_labeled,author.badge[?(type=best_answerer)].topics;data[?(target.type=question)].target.annotation_detail,comment_count;&limit=10",
             topicId);
         ApiRequestMessage message = new ApiRequestMessage(url, IN_ZHIHU_TOPIC_CALLBACK_FEED_LIST);
-        channel.topicRequest().send(MessageBuilder.withPayload(message).build());
+        channel.sendTopicRequest().send(MessageBuilder.withPayload(message).build());
     }
 
     @StreamListener(IN_ZHIHU_TOPIC_CALLBACK_FEED_LIST)
@@ -225,7 +225,7 @@ public class ZhihuTopicMessager {
                 }
                 // request for more data
                 if (!list.getPaging().getIsEnd()) {
-                    channel.topicRequest().send(MessageBuilder.withPayload(
+                    channel.sendTopicRequest().send(MessageBuilder.withPayload(
                         new ApiRequestMessage(list.getPaging().getNext(), IN_ZHIHU_TOPIC_CALLBACK_FEED_LIST)
                     ).build());
                 }

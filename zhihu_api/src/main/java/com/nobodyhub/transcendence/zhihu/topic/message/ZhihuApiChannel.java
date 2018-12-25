@@ -4,8 +4,10 @@ import com.nobodyhub.transcendence.zhihu.topic.domain.ZhihuTopic;
 import com.nobodyhub.transcendence.zhihu.topic.domain.feed.ZhihuTopicFeedList;
 import com.nobodyhub.transcendence.zhihu.topic.domain.paging.ZhihuTopicList;
 import com.nobodyhub.transcendence.zhihu.topic.domain.plazza.ZhihuTopicPlazzaList;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cloud.stream.annotation.Input;
 import org.springframework.cloud.stream.annotation.Output;
+import org.springframework.cloud.stream.binder.PollableMessageSource;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.SubscribableChannel;
 
@@ -16,7 +18,13 @@ public interface ZhihuApiChannel {
     String OUT_ZHIHU_TOPIC_REQUEST = "out-zhihu-topic-request";
 
     @Output(OUT_ZHIHU_TOPIC_REQUEST)
-    MessageChannel topicRequest();
+    MessageChannel sendTopicRequest();
+
+    String ZHIHU_TOPIC_REQUEST_CHANNEL = "zhihu-topic-request-channel";
+
+    @Qualifier(ZHIHU_TOPIC_REQUEST_CHANNEL)
+    @Input(OUT_ZHIHU_TOPIC_REQUEST)
+    PollableMessageSource receiveTopicRequest();
 
     /**
      * Response received contains <b>HTML</b> page for topics
