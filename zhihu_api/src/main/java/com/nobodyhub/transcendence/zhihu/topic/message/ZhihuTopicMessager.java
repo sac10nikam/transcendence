@@ -94,21 +94,22 @@ public class ZhihuTopicMessager {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         // form data
-        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
-        map.add("method", "next");
+        MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
+        body.add("method", "next");
         TopicsPlazzaListParam params = new TopicsPlazzaListParam();
         params.setTopicId(dataId);
         params.setOffset(offset);
         try {
-            map.add("params", objectMapper.writeValueAsString(params));
+            body.add("params", objectMapper.writeValueAsString(params));
         } catch (JsonProcessingException e) {
             log.error("Fail to serialize TopicsPlazzaListParam[{}] with error[{}]", params, e);
             // use string interpolation instead
-            map.add("params", String.format("{\"topic_id\":%d,\"offset\":%d,\"hash_id\":\"\"}",
+            body.add("params", String.format("{\"topic_id\":%d,\"offset\":%d,\"hash_id\":\"\"}",
                 dataId, offset));
         }
         ApiRequestMessage message = new ApiRequestMessage(url, ZhihuApiChannel.IN_ZHIHU_TOPIC_CALLBACK_PLAZZA_LIST);
         message.setHeaders(headers);
+        message.setBody(body);
         channel.sendTopicRequest().send(MessageBuilder.withPayload(message).build());
     }
 

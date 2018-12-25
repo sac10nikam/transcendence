@@ -1,18 +1,13 @@
 package com.nobodyhub.transcendence.zhihu.common.message;
 
-import com.google.common.collect.Maps;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 import org.springframework.http.HttpMethod;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
-import java.util.Map;
-
 @ToString
 @Data
-@RequiredArgsConstructor
 public class ApiRequestMessage {
     /**
      * Request Method
@@ -27,15 +22,26 @@ public class ApiRequestMessage {
     /**
      * Request URL
      */
-    private final String url;
+    private String url;
 
     /**
-     * Cookies
+     * Request body
      */
-    private Map<String, String> cookies = Maps.newHashMap();
+    private Object body;
 
     /**
      * topic to cache the response
      */
-    private final String topic;
+    private String topic;
+
+    /**
+     * Used by Json serializer
+     */
+    public ApiRequestMessage() {
+    }
+
+    public ApiRequestMessage(String url, String topic) {
+        this.url = url;
+        this.topic = topic;
+    }
 }
