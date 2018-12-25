@@ -19,6 +19,10 @@
   <dependencies>
     <dependency>
       <groupId>com.nobodyhub.transcendence</groupId>
+      <artifactId>api_common</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.nobodyhub.transcendence</groupId>
       <artifactId>mongodb_domain</artifactId>
     </dependency>
     <dependency>
