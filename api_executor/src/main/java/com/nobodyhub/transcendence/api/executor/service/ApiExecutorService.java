@@ -2,7 +2,7 @@ package com.nobodyhub.transcendence.api.executor.service;
 
 
 import com.google.common.collect.Maps;
-import com.nobodyhub.transcendence.api.executor.controller.ApiExecutorController;
+import com.nobodyhub.transcendence.api.common.ApiRequestMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.stream.binding.BinderAwareChannelResolver;
 import org.springframework.http.HttpEntity;
@@ -33,9 +33,9 @@ public class ApiExecutorService {
     }
 
     @Async
-    public void fetchAndDispatch(ApiExecutorController.ApiRequestMessage requestMessage) {
+    public void fetchAndDispatch(ApiRequestMessage requestMessage) {
         // make http request
-        HttpEntity<String> entity = new HttpEntity<>(requestMessage.getBody(), requestMessage.getHeaders());
+        HttpEntity<Object> entity = new HttpEntity<>(requestMessage.getBody(), requestMessage.getHeaders());
         ResponseEntity<byte[]> responseEntity = this.restTemplate.exchange(
             requestMessage.getUrl(),
             requestMessage.getMethod(),
