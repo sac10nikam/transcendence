@@ -1,6 +1,7 @@
 package com.nobodyhub.transcendence.zhihu.topic.message;
 
-import com.nobodyhub.transcendence.zhihu.common.message.ApiRequestMessage;
+import com.nobodyhub.transcendence.api.common.ApiRequestMessage;
+import com.nobodyhub.transcendence.api.common.ApiServiceClient;
 import com.nobodyhub.transcendence.zhihu.configuration.ZhihuApiProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
