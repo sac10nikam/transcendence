@@ -15,12 +15,12 @@ import static com.nobodyhub.transcendence.zhihu.topic.message.ZhihuApiChannel.ZH
 
 @Slf4j
 @Configuration
-public class ZhihuApiConfiguration {
+public class ZhihuTopicApiConfiguration {
     private final ZhihuApiProperties apiProperties;
     private final ApiServiceClient apiServiceClient;
 
-    public ZhihuApiConfiguration(ZhihuApiProperties apiProperties,
-                                 ApiServiceClient apiServiceClient) {
+    public ZhihuTopicApiConfiguration(ZhihuApiProperties apiProperties,
+                                      ApiServiceClient apiServiceClient) {
         this.apiProperties = apiProperties;
         this.apiServiceClient = apiServiceClient;
     }

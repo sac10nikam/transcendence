@@ -1,11 +1,9 @@
 package com.nobodyhub.transcendence.zhihu.common.converter;
 
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 @Component
-@ConditionalOnProperty(name = "zhihu.api.version", havingValue = "4")
 public class ZhihuUrlConverter {
     private final RestTemplate restTemplate;
 

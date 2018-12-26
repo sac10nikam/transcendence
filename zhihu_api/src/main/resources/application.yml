@@ -27,6 +27,9 @@ spring.cloud.stream.bindings:
   # Topic
   out-zhihu-topic-request:
     content-type: application/json
+  zhihu-topic-request-channel:
+    destination: out-zhihu-topic-request
+    group: zhihu-topic
   in-zhihu-topic-callback-topic-page:
     group: zhihu-topic
   in-zhihu-topic-callback-topic:
