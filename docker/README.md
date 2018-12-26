@@ -1,5 +1,12 @@
 # Dockers for Development
 
+## MongoDB
+start server
+```bash
+sudo service mongod start
+```
+
+
 ## [Kafka](kafka) 
 A Kafka Server, incl. Zookeeper.
 
@@ -10,9 +17,10 @@ docker build -t transcendence/kafka kafka/
 ```
 
 ## How to Run
-
+* Please make sure the the `ADVERTISED_HOST` is the correct the hostname
+* Must use host network rather than just expose ports
 ```bash
-docker run -p 2181:2181 -p 9092:9092 --env ADVERTISED_HOST=localhost --env ADVERTISED_PORT=9092 transcendence/kafka
+docker run -d --network host --env ADVERTISED_HOST=localhost --env ADVERTISED_PORT=9092 transcendence/kafka
 ```
 
 ### Reference 
