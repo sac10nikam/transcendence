@@ -1,4 +1,4 @@
-package com.nobodyhub.transcendence.zhihu.common.message;
+package com.nobodyhub.transcendence.api.common;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
