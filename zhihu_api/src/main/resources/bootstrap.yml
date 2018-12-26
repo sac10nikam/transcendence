@@ -1,4 +1,4 @@
-spring.application.name: zhihu-member
+spring.application.name: zhihu-api
 
 # Spring config server configuration
 spring.cloud.config:

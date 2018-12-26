@@ -9,9 +9,7 @@ A Generic Web Crawler.
 |9100-9109|---|Infrastructure|---|
 |9100|gateway|Gateway Server|9100|
 |9101|config|Configuration Server|9101|
-|9110-9119|zhihu-member|Zhihu Member Application|9110|
-|9120-9129|zhihu-topic|Zhihu Topic Application|9120|
-|9800-9899|api-throttle|API Request Throttle|9800|
+|9110-9119|zhihu-api|Zhihu API|9110|
 |9900-9999|api-executor|API Request Executor|9900|
 
 ## How to Start
