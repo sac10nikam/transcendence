@@ -1,13 +1,16 @@
 package com.nobodyhub.transcendence.zhihu.configuration;
 
+import lombok.Data;
 import lombok.Getter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.stereotype.Component;
 
 
+@Component
 @PropertySource("classpath:zhihu-api.properties")
 @ConfigurationProperties("zhihu.api")
-@Getter
+@Data
 public class ZhihuApiProperties {
     /**
      * Zhihu Api version
