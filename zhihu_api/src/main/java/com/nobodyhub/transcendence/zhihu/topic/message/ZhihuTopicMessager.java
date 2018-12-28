@@ -24,6 +24,7 @@ import org.jsoup.select.Elements;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.integration.annotation.ServiceActivator;
 import org.springframework.messaging.Message;
@@ -32,7 +33,6 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 
 import java.io.IOException;
 import java.util.List;
@@ -117,9 +117,9 @@ public class ZhihuTopicMessager {
         String url = "https://www.zhihu.com/node/TopicsPlazzaListV2";
         // header
         HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
         // form data
-        MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
+        LinkedMultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
         body.add("method", "next");
         TopicsPlazzaListParam params = new TopicsPlazzaListParam();
         params.setTopicId(dataId);
@@ -133,6 +133,7 @@ public class ZhihuTopicMessager {
                 dataId, offset));
         }
         ApiRequestMessage message = new ApiRequestMessage(url, ZhihuApiChannel.IN_ZHIHU_TOPIC_CALLBACK_PLAZZA_LIST);
+        message.setMethod(HttpMethod.POST);
         message.setHeaders(headers);
         message.setBody(body);
         channel.sendTopicRequest().send(MessageBuilder.withPayload(message).build());

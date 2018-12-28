@@ -2,9 +2,9 @@ package com.nobodyhub.transcendence.api.common.message;
 
 import lombok.Data;
 import lombok.ToString;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 
 @ToString
 @Data
@@ -17,7 +17,7 @@ public class ApiRequestMessage {
     /**
      * Request headers
      */
-    private MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
+    private HttpHeaders headers = new HttpHeaders();
 
     /**
      * Request URL
@@ -27,7 +27,7 @@ public class ApiRequestMessage {
     /**
      * Request body
      */
-    private Object body;
+    private LinkedMultiValueMap<String, Object> body;
 
     /**
      * topic to cache the response
