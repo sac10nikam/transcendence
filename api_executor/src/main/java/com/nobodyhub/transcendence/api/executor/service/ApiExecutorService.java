@@ -2,7 +2,7 @@ package com.nobodyhub.transcendence.api.executor.service;
 
 
 import com.google.common.collect.Maps;
-import com.nobodyhub.transcendence.api.common.ApiRequestMessage;
+import com.nobodyhub.transcendence.api.common.message.ApiRequestMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.stream.binding.BinderAwareChannelResolver;
 import org.springframework.http.HttpEntity;
