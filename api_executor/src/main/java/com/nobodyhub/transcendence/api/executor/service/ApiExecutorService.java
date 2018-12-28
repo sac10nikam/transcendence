@@ -6,11 +6,14 @@ import com.nobodyhub.transcendence.api.common.message.ApiRequestMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.stream.binding.BinderAwareChannelResolver;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.ByteArrayOutputStream;
@@ -35,14 +38,22 @@ public class ApiExecutorService {
     @Async
     public void fetchAndDispatch(ApiRequestMessage requestMessage) {
         // make http request
-        HttpEntity<Object> entity = new HttpEntity<>(requestMessage.getBody(), requestMessage.getHeaders());
-        ResponseEntity<byte[]> responseEntity = this.restTemplate.exchange(
-            requestMessage.getUrl(),
-            requestMessage.getMethod(),
-            entity,
-            byte[].class);
-        byte[] body = responseEntity.getBody();
-        if (body == null) {
+        HttpEntity<MultiValueMap<String, Object>> entity = new HttpEntity<>(requestMessage.getBody(), requestMessage.getHeaders());
+        byte[] respBody = null;
+        HttpHeaders respHeaders = null;
+        try {
+            ResponseEntity<byte[]> responseEntity = this.restTemplate.exchange(
+                requestMessage.getUrl(),
+                requestMessage.getMethod(),
+                entity,
+                byte[].class);
+            respBody = responseEntity.getBody();
+            respHeaders = responseEntity.getHeaders();
+        } catch (RestClientException e) {
+            log.error("Fail to process request message {}!", requestMessage);
+            log.error("with error", e);
+        }
+        if (respBody == null) {
             log.info("Received Empty Response Body. Skipped!");
             return;
         }
@@ -50,7 +61,7 @@ public class ApiExecutorService {
         byte[] message = null;
         try (ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
             ObjectOutput out = new ObjectOutputStream(bos);
-            out.writeObject(body);
+            out.writeObject(respBody);
             message = bos.toByteArray();
         } catch (IOException e) {
             log.error("Error happends when serializing response to byte[].", e);
@@ -58,7 +69,7 @@ public class ApiExecutorService {
         }
         // prepare message header
         Map<String, Object> headers = Maps.newHashMap();
-        headers.put("reponse-headers", responseEntity.getHeaders());
+        headers.put("reponse-headers", respHeaders);
         headers.put("origin-request", requestMessage);
         // write message as byte[] into the queue
         log.info("Sending message to topic [{}]", requestMessage.getTopic());
