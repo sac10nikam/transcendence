@@ -1,4 +1,4 @@
-package com.nobodyhub.transcendence.api.common;
+package com.nobodyhub.transcendence.api.common.converter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
