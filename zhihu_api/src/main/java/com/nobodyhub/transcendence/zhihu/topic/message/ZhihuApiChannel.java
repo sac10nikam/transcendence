@@ -6,7 +6,6 @@ import com.nobodyhub.transcendence.zhihu.topic.domain.paging.ZhihuTopicList;
 import com.nobodyhub.transcendence.zhihu.topic.domain.plazza.ZhihuTopicPlazzaList;
 import org.springframework.cloud.stream.annotation.Input;
 import org.springframework.cloud.stream.annotation.Output;
-import org.springframework.cloud.stream.binder.PollableMessageSource;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.SubscribableChannel;
 
@@ -22,7 +21,7 @@ public interface ZhihuApiChannel {
     String ZHIHU_TOPIC_REQUEST_CHANNEL = "zhihu-topic-request-channel";
 
     @Input(ZHIHU_TOPIC_REQUEST_CHANNEL)
-    PollableMessageSource receiveTopicRequest();
+    SubscribableChannel receiveTopicRequest();
 
     /**
      * Response received contains <b>HTML</b> page for topics

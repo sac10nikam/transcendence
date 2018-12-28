@@ -3,9 +3,11 @@ package com.nobodyhub.transcendence.zhihu.topic.message;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.nobodyhub.transcendence.api.common.ApiRequestMessage;
-import com.nobodyhub.transcendence.api.common.ApiResponseConverter;
+import com.nobodyhub.transcendence.api.common.converter.ApiResponseConverter;
+import com.nobodyhub.transcendence.api.common.executor.ApiAsyncExecutor;
+import com.nobodyhub.transcendence.api.common.message.ApiRequestMessage;
 import com.nobodyhub.transcendence.zhihu.common.converter.ZhihuUrlConverter;
+import com.nobodyhub.transcendence.zhihu.configuration.ZhihuApiProperties;
 import com.nobodyhub.transcendence.zhihu.topic.domain.ZhihuTopic;
 import com.nobodyhub.transcendence.zhihu.topic.domain.ZhihuTopicCategory;
 import com.nobodyhub.transcendence.zhihu.topic.domain.feed.ZhihuTopicFeed;
@@ -47,16 +49,39 @@ public class ZhihuTopicMessager {
     private final ApiResponseConverter converter;
     private final ZhihuUrlConverter urlConverter;
     private final ObjectMapper objectMapper;
+    private final ZhihuApiProperties apiProperties;
+    private final ApiAsyncExecutor apiAsyncExecutor;
 
 
     public ZhihuTopicMessager(ZhihuApiChannel channel,
                               ApiResponseConverter converter,
                               ZhihuUrlConverter urlConverter,
-                              ObjectMapper objectMapper) {
+                              ObjectMapper objectMapper,
+                              ZhihuApiProperties apiProperties,
+                              ApiAsyncExecutor apiAsyncExecutor) {
         this.channel = channel;
         this.converter = converter;
         this.urlConverter = urlConverter;
         this.objectMapper = objectMapper;
+        this.apiProperties = apiProperties;
+        this.apiAsyncExecutor = apiAsyncExecutor;
+    }
+
+    /**
+     * Retrieve message from queue of outbound request
+     *
+     * @param message contents of request
+     * @throws InterruptedException
+     */
+    @StreamListener(ZHIHU_TOPIC_REQUEST_CHANNEL)
+    public void receiveTopicRequest(ApiRequestMessage message) throws InterruptedException {
+        apiAsyncExecutor.execRequest(message);
+        try {
+            Thread.sleep(apiProperties.getDelay());
+        } catch (InterruptedException e) {
+            log.warn("Sleep interrupted by {}.", e);
+            throw e;
+        }
     }
 
     /**
@@ -68,7 +93,7 @@ public class ZhihuTopicMessager {
         channel.sendTopicRequest().send(MessageBuilder.withPayload(message).build());
     }
 
-    @StreamListener(ZhihuApiChannel.IN_ZHIHU_TOPIC_CALLBACK_TOPIC_PAGE)
+    @StreamListener(IN_ZHIHU_TOPIC_CALLBACK_TOPIC_PAGE)
     public void receiveTopicHtmlPage(@Payload byte[] message) {
         Optional<String> html = converter.convert(message, String.class);
         if (html.isPresent()) {
@@ -124,7 +149,7 @@ public class ZhihuTopicMessager {
         private Integer hashId;
     }
 
-    @StreamListener(ZhihuApiChannel.IN_ZHIHU_TOPIC_CALLBACK_PLAZZA_LIST)
+    @StreamListener(IN_ZHIHU_TOPIC_CALLBACK_PLAZZA_LIST)
     public void receiveTopicPLazzaList(@Payload byte[] message, @Headers Map<String, Object> headers) {
         Optional<ZhihuTopicPlazzaList> plazzaList = converter.convert(message, ZhihuTopicPlazzaList.class);
         if (plazzaList.isPresent()) {
@@ -165,19 +190,19 @@ public class ZhihuTopicMessager {
             "/api/v4/topics/{id}",
             topicId);
         channel.sendTopicRequest().send(MessageBuilder.withPayload(
-            new ApiRequestMessage(topicUrl, ZhihuApiChannel.IN_ZHIHU_TOPIC_CALLBACK_TOPIC)
+            new ApiRequestMessage(topicUrl, IN_ZHIHU_TOPIC_CALLBACK_TOPIC)
         ).build());
         // request for parent topic detail
         final String topicParentUrl = this.urlConverter.expand("/api/v4/topics/{id}/parent",
             topicId);
         channel.sendTopicRequest().send(MessageBuilder.withPayload(
-            new ApiRequestMessage(topicParentUrl, ZhihuApiChannel.IN_ZHIHU_TOPIC_CALLBACK_TOPIC_LIST)
+            new ApiRequestMessage(topicParentUrl, IN_ZHIHU_TOPIC_CALLBACK_TOPIC_LIST)
         ).build());
         // request for children topic detail
         final String topicChildUrl = this.urlConverter.expand("/api/v4/topics/{id}/children",
             topicId);
         channel.sendTopicRequest().send(MessageBuilder.withPayload(
-            new ApiRequestMessage(topicChildUrl, ZhihuApiChannel.IN_ZHIHU_TOPIC_CALLBACK_TOPIC_LIST)
+            new ApiRequestMessage(topicChildUrl, IN_ZHIHU_TOPIC_CALLBACK_TOPIC_LIST)
         ).build());
     }
 
@@ -201,7 +226,7 @@ public class ZhihuTopicMessager {
                 // request for more data
                 if (!list.getPaging().getIsEnd()) {
                     channel.sendTopicRequest().send(MessageBuilder.withPayload(
-                        new ApiRequestMessage(list.getPaging().getNext(), ZhihuApiChannel.IN_ZHIHU_TOPIC_CALLBACK_TOPIC_LIST)
+                        new ApiRequestMessage(list.getPaging().getNext(), IN_ZHIHU_TOPIC_CALLBACK_TOPIC_LIST)
                     ).build());
                 }
             }
@@ -241,7 +266,7 @@ public class ZhihuTopicMessager {
      * @param message
      * @see <a href="https://docs.spring.io/spring-cloud-stream/docs/current/reference/htmlsingle/">Error Handling</a>
      */
-    @ServiceActivator(inputChannel = ZhihuApiChannel.OUT_ZHIHU_TOPIC_REQUEST + ".zhihu-topic.errors")
+    @ServiceActivator(inputChannel = OUT_ZHIHU_TOPIC_REQUEST + ".zhihu-topic.errors")
     public void error(Message<?> message) {
 
     }
