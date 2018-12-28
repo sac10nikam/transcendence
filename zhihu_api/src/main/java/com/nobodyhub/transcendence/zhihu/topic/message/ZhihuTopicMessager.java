@@ -187,21 +187,17 @@ public class ZhihuTopicMessager {
      */
     public void getTopicById(String topicId) {
         // request for topic detail
-        final String topicUrl = this.urlConverter.expand(
-            "/api/v4/topics/{id}",
-            topicId);
+        final String topicUrl = "https://www.zhihu.com/api/v4/topics/{id}";
         channel.sendTopicRequest().send(MessageBuilder.withPayload(
             new ApiRequestMessage(topicUrl, IN_ZHIHU_TOPIC_CALLBACK_TOPIC)
         ).build());
         // request for parent topic detail
-        final String topicParentUrl = this.urlConverter.expand("/api/v4/topics/{id}/parent",
-            topicId);
+        final String topicParentUrl = "https://www.zhihu.com/api/v4/topics/{id}/parent";
         channel.sendTopicRequest().send(MessageBuilder.withPayload(
             new ApiRequestMessage(topicParentUrl, IN_ZHIHU_TOPIC_CALLBACK_TOPIC_LIST)
         ).build());
         // request for children topic detail
-        final String topicChildUrl = this.urlConverter.expand("/api/v4/topics/{id}/children",
-            topicId);
+        final String topicChildUrl = "https://www.zhihu.com/api/v4/topics/{id}/children";
         channel.sendTopicRequest().send(MessageBuilder.withPayload(
             new ApiRequestMessage(topicChildUrl, IN_ZHIHU_TOPIC_CALLBACK_TOPIC_LIST)
         ).build());
@@ -235,8 +231,7 @@ public class ZhihuTopicMessager {
     }
 
     public void getTopicFeeds(String topicId) {
-        String url = this.urlConverter.expand("/api/v4/topics/{topicId}/feeds/essence?include=data[?(target.type=topic_sticky_module)].target.data[?(target.type=answer)].target.content,relationship.is_authorized,is_author,voting,is_thanked,is_nothelp;data[?(target.type=topic_sticky_module)].target.data[?(target.type=answer)].target.is_normal,comment_count,voteup_count,content,relevant_info,excerpt.author.badge[?(type=best_answerer)].topics;data[?(target.type=topic_sticky_module)].target.data[?(target.type=article)].target.content,voteup_count,comment_count,voting,author.badge[?(type=best_answerer)].topics;data[?(target.type=topic_sticky_module)].target.data[?(target.type=people)].target.answer_count,articles_count,gender,follower_count,is_followed,is_following,badge[?(type=best_answerer)].topics;data[?(target.type=answer)].target.annotation_detail,content,hermes_label,is_labeled,relationship.is_authorized,is_author,voting,is_thanked,is_nothelp;data[?(target.type=answer)].target.author.badge[?(type=best_answerer)].topics;data[?(target.type=article)].target.annotation_detail,content,hermes_label,is_labeled,author.badge[?(type=best_answerer)].topics;data[?(target.type=question)].target.annotation_detail,comment_count;&limit=10",
-            topicId);
+        String url = "https://www.zhihu.com/api/v4/topics/{topicId}/feeds/essence?include=data[?(target.type=topic_sticky_module)].target.data[?(target.type=answer)].target.content,relationship.is_authorized,is_author,voting,is_thanked,is_nothelp;data[?(target.type=topic_sticky_module)].target.data[?(target.type=answer)].target.is_normal,comment_count,voteup_count,content,relevant_info,excerpt.author.badge[?(type=best_answerer)].topics;data[?(target.type=topic_sticky_module)].target.data[?(target.type=article)].target.content,voteup_count,comment_count,voting,author.badge[?(type=best_answerer)].topics;data[?(target.type=topic_sticky_module)].target.data[?(target.type=people)].target.answer_count,articles_count,gender,follower_count,is_followed,is_following,badge[?(type=best_answerer)].topics;data[?(target.type=answer)].target.annotation_detail,content,hermes_label,is_labeled,relationship.is_authorized,is_author,voting,is_thanked,is_nothelp;data[?(target.type=answer)].target.author.badge[?(type=best_answerer)].topics;data[?(target.type=article)].target.annotation_detail,content,hermes_label,is_labeled,author.badge[?(type=best_answerer)].topics;data[?(target.type=question)].target.annotation_detail,comment_count;&limit=10";
         ApiRequestMessage message = new ApiRequestMessage(url, IN_ZHIHU_TOPIC_CALLBACK_FEED_LIST);
         channel.sendTopicRequest().send(MessageBuilder.withPayload(message).build());
     }
