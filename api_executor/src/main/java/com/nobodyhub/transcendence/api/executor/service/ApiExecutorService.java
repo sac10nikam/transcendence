@@ -1,14 +1,13 @@
 package com.nobodyhub.transcendence.api.executor.service;
 
 
-import com.google.common.collect.Maps;
+import com.nobodyhub.transcendence.api.common.kafka.KafkaHeaderHandler;
 import com.nobodyhub.transcendence.api.common.message.ApiRequestMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.stream.binding.BinderAwareChannelResolver;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
-import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -20,7 +19,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
-import java.util.Map;
+import java.net.URI;
+
+import static com.nobodyhub.transcendence.api.common.kafka.KafkaMessageHeader.ORIGIN_REQUEST;
+import static com.nobodyhub.transcendence.api.common.kafka.KafkaMessageHeader.RESPONSE_HEADERS;
 
 
 @Slf4j
@@ -28,11 +30,14 @@ import java.util.Map;
 public class ApiExecutorService {
     private final RestTemplate restTemplate;
     private final BinderAwareChannelResolver resolver;
+    private final KafkaHeaderHandler headerHandler;
 
     public ApiExecutorService(RestTemplate restTemplate,
-                              BinderAwareChannelResolver resolver) {
+                              BinderAwareChannelResolver resolver,
+                              KafkaHeaderHandler headerHandler) {
         this.restTemplate = restTemplate;
         this.resolver = resolver;
+        this.headerHandler = headerHandler;
     }
 
     @Async
@@ -41,9 +46,11 @@ public class ApiExecutorService {
         HttpEntity<MultiValueMap<String, Object>> entity = new HttpEntity<>(requestMessage.getBody(), requestMessage.getHeaders());
         byte[] respBody = null;
         HttpHeaders respHeaders = null;
+        URI url = restTemplate.getUriTemplateHandler().expand(requestMessage.getUrlTemplate(), (Object[]) requestMessage.getUrlVariables());
         try {
+            log.info("Proceed to {} {}.", requestMessage.getMethod(), url.toString());
             ResponseEntity<byte[]> responseEntity = this.restTemplate.exchange(
-                requestMessage.getUrl(),
+                url,
                 requestMessage.getMethod(),
                 entity,
                 byte[].class);
@@ -67,16 +74,15 @@ public class ApiExecutorService {
             log.error("Error happends when serializing response to byte[].", e);
             return;
         }
-        // prepare message header
-        Map<String, Object> headers = Maps.newHashMap();
-        headers.put("reponse-headers", respHeaders);
-        headers.put("origin-request", requestMessage);
-        // write message as byte[] into the queue
+        // write message(with header) as byte[] into the queue
         log.info("Sending message to topic [{}]", requestMessage.getTopic());
         this.resolver.resolveDestination(requestMessage.getTopic()).send(
             MessageBuilder.createMessage(
                 message,
-                new MessageHeaders(headers)
+                headerHandler.builder()
+                    .put(RESPONSE_HEADERS.getKey(), respHeaders)
+                    .put(ORIGIN_REQUEST.getKey(), requestMessage)
+                    .build()
             )
         );
     }
