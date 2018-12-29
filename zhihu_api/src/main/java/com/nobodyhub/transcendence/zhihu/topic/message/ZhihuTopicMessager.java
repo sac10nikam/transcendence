@@ -105,7 +105,9 @@ public class ZhihuTopicMessager {
     }
 
     @StreamListener(IN_ZHIHU_TOPIC_CALLBACK_TOPIC_PAGE)
-    public void receiveTopicHtmlPage(@Payload byte[] message) {
+    public void receiveTopicHtmlPage(@Payload byte[] message,
+                                     @Headers MessageHeaders messageHeaders) {
+        this.cookies.update(messageHeaders);
         Optional<String> html = converter.convert(message, String.class);
         if (html.isPresent()) {
             Document doc = Jsoup.parse(html.get());
@@ -159,9 +161,9 @@ public class ZhihuTopicMessager {
     }
 
     @StreamListener(IN_ZHIHU_TOPIC_CALLBACK_PLAZZA_LIST)
-    public void receiveTopicPLazzaList(@Payload byte[] message,
+    public void receiveTopicPlazzaList(@Payload byte[] message,
                                        @Headers MessageHeaders messageHeaders) {
-
+        this.cookies.update(messageHeaders);
         Optional<ZhihuTopicPlazzaList> plazzaList = converter.convert(message, ZhihuTopicPlazzaList.class);
         if (plazzaList.isPresent()) {
             List<String> htmls = plazzaList.get().getMsg();
@@ -179,10 +181,10 @@ public class ZhihuTopicMessager {
             if (!htmls.isEmpty()) {
                 Optional<ApiRequestMessage> originMsg = headerHandler.get(messageHeaders, ORIGIN_REQUEST);
                 if (originMsg.isPresent()) {
-                    List<String> params = originMsg.get().getHeaders().get("params");
+                    List<Object> params = originMsg.get().getBody().get("params");
                     if (params != null && params.size() == 1) {
                         try {
-                            TopicsPlazzaListParam param = this.objectMapper.readValue(params.get(0), TopicsPlazzaListParam.class);
+                            TopicsPlazzaListParam param = this.objectMapper.readValue((String) params.get(0), TopicsPlazzaListParam.class);
                             getTopicIdsByCategory(param.getTopicId(), param.getOffset() + htmls.size());
                         } catch (IOException e) {
                             log.error("Fail to eserialize [{}] with error [{}]", params.get(0), e);
@@ -217,7 +219,9 @@ public class ZhihuTopicMessager {
     }
 
     @StreamListener(IN_ZHIHU_TOPIC_CALLBACK_TOPIC)
-    public void receiveTopic(@Payload byte[] message) {
+    public void receiveTopic(@Payload byte[] message,
+                             @Headers MessageHeaders messageHeaders) {
+        this.cookies.update(messageHeaders);
         Optional<ZhihuTopic> topic = converter.convert(message, ZhihuTopic.class);
         if (topic.isPresent()) {
             //TODO: save topic
@@ -225,7 +229,9 @@ public class ZhihuTopicMessager {
     }
 
     @StreamListener(IN_ZHIHU_TOPIC_CALLBACK_TOPIC_LIST)
-    public void receiveTopicList(@Payload byte[] message) {
+    public void receiveTopicList(@Payload byte[] message,
+                                 @Headers MessageHeaders messageHeaders) {
+        this.cookies.update(messageHeaders);
         Optional<ZhihuTopicList> topicList = converter.convert(message, ZhihuTopicList.class);
         if (topicList.isPresent()) {
             ZhihuTopicList list = topicList.get();
@@ -250,7 +256,9 @@ public class ZhihuTopicMessager {
     }
 
     @StreamListener(IN_ZHIHU_TOPIC_CALLBACK_FEED_LIST)
-    public void receiveTopicFeeds(@Payload byte[] message) {
+    public void receiveTopicFeeds(@Payload byte[] message,
+                                  @Headers MessageHeaders messageHeaders) {
+        this.cookies.update(messageHeaders);
         Optional<ZhihuTopicFeedList> feedList = converter.convert(message, ZhihuTopicFeedList.class);
         if (feedList.isPresent()) {
             ZhihuTopicFeedList list = feedList.get();
