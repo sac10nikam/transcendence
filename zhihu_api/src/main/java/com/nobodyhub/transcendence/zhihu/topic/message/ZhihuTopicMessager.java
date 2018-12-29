@@ -5,8 +5,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nobodyhub.transcendence.api.common.converter.ApiResponseConverter;
 import com.nobodyhub.transcendence.api.common.executor.ApiAsyncExecutor;
+import com.nobodyhub.transcendence.api.common.kafka.KafkaHeaderHandler;
 import com.nobodyhub.transcendence.api.common.message.ApiRequestMessage;
 import com.nobodyhub.transcendence.zhihu.common.converter.ZhihuUrlConverter;
+import com.nobodyhub.transcendence.zhihu.common.cookies.ZhihuApiCookies;
 import com.nobodyhub.transcendence.zhihu.configuration.ZhihuApiProperties;
 import com.nobodyhub.transcendence.zhihu.topic.domain.ZhihuTopic;
 import com.nobodyhub.transcendence.zhihu.topic.domain.ZhihuTopicCategory;
@@ -28,6 +30,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.integration.annotation.ServiceActivator;
 import org.springframework.messaging.Message;
+import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.handler.annotation.Headers;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.support.MessageBuilder;
@@ -36,9 +39,9 @@ import org.springframework.util.LinkedMultiValueMap;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
+import static com.nobodyhub.transcendence.api.common.kafka.KafkaMessageHeader.ORIGIN_REQUEST;
 import static com.nobodyhub.transcendence.zhihu.topic.message.ZhihuApiChannel.*;
 
 @Slf4j
@@ -51,6 +54,8 @@ public class ZhihuTopicMessager {
     private final ObjectMapper objectMapper;
     private final ZhihuApiProperties apiProperties;
     private final ApiAsyncExecutor apiAsyncExecutor;
+    private final ZhihuApiCookies cookies;
+    private final KafkaHeaderHandler headerHandler;
 
 
     public ZhihuTopicMessager(ZhihuApiChannel channel,
@@ -58,13 +63,17 @@ public class ZhihuTopicMessager {
                               ZhihuUrlConverter urlConverter,
                               ObjectMapper objectMapper,
                               ZhihuApiProperties apiProperties,
-                              ApiAsyncExecutor apiAsyncExecutor) {
+                              ApiAsyncExecutor apiAsyncExecutor,
+                              ZhihuApiCookies cookies,
+                              KafkaHeaderHandler headerHandler) {
         this.channel = channel;
         this.converter = converter;
         this.urlConverter = urlConverter;
         this.objectMapper = objectMapper;
         this.apiProperties = apiProperties;
         this.apiAsyncExecutor = apiAsyncExecutor;
+        this.cookies = cookies;
+        this.headerHandler = headerHandler;
     }
 
     /**
@@ -76,6 +85,8 @@ public class ZhihuTopicMessager {
     @StreamListener(ZHIHU_TOPIC_REQUEST_CHANNEL)
     public void receiveTopicRequest(ApiRequestMessage message) throws InterruptedException {
         apiAsyncExecutor.execRequest(message);
+        // append the latest cookies
+        cookies.inject(message);
         try {
             Thread.sleep(apiProperties.getDelay());
         } catch (InterruptedException e) {
@@ -89,7 +100,7 @@ public class ZhihuTopicMessager {
      */
     public void getTopicCategories() {
         String url = "https://www.zhihu.com/topics";
-        ApiRequestMessage message = new ApiRequestMessage(url, ZhihuApiChannel.IN_ZHIHU_TOPIC_CALLBACK_TOPIC_PAGE);
+        ApiRequestMessage message = new ApiRequestMessage(ZhihuApiChannel.IN_ZHIHU_TOPIC_CALLBACK_TOPIC_PAGE, url);
         channel.sendTopicRequest().send(MessageBuilder.withPayload(message).build());
     }
 
@@ -115,9 +126,6 @@ public class ZhihuTopicMessager {
      */
     public void getTopicIdsByCategory(Integer dataId, int offset) {
         String url = "https://www.zhihu.com/node/TopicsPlazzaListV2";
-        // header
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
         // form data
         LinkedMultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
         body.add("method", "next");
@@ -132,9 +140,9 @@ public class ZhihuTopicMessager {
             body.add("params", String.format("{\"topic_id\":%d,\"offset\":%d,\"hash_id\":\"\"}",
                 dataId, offset));
         }
-        ApiRequestMessage message = new ApiRequestMessage(url, ZhihuApiChannel.IN_ZHIHU_TOPIC_CALLBACK_PLAZZA_LIST);
+        ApiRequestMessage message = new ApiRequestMessage(ZhihuApiChannel.IN_ZHIHU_TOPIC_CALLBACK_PLAZZA_LIST, url);
         message.setMethod(HttpMethod.POST);
-        message.setHeaders(headers);
+        message.addHeader(HttpHeaders.CONTENT_TYPE, MediaType.MULTIPART_FORM_DATA.toString());
         message.setBody(body);
         channel.sendTopicRequest().send(MessageBuilder.withPayload(message).build());
     }
@@ -151,7 +159,9 @@ public class ZhihuTopicMessager {
     }
 
     @StreamListener(IN_ZHIHU_TOPIC_CALLBACK_PLAZZA_LIST)
-    public void receiveTopicPLazzaList(@Payload byte[] message, @Headers Map<String, Object> headers) {
+    public void receiveTopicPLazzaList(@Payload byte[] message,
+                                       @Headers MessageHeaders messageHeaders) {
+
         Optional<ZhihuTopicPlazzaList> plazzaList = converter.convert(message, ZhihuTopicPlazzaList.class);
         if (plazzaList.isPresent()) {
             List<String> htmls = plazzaList.get().getMsg();
@@ -161,19 +171,22 @@ public class ZhihuTopicMessager {
                     String topicId = link.attr("href").replace("/topic/", "");
                     // request for topic detail
                     getTopicById(topicId);
-                    // request for topic feeds(answer)
+                    // request for topi
+                    // c feeds(answer)
                     getTopicFeeds(topicId);
                 }
             }
             if (!htmls.isEmpty()) {
-                ApiRequestMessage originMsg = (ApiRequestMessage) headers.get("origin-request");
-                List<String> params = originMsg.getHeaders().get("params");
-                if (params != null && params.size() == 1) {
-                    try {
-                        TopicsPlazzaListParam param = this.objectMapper.readValue(params.get(0), TopicsPlazzaListParam.class);
-                        getTopicIdsByCategory(param.getTopicId(), param.getOffset() + htmls.size());
-                    } catch (IOException e) {
-                        log.error("Fail to eserialize [{}] with error [{}]", params.get(0), e);
+                Optional<ApiRequestMessage> originMsg = headerHandler.get(messageHeaders, ORIGIN_REQUEST);
+                if (originMsg.isPresent()) {
+                    List<String> params = originMsg.get().getHeaders().get("params");
+                    if (params != null && params.size() == 1) {
+                        try {
+                            TopicsPlazzaListParam param = this.objectMapper.readValue(params.get(0), TopicsPlazzaListParam.class);
+                            getTopicIdsByCategory(param.getTopicId(), param.getOffset() + htmls.size());
+                        } catch (IOException e) {
+                            log.error("Fail to eserialize [{}] with error [{}]", params.get(0), e);
+                        }
                     }
                 }
             }
@@ -189,17 +202,17 @@ public class ZhihuTopicMessager {
         // request for topic detail
         final String topicUrl = "https://www.zhihu.com/api/v4/topics/{id}";
         channel.sendTopicRequest().send(MessageBuilder.withPayload(
-            new ApiRequestMessage(topicUrl, IN_ZHIHU_TOPIC_CALLBACK_TOPIC)
+            new ApiRequestMessage(IN_ZHIHU_TOPIC_CALLBACK_TOPIC, topicUrl, topicId)
         ).build());
         // request for parent topic detail
         final String topicParentUrl = "https://www.zhihu.com/api/v4/topics/{id}/parent";
         channel.sendTopicRequest().send(MessageBuilder.withPayload(
-            new ApiRequestMessage(topicParentUrl, IN_ZHIHU_TOPIC_CALLBACK_TOPIC_LIST)
+            new ApiRequestMessage(IN_ZHIHU_TOPIC_CALLBACK_TOPIC_LIST, topicParentUrl, topicId)
         ).build());
         // request for children topic detail
         final String topicChildUrl = "https://www.zhihu.com/api/v4/topics/{id}/children";
         channel.sendTopicRequest().send(MessageBuilder.withPayload(
-            new ApiRequestMessage(topicChildUrl, IN_ZHIHU_TOPIC_CALLBACK_TOPIC_LIST)
+            new ApiRequestMessage(IN_ZHIHU_TOPIC_CALLBACK_TOPIC_LIST, topicChildUrl, topicId)
         ).build());
     }
 
@@ -223,7 +236,7 @@ public class ZhihuTopicMessager {
                 // request for more data
                 if (!list.getPaging().getIsEnd()) {
                     channel.sendTopicRequest().send(MessageBuilder.withPayload(
-                        new ApiRequestMessage(list.getPaging().getNext(), IN_ZHIHU_TOPIC_CALLBACK_TOPIC_LIST)
+                        new ApiRequestMessage(IN_ZHIHU_TOPIC_CALLBACK_TOPIC_LIST, list.getPaging().getNext())
                     ).build());
                 }
             }
@@ -232,7 +245,7 @@ public class ZhihuTopicMessager {
 
     public void getTopicFeeds(String topicId) {
         String url = "https://www.zhihu.com/api/v4/topics/{topicId}/feeds/essence?include=data[?(target.type=topic_sticky_module)].target.data[?(target.type=answer)].target.content,relationship.is_authorized,is_author,voting,is_thanked,is_nothelp;data[?(target.type=topic_sticky_module)].target.data[?(target.type=answer)].target.is_normal,comment_count,voteup_count,content,relevant_info,excerpt.author.badge[?(type=best_answerer)].topics;data[?(target.type=topic_sticky_module)].target.data[?(target.type=article)].target.content,voteup_count,comment_count,voting,author.badge[?(type=best_answerer)].topics;data[?(target.type=topic_sticky_module)].target.data[?(target.type=people)].target.answer_count,articles_count,gender,follower_count,is_followed,is_following,badge[?(type=best_answerer)].topics;data[?(target.type=answer)].target.annotation_detail,content,hermes_label,is_labeled,relationship.is_authorized,is_author,voting,is_thanked,is_nothelp;data[?(target.type=answer)].target.author.badge[?(type=best_answerer)].topics;data[?(target.type=article)].target.annotation_detail,content,hermes_label,is_labeled,author.badge[?(type=best_answerer)].topics;data[?(target.type=question)].target.annotation_detail,comment_count;&limit=10";
-        ApiRequestMessage message = new ApiRequestMessage(url, IN_ZHIHU_TOPIC_CALLBACK_FEED_LIST);
+        ApiRequestMessage message = new ApiRequestMessage(IN_ZHIHU_TOPIC_CALLBACK_FEED_LIST, url, topicId);
         channel.sendTopicRequest().send(MessageBuilder.withPayload(message).build());
     }
 
@@ -248,7 +261,7 @@ public class ZhihuTopicMessager {
                 // request for more data
                 if (!list.getPaging().getIsEnd()) {
                     channel.sendTopicRequest().send(MessageBuilder.withPayload(
-                        new ApiRequestMessage(list.getPaging().getNext(), IN_ZHIHU_TOPIC_CALLBACK_FEED_LIST)
+                        new ApiRequestMessage(IN_ZHIHU_TOPIC_CALLBACK_FEED_LIST, list.getPaging().getNext())
                     ).build());
                 }
             }
