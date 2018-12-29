@@ -40,3 +40,7 @@ spring.cloud.stream.bindings:
     group: zhihu-topic
   in-zhihu-topic-callback-feed-list:
     group: zhihu-topic
+
+feign.client.config.default:
+  connectTimeout: 160000000
+  readTimeout: 160000000
