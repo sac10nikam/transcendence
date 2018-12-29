@@ -36,6 +36,12 @@
       <artifactId>spring-cloud-starter-openfeign</artifactId>
     </dependency>
 
+    <!--Zhihu-->
+    <dependency>
+      <groupId>com.nobodyhub.transcendence.zhihu</groupId>
+      <artifactId>zhihu_domain</artifactId>
+    </dependency>
+
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
