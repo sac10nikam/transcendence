@@ -40,19 +40,17 @@ import java.util.Set;
 @Service
 @Deprecated
 public class ZhihuTopicApiServiceImpl implements ZhihuTopicApiService {
-    private final RestTemplate restTemplate;
+    private final RestTemplate restTemplate = null;
     private final ZhihuTopicRepository topicRepository;
     private final ZhihuMemberService zhihuMemberService;
     private final ZhihuQuestionService zhihuQuestionService;
     private final ZhihuUrlConverter urlConverter;
 
     @Autowired
-    public ZhihuTopicApiServiceImpl(RestTemplate restTemplate,
-                                    ZhihuTopicRepository topicRepository,
+    public ZhihuTopicApiServiceImpl(ZhihuTopicRepository topicRepository,
                                     ZhihuMemberService zhihuMemberService,
                                     ZhihuQuestionService zhihuQuestionService,
                                     ZhihuUrlConverter urlConverter) {
-        this.restTemplate = restTemplate;
         this.topicRepository = topicRepository;
         this.zhihuMemberService = zhihuMemberService;
         this.zhihuQuestionService = zhihuQuestionService;
