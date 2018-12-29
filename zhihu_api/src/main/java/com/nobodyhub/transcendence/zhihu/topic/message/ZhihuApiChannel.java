@@ -1,6 +1,7 @@
 package com.nobodyhub.transcendence.zhihu.topic.message;
 
-import com.nobodyhub.transcendence.zhihu.topic.domain.ZhihuTopic;
+
+import com.nobodyhub.transcendence.zhihu.domain.ZhihuTopic;
 import com.nobodyhub.transcendence.zhihu.topic.domain.feed.ZhihuTopicFeedList;
 import com.nobodyhub.transcendence.zhihu.topic.domain.paging.ZhihuTopicList;
 import com.nobodyhub.transcendence.zhihu.topic.domain.plazza.ZhihuTopicPlazzaList;

@@ -1,19 +1,25 @@
 package com.nobodyhub.transcendence.zhihu.domain;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.nobodyhub.transcendence.common.merge.Mergeable;
+import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.util.Set;
 
+@Data
 @NoArgsConstructor
-@EqualsAndHashCode
-public class ZhihuTopic {
+@EqualsAndHashCode(of = "id")
+public class ZhihuTopic implements Mergeable {
     /**
      * Unique id in zhihu topics
      */
     @JsonProperty("id")
     private String id;
+    /**
+     * Should be the same with enclosing Topic#name
+     */
     @JsonProperty("name")
     private String name;
     @JsonProperty("introduction")

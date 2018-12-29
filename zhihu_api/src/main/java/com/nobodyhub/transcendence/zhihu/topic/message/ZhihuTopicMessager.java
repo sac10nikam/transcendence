@@ -10,7 +10,7 @@ import com.nobodyhub.transcendence.api.common.message.ApiRequestMessage;
 import com.nobodyhub.transcendence.zhihu.common.converter.ZhihuUrlConverter;
 import com.nobodyhub.transcendence.zhihu.common.cookies.ZhihuApiCookies;
 import com.nobodyhub.transcendence.zhihu.configuration.ZhihuApiProperties;
-import com.nobodyhub.transcendence.zhihu.topic.domain.ZhihuTopic;
+import com.nobodyhub.transcendence.zhihu.domain.ZhihuTopic;
 import com.nobodyhub.transcendence.zhihu.topic.domain.ZhihuTopicCategory;
 import com.nobodyhub.transcendence.zhihu.topic.domain.feed.ZhihuTopicFeed;
 import com.nobodyhub.transcendence.zhihu.topic.domain.feed.ZhihuTopicFeedList;

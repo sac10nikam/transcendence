@@ -18,6 +18,10 @@
 
   <dependencies>
     <dependency>
+      <groupId>com.nobodyhub.transcendence.zhihu</groupId>
+      <artifactId>zhihu_domain</artifactId>
+    </dependency>
+    <dependency>
       <groupId>com.nobodyhub.transcendence</groupId>
       <artifactId>api_common</artifactId>
     </dependency>

@@ -18,6 +18,10 @@
 
   <dependencies>
     <dependency>
+      <groupId>com.nobodyhub.transcendence</groupId>
+      <artifactId>common_utils</artifactId>
+    </dependency>
+    <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-annotations</artifactId>
     </dependency>
