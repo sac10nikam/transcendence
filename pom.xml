@@ -74,27 +74,12 @@
       <!--Zhihu-->
       <dependency>
         <groupId>com.nobodyhub.transcendence.zhihu</groupId>
-        <artifactId>zhihu_api_common</artifactId>
-        <version>${transcendence.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.nobodyhub.transcendence</groupId>
         <artifactId>zhihu_domain</artifactId>
         <version>${transcendence.version}</version>
       </dependency>
       <dependency>
-        <groupId>com.nobodyhub.transcendence</groupId>
-        <artifactId>zhihu_member</artifactId>
-        <version>${transcendence.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.nobodyhub.transcendence</groupId>
-        <artifactId>zhihu_question</artifactId>
-        <version>${transcendence.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.nobodyhub.transcendence</groupId>
-        <artifactId>zhihu_topic</artifactId>
+        <groupId>com.nobodyhub.transcendence.zhihu</groupId>
+        <artifactId>zhihu_api</artifactId>
         <version>${transcendence.version}</version>
       </dependency>
 
