@@ -3,14 +3,15 @@ A Generic Web Crawler.
 
 ## Services
 
-|Port|Service Id|Service Name|Default Port|
-|:--:|:--------:|:----------:|-----------:|
-|8761|service-registry|Service Registry|8761|
-|9100-9109|---|Infrastructure|---|
-|9100|gateway|Gateway Server|9100|
-|9101|config|Configuration Server|9101|
-|9110-9119|zhihu-api|Zhihu API|9110|
-|9900-9999|api-executor|API Request Executor|9900|
+|Port|Service Id|Service Name|
+|:--:|:--------:|:----------:|
+|8761|service-registry|Service Registry|
+|9100-9109|---|Infrastructure|
+|9100|gateway|Gateway Server|
+|9101|config|Configuration Server|
+|9110|zhihu-api|Zhihu API|
+|9810|hub-topic|Topic Hub|
+|9900|api-executor|API Request Executor|
 
 ## How to Start
 1. Start Kafka Service
