@@ -1,6 +1,6 @@
 package com.nobodyhub.transcendence.zhihu.topic.domain.feed;
 
-import com.nobodyhub.transcendence.zhihu.topic.domain.paging.ZhihuTopicPaging;
+import com.nobodyhub.transcendence.zhihu.common.domain.ZhihuApiPaging;
 import lombok.Data;
 
 import java.util.List;
@@ -11,5 +11,5 @@ import java.util.List;
 @Data
 public class ZhihuTopicFeedList {
     private List<ZhihuTopicFeed> data;
-    private ZhihuTopicPaging paging;
+    private ZhihuApiPaging paging;
 }

@@ -1,10 +1,10 @@
-package com.nobodyhub.transcendence.zhihu.topic.domain.paging;
+package com.nobodyhub.transcendence.zhihu.common.domain;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 @Data
-public class ZhihuTopicPaging {
+public class ZhihuApiPaging {
     @JsonProperty("is_end")
     private Boolean isEnd;
     @JsonProperty("is_start")
@@ -13,4 +13,6 @@ public class ZhihuTopicPaging {
     private String next;
     @JsonProperty("previous")
     private String previous;
+    @JsonProperty("total")
+    private Long total;
 }

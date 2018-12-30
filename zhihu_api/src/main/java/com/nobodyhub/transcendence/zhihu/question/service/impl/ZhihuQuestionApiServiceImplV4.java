@@ -83,7 +83,7 @@ public class ZhihuQuestionApiServiceImplV4 implements ZhihuQuestionApiService {
         while (answerList != null
             && answerList.getPaging() != null
             && answerList.getPaging().getNext() != null
-            && !answerList.getPaging().getIs_end()) {
+            && !answerList.getPaging().getIsEnd()) {
             Optional<ZhihuAnswerList> result = doFetch(
                 zhihuUrlConvertService.convert(answerList.getPaging().getNext()), ZhihuAnswerList.class);
             if (result.isPresent()) {
