@@ -23,9 +23,11 @@ public class MergeUtilsTest {
         oldA.setBList(Lists.newArrayList(
             new B("bOLdList1", true),
             new B("bOLdList2", false),
-            new B("bOLdList2", null)
+            new B("bOLdList3", null)
         ));
-        oldA.setBMap(Maps.newHashMap());
+        Map<String, B> oldBMap = Maps.newHashMap();
+        oldBMap.put("oldB", new B("bOld", false));
+        oldA.setBMap(oldBMap);
         oldA.setC(new C("cOld", 1L));
 
         A newA = new A();
@@ -36,6 +38,10 @@ public class MergeUtilsTest {
             new B("bNewList2", true),
             new B("bNewList3", false)
         ));
+        Map<String, B> newBMap = Maps.newHashMap();
+        newBMap.put("newB1", new B("bNew1", false));
+        newBMap.put("newB2", new B("bNew2", false));
+        newA.setBMap(newBMap);
         newA.setC(new C("cNew", 2L));
 
         A result = MergeUtils.merge(newA, oldA);
@@ -44,11 +50,17 @@ public class MergeUtilsTest {
         assertEquals("aNew", result.getA1());
         assertEquals(Integer.valueOf(1), result.getA2());
         assertEquals(new B("bNew", true), result.getB());
-        assertEquals(3, result.getBList().size());
+        assertEquals(6, result.getBList().size());
+        assertEquals(true, result.getBList().contains(new B("bOLdList1", true)));
+        assertEquals(true, result.getBList().contains(new B("bOLdList2", false)));
+        assertEquals(true, result.getBList().contains(new B("bOLdList3", null)));
         assertEquals(true, result.getBList().contains(new B("bNewList1", null)));
         assertEquals(true, result.getBList().contains(new B("bNewList2", true)));
         assertEquals(true, result.getBList().contains(new B("bNewList3", false)));
-        assertEquals(true, result.getBMap().isEmpty());
+        assertEquals(3, result.getBMap().size());
+        assertEquals(true, result.getBMap().containsKey("oldB"));
+        assertEquals(true, result.getBMap().containsKey("newB1"));
+        assertEquals(true, result.getBMap().containsKey("newB2"));
         assertEquals(new C("cNew", 2L), result.getC());
 
         result = MergeUtils.merge(newA, null);
