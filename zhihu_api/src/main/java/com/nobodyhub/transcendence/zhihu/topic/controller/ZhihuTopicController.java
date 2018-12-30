@@ -7,10 +7,10 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/zhihu/topics")
 public class ZhihuTopicController {
-    private final ZhihuTopicApiService topicMessager;
+    private final ZhihuTopicApiService topicApiService;
 
-    public ZhihuTopicController(ZhihuTopicApiService topicMessager) {
-        this.topicMessager = topicMessager;
+    public ZhihuTopicController(ZhihuTopicApiService topicApiService) {
+        this.topicApiService = topicApiService;
     }
 
     /**
@@ -21,7 +21,7 @@ public class ZhihuTopicController {
     @GetMapping(path = "/topicId/{topicId}")
     @ResponseStatus(HttpStatus.OK)
     void getTopicById(@PathVariable("topicId") String topicId) {
-        topicMessager.getTopicById(topicId);
+        topicApiService.getTopicById(topicId);
     }
 
     /**
@@ -32,7 +32,7 @@ public class ZhihuTopicController {
     @GetMapping(path = "/topicId/{topicId}/parents")
     @ResponseStatus(HttpStatus.OK)
     void getTopicParents(@PathVariable("topicId") String topicId) {
-        topicMessager.getTopicParents(topicId);
+        topicApiService.getTopicParents(topicId);
     }
 
     /**
@@ -43,7 +43,7 @@ public class ZhihuTopicController {
     @GetMapping(path = "/topicId/{topicId}/children")
     @ResponseStatus(HttpStatus.OK)
     void getTopicChildren(@PathVariable("topicId") String topicId) {
-        topicMessager.getTopicChildrent(topicId);
+        topicApiService.getTopicChildrent(topicId);
     }
 
     /**
@@ -53,6 +53,6 @@ public class ZhihuTopicController {
     @GetMapping(path = "/admin/refresh")
     @ResponseStatus(HttpStatus.OK)
     void refreshTopics() {
-        topicMessager.getTopicCategories();
+        topicApiService.getTopicCategories();
     }
 }

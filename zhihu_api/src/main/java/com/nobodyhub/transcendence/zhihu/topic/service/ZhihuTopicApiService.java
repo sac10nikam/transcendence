@@ -9,6 +9,7 @@ import com.nobodyhub.transcendence.api.common.kafka.KafkaHeaderHandler;
 import com.nobodyhub.transcendence.api.common.message.ApiRequestMessage;
 import com.nobodyhub.transcendence.zhihu.client.TopicHubClient;
 import com.nobodyhub.transcendence.zhihu.common.cookies.ZhihuApiCookies;
+import com.nobodyhub.transcendence.zhihu.common.service.ApiChannelBaseService;
 import com.nobodyhub.transcendence.zhihu.configuration.ZhihuApiProperties;
 import com.nobodyhub.transcendence.zhihu.domain.ZhihuTopic;
 import com.nobodyhub.transcendence.zhihu.topic.domain.ZhihuTopicCategory;
@@ -34,7 +35,7 @@ import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.handler.annotation.Headers;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.support.MessageBuilder;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 
 import java.io.IOException;
@@ -45,18 +46,11 @@ import static com.nobodyhub.transcendence.api.common.kafka.KafkaMessageHeader.OR
 import static com.nobodyhub.transcendence.zhihu.topic.service.ZhihuTopicApiChannel.*;
 
 @Slf4j
-@Component
+@Service
 @EnableBinding(ZhihuTopicApiChannel.class)
-public class ZhihuTopicApiService {
-    private final ZhihuTopicApiChannel channel;
-    private final ApiResponseConverter converter;
-    private final ObjectMapper objectMapper;
-    private final ZhihuApiProperties apiProperties;
-    private final ApiAsyncExecutor apiAsyncExecutor;
-    private final ZhihuApiCookies cookies;
-    private final KafkaHeaderHandler headerHandler;
-    private final TopicHubClient topicHubClient;
+public class ZhihuTopicApiService extends ApiChannelBaseService<ZhihuTopicApiChannel> {
 
+    protected final TopicHubClient topicHubClient;
 
     public ZhihuTopicApiService(ZhihuTopicApiChannel channel,
                                 ApiResponseConverter converter,
@@ -66,13 +60,7 @@ public class ZhihuTopicApiService {
                                 ZhihuApiCookies cookies,
                                 KafkaHeaderHandler headerHandler,
                                 TopicHubClient topicHubClient) {
-        this.channel = channel;
-        this.converter = converter;
-        this.objectMapper = objectMapper;
-        this.apiProperties = apiProperties;
-        this.apiAsyncExecutor = apiAsyncExecutor;
-        this.cookies = cookies;
-        this.headerHandler = headerHandler;
+        super(channel, converter, objectMapper, apiProperties, apiAsyncExecutor, cookies, headerHandler);
         this.topicHubClient = topicHubClient;
     }
 
@@ -84,15 +72,7 @@ public class ZhihuTopicApiService {
      */
     @StreamListener(ZHIHU_TOPIC_REQUEST_CHANNEL)
     public void receiveTopicRequest(ApiRequestMessage message) throws InterruptedException {
-        apiAsyncExecutor.execRequest(message);
-        // append the latest cookies
-        cookies.inject(message);
-        try {
-            Thread.sleep(apiProperties.getDelay());
-        } catch (InterruptedException e) {
-            log.warn("Sleep interrupted by {}.", e);
-            throw e;
-        }
+        makeOutboundRequest(message);
     }
 
     /**

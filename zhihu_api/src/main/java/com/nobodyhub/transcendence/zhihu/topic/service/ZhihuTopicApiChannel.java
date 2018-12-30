@@ -1,6 +1,7 @@
 package com.nobodyhub.transcendence.zhihu.topic.service;
 
 
+import com.nobodyhub.transcendence.zhihu.common.service.ApiChannel;
 import com.nobodyhub.transcendence.zhihu.domain.ZhihuTopic;
 import com.nobodyhub.transcendence.zhihu.topic.domain.feed.ZhihuTopicFeedList;
 import com.nobodyhub.transcendence.zhihu.topic.domain.paging.ZhihuTopicList;
@@ -10,7 +11,7 @@ import org.springframework.cloud.stream.annotation.Output;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.SubscribableChannel;
 
-public interface ZhihuTopicApiChannel {
+public interface ZhihuTopicApiChannel extends ApiChannel {
     /**
      * Request sent to fetch Topic information
      */
