@@ -7,10 +7,10 @@ import com.nobodyhub.transcendence.api.common.converter.ApiResponseConverter;
 import com.nobodyhub.transcendence.api.common.executor.ApiAsyncExecutor;
 import com.nobodyhub.transcendence.api.common.kafka.KafkaHeaderHandler;
 import com.nobodyhub.transcendence.api.common.message.ApiRequestMessage;
-import com.nobodyhub.transcendence.zhihu.common.converter.ZhihuUrlConverter;
 import com.nobodyhub.transcendence.zhihu.common.cookies.ZhihuApiCookies;
 import com.nobodyhub.transcendence.zhihu.configuration.ZhihuApiProperties;
 import com.nobodyhub.transcendence.zhihu.domain.ZhihuTopic;
+import com.nobodyhub.transcendence.zhihu.topic.client.TopicHubClient;
 import com.nobodyhub.transcendence.zhihu.topic.domain.ZhihuTopicCategory;
 import com.nobodyhub.transcendence.zhihu.topic.domain.feed.ZhihuTopicFeed;
 import com.nobodyhub.transcendence.zhihu.topic.domain.feed.ZhihuTopicFeedList;
@@ -50,30 +50,30 @@ import static com.nobodyhub.transcendence.zhihu.topic.message.ZhihuApiChannel.*;
 public class ZhihuTopicMessager {
     private final ZhihuApiChannel channel;
     private final ApiResponseConverter converter;
-    private final ZhihuUrlConverter urlConverter;
     private final ObjectMapper objectMapper;
     private final ZhihuApiProperties apiProperties;
     private final ApiAsyncExecutor apiAsyncExecutor;
     private final ZhihuApiCookies cookies;
     private final KafkaHeaderHandler headerHandler;
+    private final TopicHubClient topicHubClient;
 
 
     public ZhihuTopicMessager(ZhihuApiChannel channel,
                               ApiResponseConverter converter,
-                              ZhihuUrlConverter urlConverter,
                               ObjectMapper objectMapper,
                               ZhihuApiProperties apiProperties,
                               ApiAsyncExecutor apiAsyncExecutor,
                               ZhihuApiCookies cookies,
-                              KafkaHeaderHandler headerHandler) {
+                              KafkaHeaderHandler headerHandler,
+                              TopicHubClient topicHubClient) {
         this.channel = channel;
         this.converter = converter;
-        this.urlConverter = urlConverter;
         this.objectMapper = objectMapper;
         this.apiProperties = apiProperties;
         this.apiAsyncExecutor = apiAsyncExecutor;
         this.cookies = cookies;
         this.headerHandler = headerHandler;
+        this.topicHubClient = topicHubClient;
     }
 
     /**
@@ -114,7 +114,6 @@ public class ZhihuTopicMessager {
             Elements categories = doc.select(".zm-topic-cat-item");
             for (Element c : categories) {
                 ZhihuTopicCategory topicCategory = new ZhihuTopicCategory(Integer.valueOf(c.attr("data-id")), c.text());
-                //TODO: Store topic Category
                 getTopicIdsByCategory(topicCategory.getDataId(), 0);
             }
         }
@@ -173,8 +172,9 @@ public class ZhihuTopicMessager {
                     String topicId = link.attr("href").replace("/topic/", "");
                     // request for topic detail
                     getTopicById(topicId);
-                    // request for topi
-                    // c feeds(answer)
+                    getTopicParents(topicId);
+                    getTopicChildrent(topicId);
+                    // request for topic feeds(answer)
                     getTopicFeeds(topicId);
                 }
             }
@@ -206,16 +206,6 @@ public class ZhihuTopicMessager {
         channel.sendTopicRequest().send(MessageBuilder.withPayload(
             new ApiRequestMessage(IN_ZHIHU_TOPIC_CALLBACK_TOPIC, topicUrl, topicId)
         ).build());
-        // request for parent topic detail
-        final String topicParentUrl = "https://www.zhihu.com/api/v4/topics/{id}/parent";
-        channel.sendTopicRequest().send(MessageBuilder.withPayload(
-            new ApiRequestMessage(IN_ZHIHU_TOPIC_CALLBACK_TOPIC_LIST, topicParentUrl, topicId)
-        ).build());
-        // request for children topic detail
-        final String topicChildUrl = "https://www.zhihu.com/api/v4/topics/{id}/children";
-        channel.sendTopicRequest().send(MessageBuilder.withPayload(
-            new ApiRequestMessage(IN_ZHIHU_TOPIC_CALLBACK_TOPIC_LIST, topicChildUrl, topicId)
-        ).build());
     }
 
     @StreamListener(IN_ZHIHU_TOPIC_CALLBACK_TOPIC)
@@ -223,9 +213,21 @@ public class ZhihuTopicMessager {
                              @Headers MessageHeaders messageHeaders) {
         this.cookies.update(messageHeaders);
         Optional<ZhihuTopic> topic = converter.convert(message, ZhihuTopic.class);
-        if (topic.isPresent()) {
-            //TODO: save topic
-        }
+        topic.ifPresent(this.topicHubClient::saveZhihuTopic);
+    }
+
+    public void getTopicParents(String topicId) {
+        final String topicParentUrl = "https://www.zhihu.com/api/v4/topics/{id}/parent";
+        channel.sendTopicRequest().send(MessageBuilder.withPayload(
+            new ApiRequestMessage(IN_ZHIHU_TOPIC_CALLBACK_TOPIC_LIST, topicParentUrl, topicId)
+        ).build());
+    }
+
+    public void getTopicChildrent(String topicId) {
+        final String topicChildUrl = "https://www.zhihu.com/api/v4/topics/{id}/children";
+        channel.sendTopicRequest().send(MessageBuilder.withPayload(
+            new ApiRequestMessage(IN_ZHIHU_TOPIC_CALLBACK_TOPIC_LIST, topicChildUrl, topicId)
+        ).build());
     }
 
     @StreamListener(IN_ZHIHU_TOPIC_CALLBACK_TOPIC_LIST)
@@ -237,7 +239,7 @@ public class ZhihuTopicMessager {
             ZhihuTopicList list = topicList.get();
             if (!list.getData().isEmpty()) {
                 for (ZhihuTopic topic : list.getData()) {
-                    //TODO: save topic
+                    this.topicHubClient.saveZhihuTopic(topic);
                 }
                 // request for more data
                 if (!list.getPaging().getIsEnd()) {
