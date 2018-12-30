@@ -26,11 +26,11 @@ spring.cloud.stream.bindings:
   zhihu-member-callback:
     group: zhihu-member
   # Topic
-  out-zhihu-topic-request:
-    content-type: application/json
   zhihu-topic-request-channel:
     destination: out-zhihu-topic-request
     group: zhihu-topic
+  out-zhihu-topic-request:
+    content-type: application/json
   in-zhihu-topic-callback-topic-page:
     group: zhihu-topic
   in-zhihu-topic-callback-topic:
@@ -41,6 +41,17 @@ spring.cloud.stream.bindings:
     group: zhihu-topic
   in-zhihu-topic-callback-feed-list:
     group: zhihu-topic
+  # Answer
+  zhihu-answer-request-channel:
+    destination: out-zhihu-answer-request
+    group: zhihu-answer
+  out-zhihu-answer-request:
+    content-type: application/json
+  in-zhihu-answer-callback-answer:
+    group: zhihu-answer
+  in-zhihu-answer-callback-comment:
+    group: zhihu-answer
+
 
 feign.client.config.default:
   connectTimeout: 160000000
