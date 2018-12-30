@@ -4,7 +4,7 @@ import com.nobodyhub.transcendence.hub.topic.domain.Topic;
 import com.nobodyhub.transcendence.zhihu.domain.ZhihuTopic;
 import org.springframework.data.repository.CrudRepository;
 
-import java.util.List;
+import java.util.Optional;
 
 public interface TopicRepository extends CrudRepository<Topic, String> {
     /**
@@ -13,7 +13,7 @@ public interface TopicRepository extends CrudRepository<Topic, String> {
      * @param name
      * @return
      */
-    List<Topic> findByName(String name);
+    Optional<Topic> findFirstByName(String name);
 
     /**
      * find topic by {@link ZhihuTopic#getId()}
@@ -21,5 +21,5 @@ public interface TopicRepository extends CrudRepository<Topic, String> {
      * @param id
      * @return
      */
-    List<Topic> findByZhihuTopic_Id(String id);
+    Optional<Topic> findFirstByZhihuTopic_Id(String id);
 }

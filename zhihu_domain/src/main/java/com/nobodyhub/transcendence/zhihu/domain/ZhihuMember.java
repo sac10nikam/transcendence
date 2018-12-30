@@ -1,4 +1,4 @@
-package com.nobodyhub.transcendence.zhihu.common.domain;
+package com.nobodyhub.transcendence.zhihu.domain;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.nobodyhub.transcendence.common.merge.Mergeable;
@@ -13,7 +13,7 @@ import java.util.List;
  */
 @Data
 @EqualsAndHashCode
-public class ZhihuApiMember implements Mergeable {
+public class ZhihuMember implements Mergeable {
     @JsonProperty("id")
     protected String id;
     @JsonProperty("url_token")
@@ -75,13 +75,13 @@ public class ZhihuApiMember implements Mergeable {
     @JsonProperty("thanked_count")
     protected Long thankedCount;
     @JsonProperty("business")
-    protected ZhihuApiTopic business;
+    protected ZhihuTopic business;
     @JsonProperty("employments")
-    protected List<ZhihuApiEmployment> employments;
+    protected List<ZhihuEmployment> employments;
     @JsonProperty("educations")
-    protected List<ZhihuApiEducation> educations;
+    protected List<ZhihuEducation> educations;
     @JsonProperty("locations")
-    protected List<ZhihuApiTopic> locations;
+    protected List<ZhihuTopic> locations;
     @JsonProperty("badge")
-    private List<ZhihuApiBadge> badge;
+    private List<ZhihuBadge> badge;
 }

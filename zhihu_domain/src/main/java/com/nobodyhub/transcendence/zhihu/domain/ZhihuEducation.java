@@ -1,4 +1,4 @@
-package com.nobodyhub.transcendence.zhihu.common.domain;
+package com.nobodyhub.transcendence.zhihu.domain;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.nobodyhub.transcendence.common.merge.Mergeable;
@@ -8,11 +8,11 @@ import lombok.Data;
  * Member Education information
  */
 @Data
-public class ZhihuApiEducation implements Mergeable {
+public class ZhihuEducation implements Mergeable {
     @JsonProperty("major")
-    protected ZhihuApiTopic major;
+    protected ZhihuTopic major;
     @JsonProperty("school")
-    protected ZhihuApiTopic school;
+    protected ZhihuTopic school;
     @JsonProperty("diploma")
     protected int diploma;
 }

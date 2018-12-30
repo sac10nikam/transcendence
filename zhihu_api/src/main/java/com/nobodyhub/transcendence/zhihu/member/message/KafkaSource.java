@@ -2,7 +2,7 @@ package com.nobodyhub.transcendence.zhihu.member.message;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nobodyhub.transcendence.api.common.message.ApiRequestMessage;
-import com.nobodyhub.transcendence.zhihu.common.domain.ZhihuApiMember;
+import com.nobodyhub.transcendence.zhihu.domain.ZhihuMember;
 import com.nobodyhub.transcendence.zhihu.member.service.ZhihuMemberService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.stream.annotation.StreamListener;
@@ -45,7 +45,7 @@ public class KafkaSource {
             //https://stackoverflow.com/questions/2836646/java-serializable-object-to-byte-array
             ObjectInput in = new ObjectInputStream(ios);
             byte[] object = (byte[]) in.readObject();
-            ZhihuApiMember member = objectMapper.readValue(object, ZhihuApiMember.class);
+            ZhihuMember member = objectMapper.readValue(object, ZhihuMember.class);
             log.info("Saving member[{}]...", member.getUrlToken());
             this.memberService.save(member);
             log.info("Save successfully!");

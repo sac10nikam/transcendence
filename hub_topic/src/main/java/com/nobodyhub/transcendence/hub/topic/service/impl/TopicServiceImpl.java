@@ -8,7 +8,7 @@ import com.nobodyhub.transcendence.hub.topic.service.TopicService;
 import com.nobodyhub.transcendence.zhihu.domain.ZhihuTopic;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -25,14 +25,14 @@ public class TopicServiceImpl implements TopicService {
     @Override
     public void saveZhihuTopic(ZhihuTopic zhihuTopic) {
         // find existing topic if any
-        List<Topic> topics = topicRepository.findByZhihuTopic_Id(zhihuTopic.getId());
-        if (topics != null && !topics.isEmpty()) {
+        Optional<Topic> exist = topicRepository.findFirstByZhihuTopic_Id(zhihuTopic.getId());
+        if (exist.isPresent()) {
+            Topic existTopic = exist.get();
             // if exist, update zhihu topic
-            Topic topic = topics.get(0);
-            ZhihuTopic exist = topic.getZhihuTopic();
-            if (exist != null) {
-                topic.setZhihuTopic(MergeUtils.merge(zhihuTopic, exist));
-                this.topicRepository.save(topic);
+            ZhihuTopic existZhihuTopic = existTopic.getZhihuTopic();
+            if (existZhihuTopic != null) {
+                existTopic.setZhihuTopic(MergeUtils.merge(zhihuTopic, existZhihuTopic));
+                this.topicRepository.save(existTopic);
             }
         } else {
             // if non-exist, create new one with zhihu topic
@@ -43,12 +43,11 @@ public class TopicServiceImpl implements TopicService {
     }
 
     @Override
-    public void saveZhihuTopicParent(String topicId, Set<ZhihuTopic> parents) {
-        List<Topic> topics = this.topicRepository.findByZhihuTopic_Id(topicId);
-        if (topics != null && !topics.isEmpty()) {
+    public void saveZhihuTopicParents(String topicId, Set<ZhihuTopic> parents) {
+        Optional<Topic> topic = this.topicRepository.findFirstByZhihuTopic_Id(topicId);
+        if (topic.isPresent()) {
             // if exist, update zhihu topic
-            Topic topic = topics.get(0);
-            ZhihuTopic exist = topic.getZhihuTopic();
+            ZhihuTopic exist = topic.get().getZhihuTopic();
             if (exist != null) {
                 exist.setParents(parents);
             }
@@ -60,12 +59,11 @@ public class TopicServiceImpl implements TopicService {
     }
 
     @Override
-    public void saveZhihuTopicChild(String topicId, Set<ZhihuTopic> children) {
-        List<Topic> topics = this.topicRepository.findByZhihuTopic_Id(topicId);
-        if (topics != null && !topics.isEmpty()) {
+    public void saveZhihuTopicChildren(String topicId, Set<ZhihuTopic> children) {
+        Optional<Topic> topic = this.topicRepository.findFirstByZhihuTopic_Id(topicId);
+        if (topic.isPresent()) {
             // if exist, update zhihu topic
-            Topic topic = topics.get(0);
-            ZhihuTopic exist = topic.getZhihuTopic();
+            ZhihuTopic exist = topic.get().getZhihuTopic();
             if (exist != null) {
                 exist.setChildren(children);
             }

@@ -2,6 +2,7 @@ package com.nobodyhub.transcendence.zhihu.common.domain;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.nobodyhub.transcendence.common.merge.Mergeable;
+import com.nobodyhub.transcendence.zhihu.domain.ZhihuMember;
 import lombok.Data;
 
 /**
@@ -17,7 +18,7 @@ public class ZhihuApiAnswer implements Mergeable {
     @JsonProperty("question")
     protected ZhihuApiQuestion question;
     @JsonProperty("author")
-    protected ZhihuApiMember author;
+    protected ZhihuMember author;
     @JsonProperty("url")
     protected String url;
     @JsonProperty("created_time")

@@ -32,14 +32,14 @@ public class ZhihuTopic implements Mergeable {
     private String avatarUrl;
     @JsonProperty("unanswered_count")
     private Long unansweredCount;
-    @JsonProperty("bestAnswerersCount")
-    private Long best_answerers_count;
-    @JsonProperty("questionsCount")
-    private Long questions_count;
-    @JsonProperty("followersCount")
-    private Long followers_count;
-    @JsonProperty("bestAnswersCount")
-    private Long best_answers_count;
+    @JsonProperty("best_answerers_count")
+    private Long bestAnswerersCount;
+    @JsonProperty("questions_count")
+    private Long questionsCount;
+    @JsonProperty("followers_count")
+    private Long followersCount;
+    @JsonProperty("best_answers_count")
+    private Long bestAnswersCount;
 
     private Set<ZhihuTopic> parents;
     private Set<ZhihuTopic> children;

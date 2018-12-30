@@ -1,7 +1,7 @@
 package com.nobodyhub.transcendence.zhihu.question.service;
 
 import com.nobodyhub.transcendence.zhihu.common.domain.ZhihuApiAnswer;
-import com.nobodyhub.transcendence.zhihu.common.domain.ZhihuApiMember;
+import com.nobodyhub.transcendence.zhihu.domain.ZhihuMember;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +36,7 @@ public class ZhihuQuestionApiServiceImplTest {
 
     @Test
     public void getAuthorTest() {
-        ZhihuApiMember author = zhihuQuestionApiService.getAuthor("zhang-wei-21-56-86");
+        ZhihuMember author = zhihuQuestionApiService.getAuthor("zhang-wei-21-56-86");
         assertNotNull(author);
         assertEquals("zhang-wei-21-56-86", author.getUrlToken());
     }

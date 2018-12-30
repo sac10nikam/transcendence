@@ -18,13 +18,13 @@ public interface TopicService {
      * @param topicId topic whose parent to be updated
      * @param parents parent topics
      */
-    void saveZhihuTopicParent(String topicId, Set<ZhihuTopic> parents);
+    void saveZhihuTopicParents(String topicId, Set<ZhihuTopic> parents);
 
     /**
-     * Save childrent of zhihu topic
+     * Save children of zhihu topic
      *
      * @param topicId  topic whose parent to be updated
      * @param children child topics
      */
-    void saveZhihuTopicChild(String topicId, Set<ZhihuTopic> children);
+    void saveZhihuTopicChildren(String topicId, Set<ZhihuTopic> children);
 }

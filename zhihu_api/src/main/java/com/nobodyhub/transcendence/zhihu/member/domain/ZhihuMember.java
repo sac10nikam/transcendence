@@ -1,7 +1,6 @@
 package com.nobodyhub.transcendence.zhihu.member.domain;
 
 import com.nobodyhub.transcendence.mongodb.domain.MongoObject;
-import com.nobodyhub.transcendence.zhihu.common.domain.ZhihuApiMember;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -12,22 +11,22 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @NoArgsConstructor
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class ZhihuMember extends MongoObject<ZhihuApiMember> {
+public class ZhihuMember extends MongoObject<com.nobodyhub.transcendence.zhihu.domain.ZhihuMember> {
 
     /**
-     * @see ZhihuApiMember#getId()
+     * @see com.nobodyhub.transcendence.zhihu.domain.ZhihuMember#getId()
      */
     @Indexed
     private String dateId;
 
     /**
-     * @see ZhihuApiMember#getUrlToken()
+     * @see com.nobodyhub.transcendence.zhihu.domain.ZhihuMember#getUrlToken()
      */
     @Indexed
     private String urlToken;
 
     @Override
-    public void setData(ZhihuApiMember data) {
+    public void setData(com.nobodyhub.transcendence.zhihu.domain.ZhihuMember data) {
         this.data = data;
         this.dateId = data.getId();
         this.urlToken = data.getUrlToken();

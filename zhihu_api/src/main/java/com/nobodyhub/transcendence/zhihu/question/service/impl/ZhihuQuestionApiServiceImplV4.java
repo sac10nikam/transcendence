@@ -2,7 +2,7 @@ package com.nobodyhub.transcendence.zhihu.question.service.impl;
 
 import com.google.common.collect.Lists;
 import com.nobodyhub.transcendence.zhihu.common.domain.ZhihuApiAnswer;
-import com.nobodyhub.transcendence.zhihu.common.domain.ZhihuApiMember;
+import com.nobodyhub.transcendence.zhihu.domain.ZhihuMember;
 import com.nobodyhub.transcendence.zhihu.question.domain.ZhihuAnswerList;
 import com.nobodyhub.transcendence.zhihu.question.service.ZhihuQuestionApiService;
 import com.nobodyhub.transcendence.zhihu.question.service.ZhihuUrlConvertService;
@@ -96,12 +96,12 @@ public class ZhihuQuestionApiServiceImplV4 implements ZhihuQuestionApiService {
     }
 
     @Override
-    public ZhihuApiMember getAuthor(String urlToken) {
+    public ZhihuMember getAuthor(String urlToken) {
         return doFetch(
             zhihuUrlConvertService.convert(
                 "/api/v4/members/{urlToken}?include=locations,employments,gender,educations,business,voteup_count,thanked_Count,follower_count,following_count,cover_url,following_topic_count,following_question_count,following_favlists_count,following_columns_count,avatar_hue,answer_count,articles_count,pins_count,question_count,columns_count,commercial_question_count,favorite_count,favorited_count,logs_count,marked_answers_count,marked_answers_text,message_thread_token,account_status,is_active,is_force_renamed,is_bind_sina,sina_weibo_url,sina_weibo_name,show_sina_weibo,is_blocking,is_blocked,is_following,is_followed,mutual_followees_count,vote_to_count,vote_from_count,thank_to_count,thank_from_count,thanked_count,description,hosted_live_count,participated_live_count,allow_message,industry_category,org_name,org_homepage,is_org"),
-            ZhihuApiMember.class,
-            urlToken).orElse(new ZhihuApiMember());
+            ZhihuMember.class,
+            urlToken).orElse(new ZhihuMember());
     }
 
     private <T> Optional<T> doFetch(String url, Class<T> clz, Object... urlVariables) {
