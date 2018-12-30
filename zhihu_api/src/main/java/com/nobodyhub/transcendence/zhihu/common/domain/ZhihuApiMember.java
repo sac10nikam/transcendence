@@ -82,4 +82,6 @@ public class ZhihuApiMember implements Mergeable {
     protected List<ZhihuApiEducation> educations;
     @JsonProperty("locations")
     protected List<ZhihuApiTopic> locations;
+    @JsonProperty("badge")
+    private List<ZhihuApiBadge> badge;
 }
