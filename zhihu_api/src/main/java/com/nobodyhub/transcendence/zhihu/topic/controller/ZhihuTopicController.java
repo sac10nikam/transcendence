@@ -1,15 +1,15 @@
 package com.nobodyhub.transcendence.zhihu.topic.controller;
 
-import com.nobodyhub.transcendence.zhihu.topic.message.ZhihuTopicMessager;
+import com.nobodyhub.transcendence.zhihu.topic.service.ZhihuTopicApiService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/zhihu/topics")
 public class ZhihuTopicController {
-    private final ZhihuTopicMessager topicMessager;
+    private final ZhihuTopicApiService topicMessager;
 
-    public ZhihuTopicController(ZhihuTopicMessager topicMessager) {
+    public ZhihuTopicController(ZhihuTopicApiService topicMessager) {
         this.topicMessager = topicMessager;
     }
 

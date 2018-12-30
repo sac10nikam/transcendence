@@ -1,4 +1,4 @@
-package com.nobodyhub.transcendence.zhihu.topic.message;
+package com.nobodyhub.transcendence.zhihu.topic.service;
 
 
 import com.nobodyhub.transcendence.zhihu.domain.ZhihuTopic;
@@ -10,7 +10,7 @@ import org.springframework.cloud.stream.annotation.Output;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.SubscribableChannel;
 
-public interface ZhihuApiChannel {
+public interface ZhihuTopicApiChannel {
     /**
      * Request sent to fetch Topic information
      */
@@ -27,7 +27,7 @@ public interface ZhihuApiChannel {
     /**
      * Response received contains <b>HTML</b> page for topics
      *
-     * @see ZhihuTopicMessager#getTopicCategories()
+     * @see ZhihuTopicApiService#getTopicCategories()
      */
     String IN_ZHIHU_TOPIC_CALLBACK_TOPIC_PAGE = "in-zhihu-topic-callback-topic-page";
 

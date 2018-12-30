@@ -1,4 +1,4 @@
-package com.nobodyhub.transcendence.zhihu.topic.message;
+package com.nobodyhub.transcendence.zhihu.topic.service;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -42,13 +42,13 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.nobodyhub.transcendence.api.common.kafka.KafkaMessageHeader.ORIGIN_REQUEST;
-import static com.nobodyhub.transcendence.zhihu.topic.message.ZhihuApiChannel.*;
+import static com.nobodyhub.transcendence.zhihu.topic.service.ZhihuTopicApiChannel.*;
 
 @Slf4j
 @Component
-@EnableBinding(ZhihuApiChannel.class)
-public class ZhihuTopicMessager {
-    private final ZhihuApiChannel channel;
+@EnableBinding(ZhihuTopicApiChannel.class)
+public class ZhihuTopicApiService {
+    private final ZhihuTopicApiChannel channel;
     private final ApiResponseConverter converter;
     private final ObjectMapper objectMapper;
     private final ZhihuApiProperties apiProperties;
@@ -58,14 +58,14 @@ public class ZhihuTopicMessager {
     private final TopicHubClient topicHubClient;
 
 
-    public ZhihuTopicMessager(ZhihuApiChannel channel,
-                              ApiResponseConverter converter,
-                              ObjectMapper objectMapper,
-                              ZhihuApiProperties apiProperties,
-                              ApiAsyncExecutor apiAsyncExecutor,
-                              ZhihuApiCookies cookies,
-                              KafkaHeaderHandler headerHandler,
-                              TopicHubClient topicHubClient) {
+    public ZhihuTopicApiService(ZhihuTopicApiChannel channel,
+                                ApiResponseConverter converter,
+                                ObjectMapper objectMapper,
+                                ZhihuApiProperties apiProperties,
+                                ApiAsyncExecutor apiAsyncExecutor,
+                                ZhihuApiCookies cookies,
+                                KafkaHeaderHandler headerHandler,
+                                TopicHubClient topicHubClient) {
         this.channel = channel;
         this.converter = converter;
         this.objectMapper = objectMapper;
@@ -100,7 +100,7 @@ public class ZhihuTopicMessager {
      */
     public void getTopicCategories() {
         String url = "https://www.zhihu.com/topics";
-        ApiRequestMessage message = new ApiRequestMessage(ZhihuApiChannel.IN_ZHIHU_TOPIC_CALLBACK_TOPIC_PAGE, url);
+        ApiRequestMessage message = new ApiRequestMessage(ZhihuTopicApiChannel.IN_ZHIHU_TOPIC_CALLBACK_TOPIC_PAGE, url);
         channel.sendTopicRequest().send(MessageBuilder.withPayload(message).build());
     }
 
@@ -141,7 +141,7 @@ public class ZhihuTopicMessager {
             body.add("params", String.format("{\"topic_id\":%d,\"offset\":%d,\"hash_id\":\"\"}",
                 dataId, offset));
         }
-        ApiRequestMessage message = new ApiRequestMessage(ZhihuApiChannel.IN_ZHIHU_TOPIC_CALLBACK_PLAZZA_LIST, url);
+        ApiRequestMessage message = new ApiRequestMessage(ZhihuTopicApiChannel.IN_ZHIHU_TOPIC_CALLBACK_PLAZZA_LIST, url);
         message.setMethod(HttpMethod.POST);
         message.addHeader(HttpHeaders.CONTENT_TYPE, MediaType.MULTIPART_FORM_DATA.toString());
         message.setBody(body);
