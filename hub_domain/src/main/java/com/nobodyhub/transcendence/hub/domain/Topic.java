@@ -1,6 +1,6 @@
-package com.nobodyhub.transcendence.hub.people.domain;
+package com.nobodyhub.transcendence.hub.domain;
 
-import com.nobodyhub.transcendence.zhihu.domain.ZhihuMember;
+import com.nobodyhub.transcendence.zhihu.domain.ZhihuTopic;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
@@ -8,17 +8,17 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document
 @Data
-public class People {
+public class Topic {
     /**
      * Unque id of document
      */
     @Id
     private String id;
     /**
-     * Name of Individual
+     * Topic name
      */
     @Indexed(unique = true)
     private String name;
 
-    private ZhihuMember zhihuMember;
+    private ZhihuTopic zhihuTopic;
 }

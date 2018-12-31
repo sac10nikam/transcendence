@@ -1,8 +1,8 @@
 package com.nobodyhub.transcendence.hub.topic.service.impl;
 
 import com.nobodyhub.transcendence.common.merge.MergeUtils;
+import com.nobodyhub.transcendence.hub.domain.Topic;
 import com.nobodyhub.transcendence.hub.topic.client.ZhihuTopicApiClient;
-import com.nobodyhub.transcendence.hub.topic.domain.Topic;
 import com.nobodyhub.transcendence.hub.topic.repository.TopicRepository;
 import com.nobodyhub.transcendence.hub.topic.service.TopicService;
 import com.nobodyhub.transcendence.zhihu.domain.ZhihuTopic;

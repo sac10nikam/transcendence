@@ -36,10 +36,9 @@
       <artifactId>spring-cloud-starter-openfeign</artifactId>
     </dependency>
 
-    <!--Zhihu-->
     <dependency>
-      <groupId>com.nobodyhub.transcendence.zhihu</groupId>
-      <artifactId>zhihu_domain</artifactId>
+      <groupId>com.nobodyhub.transcendence.hub</groupId>
+      <artifactId>hub_domain</artifactId>
     </dependency>
 
     <dependency>
