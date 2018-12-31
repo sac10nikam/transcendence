@@ -1,10 +1,13 @@
 package com.nobodyhub.transcendence.zhihu.domain;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.nobodyhub.transcendence.common.merge.Mergeable;
+import lombok.Data;
 
 import java.util.List;
 
-public class ZhihuComment {
+@Data
+public class ZhihuComment implements Mergeable {
     @JsonProperty("id")
     private String id;
     @JsonProperty("author")
@@ -21,4 +24,9 @@ public class ZhihuComment {
     private String url;
     @JsonProperty("vote_count")
     private Long voteCount;
+
+    /**
+     * id of belonging answer, not included in the response json
+     */
+    private String answerId;
 }

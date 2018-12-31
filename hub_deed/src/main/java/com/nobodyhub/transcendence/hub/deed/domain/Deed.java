@@ -6,7 +6,6 @@ import com.nobodyhub.transcendence.zhihu.domain.ZhihuAnswer;
 import com.nobodyhub.transcendence.zhihu.domain.ZhihuComment;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 
@@ -19,10 +18,12 @@ public class Deed {
     @Id
     private String id;
     /**
-     * Name of Individual
+     * Id of including detail dat
+     * borrow from the id of corresponding detail
+     * - {@link ZhihuAnswer#getId()}
+     * - {@link ZhihuComment#getId()}
      */
-    @Indexed(unique = true)
-    private String name;
+    private String dataId;
     /**
      * Contents of deed
      * including html marker if any
@@ -42,11 +43,10 @@ public class Deed {
      */
     private People people;
     /**
-     * parent deed
-     * can be of different type
-     * if no parent, or root deed, can be null
+     * id of parent deed
+     * if no parent(e.g., root deed), can be null
      */
-    private Deed parent;
+    private String parentId;
     /**
      * created time
      * used to decide the order of the childrent of the same parent
