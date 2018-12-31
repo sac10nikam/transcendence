@@ -1,7 +1,7 @@
 package com.nobodyhub.transcendence.zhihu.question.domain;
 
-import com.nobodyhub.transcendence.zhihu.common.domain.ZhihuApiAnswer;
 import com.nobodyhub.transcendence.zhihu.common.domain.ZhihuApiPaging;
+import com.nobodyhub.transcendence.zhihu.domain.ZhihuAnswer;
 import lombok.Data;
 
 import java.util.List;
@@ -11,6 +11,6 @@ import java.util.List;
  */
 @Data
 public class ZhihuAnswerList {
-    private List<ZhihuApiAnswer> data;
+    private List<ZhihuAnswer> data;
     private ZhihuApiPaging paging;
 }

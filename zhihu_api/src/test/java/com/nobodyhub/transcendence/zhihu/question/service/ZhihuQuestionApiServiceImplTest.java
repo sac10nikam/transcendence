@@ -1,6 +1,6 @@
 package com.nobodyhub.transcendence.zhihu.question.service;
 
-import com.nobodyhub.transcendence.zhihu.common.domain.ZhihuApiAnswer;
+import com.nobodyhub.transcendence.zhihu.domain.ZhihuAnswer;
 import com.nobodyhub.transcendence.zhihu.domain.ZhihuMember;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,14 +22,14 @@ public class ZhihuQuestionApiServiceImplTest {
 
     @Test
     public void getAnswersForQuestionTest() {
-        List<ZhihuApiAnswer> answerList = this.zhihuQuestionApiService.getAnswersForQuestion("49472046");
+        List<ZhihuAnswer> answerList = this.zhihuQuestionApiService.getAnswersForQuestion("49472046");
         assertNotNull(answerList);
         assertEquals("49472046", answerList.get(0).getQuestion().getId());
     }
 
     @Test
     public void getAnswersForMemberTest() {
-        List<ZhihuApiAnswer> answerList = this.zhihuQuestionApiService.getAnswersForMember("yun-dong-shan");
+        List<ZhihuAnswer> answerList = this.zhihuQuestionApiService.getAnswersForMember("yun-dong-shan");
         assertNotNull(answerList);
         assertEquals("yun-dong-shan", answerList.get(0).getAuthor().getUrlToken());
     }

@@ -1,11 +1,13 @@
-package com.nobodyhub.transcendence.zhihu.common.domain;
+package com.nobodyhub.transcendence.zhihu.domain;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.nobodyhub.transcendence.zhihu.member.domain.ZhihuMember;
 import lombok.Data;
 
+/**
+ * A wrapper of {@link ZhihuMember}
+ */
 @Data
-public class ZhihuApiAuthor {
+public class ZhihuAuthor {
     @JsonProperty("member")
     private ZhihuMember member;
     @JsonProperty("role")

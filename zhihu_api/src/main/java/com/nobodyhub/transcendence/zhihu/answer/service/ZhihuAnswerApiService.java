@@ -6,12 +6,12 @@ import com.nobodyhub.transcendence.api.common.executor.ApiAsyncExecutor;
 import com.nobodyhub.transcendence.api.common.kafka.KafkaHeaderHandler;
 import com.nobodyhub.transcendence.api.common.message.ApiRequestMessage;
 import com.nobodyhub.transcendence.zhihu.common.cookies.ZhihuApiCookies;
-import com.nobodyhub.transcendence.zhihu.common.domain.ZhihuApiAnswer;
-import com.nobodyhub.transcendence.zhihu.common.domain.ZhihuApiAnswerComment;
-import com.nobodyhub.transcendence.zhihu.common.domain.ZhihuApiAnswerComments;
 import com.nobodyhub.transcendence.zhihu.common.domain.ZhihuApiPaging;
+import com.nobodyhub.transcendence.zhihu.common.domain.ZhihuComments;
 import com.nobodyhub.transcendence.zhihu.common.service.ApiChannelBaseService;
 import com.nobodyhub.transcendence.zhihu.configuration.ZhihuApiProperties;
+import com.nobodyhub.transcendence.zhihu.domain.ZhihuAnswer;
+import com.nobodyhub.transcendence.zhihu.domain.ZhihuComment;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.annotation.StreamListener;
@@ -68,7 +68,7 @@ public class ZhihuAnswerApiService extends ApiChannelBaseService<ZhihuAnswerApiC
     public void receiveAnswer(@Payload byte[] message,
                               @Headers MessageHeaders messageHeaders) {
         this.cookies.update(messageHeaders);
-        Optional<ZhihuApiAnswer> answer = converter.convert(message, ZhihuApiAnswer.class);
+        Optional<ZhihuAnswer> answer = converter.convert(message, ZhihuAnswer.class);
         if (answer.isPresent()) {
             //TODO: save as deed
         }
@@ -88,11 +88,11 @@ public class ZhihuAnswerApiService extends ApiChannelBaseService<ZhihuAnswerApiC
     public void receiveComments(@Payload byte[] message,
                                 @Headers MessageHeaders messageHeaders) {
         this.cookies.update(messageHeaders);
-        Optional<ZhihuApiAnswerComments> comments = converter.convert(message, ZhihuApiAnswerComments.class);
+        Optional<ZhihuComments> comments = converter.convert(message, ZhihuComments.class);
         if (comments.isPresent()) {
-            List<ZhihuApiAnswerComment> commentList = comments.get().getData();
+            List<ZhihuComment> commentList = comments.get().getData();
             if (commentList != null && !commentList.isEmpty()) {
-                for (ZhihuApiAnswerComment comment : commentList) {
+                for (ZhihuComment comment : commentList) {
                     //TODO: save as deed
                 }
                 // follow paging to ge more comments

@@ -1,6 +1,6 @@
 package com.nobodyhub.transcendence.zhihu.question.controller;
 
-import com.nobodyhub.transcendence.zhihu.common.domain.ZhihuApiQuestion;
+import com.nobodyhub.transcendence.zhihu.domain.ZhihuQuestion;
 import com.nobodyhub.transcendence.zhihu.question.service.ZhihuQuestionService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,7 +17,7 @@ public class ZhihuQuestionController {
     }
 
     @GetMapping("/id/{id}")
-    ZhihuApiQuestion findById(@PathVariable("id") String id) {
-        return zhihuQuestionService.findById(id).orElse(new ZhihuApiQuestion());
+    ZhihuQuestion findById(@PathVariable("id") String id) {
+        return zhihuQuestionService.findById(id).orElse(new ZhihuQuestion());
     }
 }

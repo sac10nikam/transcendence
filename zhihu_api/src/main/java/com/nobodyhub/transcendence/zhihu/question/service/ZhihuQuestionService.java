@@ -1,6 +1,6 @@
 package com.nobodyhub.transcendence.zhihu.question.service;
 
-import com.nobodyhub.transcendence.zhihu.common.domain.ZhihuApiQuestion;
+import com.nobodyhub.transcendence.zhihu.domain.ZhihuQuestion;
 
 import java.util.Optional;
 
@@ -11,7 +11,7 @@ public interface ZhihuQuestionService {
      * @param id
      * @return
      */
-    Optional<ZhihuApiQuestion> findById(String id);
+    Optional<ZhihuQuestion> findById(String id);
 
     /**
      * Save, or merge if exist, the given question
@@ -19,5 +19,5 @@ public interface ZhihuQuestionService {
      * @param question
      * @return the saved/merged question
      */
-    ZhihuApiQuestion save(ZhihuApiQuestion question);
+    ZhihuQuestion save(ZhihuQuestion question);
 }
