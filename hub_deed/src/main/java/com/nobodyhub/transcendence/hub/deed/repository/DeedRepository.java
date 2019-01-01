@@ -14,7 +14,7 @@ public interface DeedRepository extends PagingAndSortingRepository<Deed, String>
      * @param dataId
      * @return
      */
-    Optional<Deed> findFirstByDataId(String dataId);
+    Optional<Deed> findFirstByDataIdAndType(String dataId, Deed.DeedType type);
 
     /**
      * find the deeds belong to topic with given name

@@ -13,6 +13,9 @@ import java.awt.print.Pageable;
 import java.util.List;
 import java.util.Optional;
 
+import static com.nobodyhub.transcendence.hub.domain.Deed.DeedType.ZHIHU_ANSWER;
+import static com.nobodyhub.transcendence.hub.domain.Deed.DeedType.ZHIHU_COMMENT;
+
 @Service
 public class DeedServiceImpl implements DeedService {
     private final DeedRepository deedRepository;
@@ -26,10 +29,10 @@ public class DeedServiceImpl implements DeedService {
 
     @Override
     public void save(ZhihuAnswer answer) {
-        Optional<Deed> deed = this.deedRepository.findFirstByDataId(answer.getId());
+        Optional<Deed> deed = this.deedRepository.findFirstByDataIdAndType(answer.getId(), ZHIHU_ANSWER);
         if (deed.isPresent()) {
             Deed existDeed = deed.get();
-            if (Deed.DeedType.ZHIHU_ANSWER.equals(existDeed.getType())) {
+            if (ZHIHU_ANSWER.equals(existDeed.getType())) {
                 ZhihuAnswer exist = existDeed.getZhihuAnswer();
                 exist = MergeUtils.merge(answer, exist);
                 existDeed.setZhihuAnswer(exist);
@@ -46,22 +49,21 @@ public class DeedServiceImpl implements DeedService {
         deed.setContent(answer.getContent());
         deed.setExcerpt(answer.getExcerpt());
         deed.setTopic(topicHubClient.getByZhihuQuestion(answer.getQuestion()));
-        ;
 //            newDeed.setTopic()
         //TODO: get corresponding people
 //            newDeed.setPeople()
         deed.setCreatedAt(answer.getCreatedTime());
-        deed.setType(Deed.DeedType.ZHIHU_ANSWER);
+        deed.setType(ZHIHU_ANSWER);
         deed.setZhihuAnswer(answer);
         return deed;
     }
 
     @Override
     public void save(ZhihuComment comment) {
-        Optional<Deed> deed = this.deedRepository.findFirstByDataId(comment.getId());
+        Optional<Deed> deed = this.deedRepository.findFirstByDataIdAndType(comment.getId(), ZHIHU_COMMENT);
         if (deed.isPresent()) {
             Deed existDeed = deed.get();
-            if (Deed.DeedType.ZHIHU_COMMENT.equals(existDeed.getType())) {
+            if (ZHIHU_COMMENT.equals(existDeed.getType())) {
                 ZhihuComment exist = existDeed.getZhihuComment();
                 exist = MergeUtils.merge(comment, exist);
                 existDeed.setZhihuComment(exist);
@@ -81,7 +83,7 @@ public class DeedServiceImpl implements DeedService {
         //TODO: get corresponding people
 //            newDeed.setPeople()
         deed.setCreatedAt(comment.getCreatedTime());
-        deed.setType(Deed.DeedType.ZHIHU_COMMENT);
+        deed.setType(ZHIHU_COMMENT);
         deed.setZhihuComment(comment);
         deed.setParentId(comment.getAnswerId());
         return deed;
