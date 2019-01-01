@@ -21,7 +21,7 @@ public class TopicController {
      *
      * @param zhihuTopic
      */
-    @PostMapping(path = "/zhihu")
+    @PostMapping(path = "/zhihu-topic")
     @ResponseStatus(HttpStatus.OK)
     void saveZhihuTopic(@RequestBody ZhihuTopic zhihuTopic) {
         topicService.saveZhihuTopic(zhihuTopic);
@@ -33,7 +33,7 @@ public class TopicController {
      * @param topicId
      * @param parents
      */
-    @PostMapping(path = "/zhihu/parent/{topicId}")
+    @PostMapping(path = "/zhihu-topic/parent/{topicId}")
     @ResponseStatus(HttpStatus.OK)
     void saveZhihuParentsTopic(@PathVariable("topicId") String topicId,
                                @RequestBody Set<ZhihuTopic> parents) {
@@ -46,7 +46,7 @@ public class TopicController {
      * @param topicId
      * @param children
      */
-    @PostMapping(path = "/zhihu/children/{topicId}")
+    @PostMapping(path = "/zhihu-topic/children/{topicId}")
     @ResponseStatus(HttpStatus.OK)
     void saveZhihuChildrenTopic(@PathVariable("topicId") String topicId,
                                 @RequestBody Set<ZhihuTopic> children) {
