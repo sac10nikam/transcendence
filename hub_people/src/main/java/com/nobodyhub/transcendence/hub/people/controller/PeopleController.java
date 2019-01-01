@@ -21,7 +21,7 @@ public class PeopleController {
      */
     @PostMapping(path = "/zhihu")
     @ResponseStatus(HttpStatus.OK)
-    void saveZhihuTopic(@RequestBody ZhihuMember zhihuMember) {
+    void saveZhihuMember(@RequestBody ZhihuMember zhihuMember) {
         peopleService.saveZhihuMenber(zhihuMember);
     }
 }
