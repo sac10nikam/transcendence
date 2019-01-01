@@ -15,6 +15,18 @@ A Generic Web Crawler.
 |9830|hub-deed|Deed Hub|
 |9900|api-executor|API Request Executor|
 
+## Category
+### Topic
+* Zhihu Topic
+* Zhihu Question
+
+### People
+* Zhihu Member
+
+### Deed
+* Zhihu Answer
+* Zhihu Comment
+
 ## How to Start
 1. Start Kafka Service
   ```bash
