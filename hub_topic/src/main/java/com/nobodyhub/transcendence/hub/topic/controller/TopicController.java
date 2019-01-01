@@ -1,6 +1,8 @@
 package com.nobodyhub.transcendence.hub.topic.controller;
 
+import com.nobodyhub.transcendence.hub.domain.Topic;
 import com.nobodyhub.transcendence.hub.topic.service.TopicService;
+import com.nobodyhub.transcendence.zhihu.domain.ZhihuQuestion;
 import com.nobodyhub.transcendence.zhihu.domain.ZhihuTopic;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -17,14 +19,23 @@ public class TopicController {
     }
 
     /**
+     * Get by zhihu topic
+     *
+     * @param zhihuTopic
+     */
+    @PostMapping(path = "/zhihu-topic/get")
+    Topic getByZhihuTopic(@RequestBody ZhihuTopic zhihuTopic) {
+        return topicService.find(zhihuTopic);
+    }
+
+    /**
      * Save zhihu topic
      *
      * @param zhihuTopic
      */
-    @PostMapping(path = "/zhihu-topic")
-    @ResponseStatus(HttpStatus.OK)
-    void saveZhihuTopic(@RequestBody ZhihuTopic zhihuTopic) {
-        topicService.saveZhihuTopic(zhihuTopic);
+    @PostMapping(path = "/zhihu-topic/save")
+    Topic saveZhihuTopic(@RequestBody ZhihuTopic zhihuTopic) {
+        return topicService.save(zhihuTopic);
     }
 
     /**
@@ -51,5 +62,25 @@ public class TopicController {
     void saveZhihuChildrenTopic(@PathVariable("topicId") String topicId,
                                 @RequestBody Set<ZhihuTopic> children) {
         topicService.saveZhihuTopicChildren(topicId, children);
+    }
+
+    /**
+     * Get by zhihu question
+     *
+     * @param zhihuQuestion
+     */
+    @PostMapping(path = "/zhihu-question/get")
+    Topic getByZhihuQuestion(@RequestBody ZhihuQuestion zhihuQuestion) {
+        return topicService.find(zhihuQuestion);
+    }
+
+    /**
+     * Save zhihu question
+     *
+     * @param zhihuQuestion
+     */
+    @PostMapping(path = "/zhihu-topic/save")
+    Topic saveZhihuTopic(@RequestBody ZhihuQuestion zhihuQuestion) {
+        return topicService.save(zhihuQuestion);
     }
 }
