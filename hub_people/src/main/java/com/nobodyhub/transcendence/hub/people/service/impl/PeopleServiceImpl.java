@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+import static com.nobodyhub.transcendence.hub.domain.People.PeopleType.ZHIHU_MEMBER;
+
 @Slf4j
 @Service
 public class PeopleServiceImpl implements PeopleService {
@@ -20,22 +22,30 @@ public class PeopleServiceImpl implements PeopleService {
     }
 
     @Override
-    public void saveZhihuMenber(ZhihuMember member) {
-        Optional<People> people = peopleRepository.findFirstByZhihuMember_UrlToken(member.getUrlToken());
+    public People save(ZhihuMember zhihuMember) {
+        Optional<People> people = peopleRepository.findFirstByDataIdAndType(zhihuMember.getUrlToken(), ZHIHU_MEMBER);
         if (people.isPresent()) {
             People existPeople = people.get();
             ZhihuMember exist = existPeople.getZhihuMember();
-            if (exist != null) {
-                existPeople.setZhihuMember(MergeUtils.merge(member, exist));
-            } else {
-                existPeople.setZhihuMember(member);
-            }
-            peopleRepository.save(existPeople);
-        } else {
-            People newPeople = new People();
-            newPeople.setName(member.getName());
-            newPeople.setZhihuMember(member);
-            peopleRepository.save(newPeople);
+            existPeople.setZhihuMember(MergeUtils.merge(zhihuMember, exist));
+            return peopleRepository.save(existPeople);
         }
+        return createFromZhihuMember(zhihuMember);
+    }
+
+
+    @Override
+    public People find(ZhihuMember zhihuMember) {
+        Optional<People> people = peopleRepository.findFirstByDataIdAndType(zhihuMember.getUrlToken(), ZHIHU_MEMBER);
+        return people.orElseGet(() -> createFromZhihuMember(zhihuMember));
+    }
+
+    private People createFromZhihuMember(ZhihuMember zhihuMember) {
+        People people = new People();
+        people.setDataId(zhihuMember.getUrlToken());
+        people.setName(zhihuMember.getName());
+        people.setType(ZHIHU_MEMBER);
+        people.setZhihuMember(zhihuMember);
+        return peopleRepository.save(people);
     }
 }
