@@ -1,7 +1,7 @@
 package com.nobodyhub.transcendence.hub.people.service.impl;
 
 import com.nobodyhub.transcendence.common.merge.MergeUtils;
-import com.nobodyhub.transcendence.hub.people.domain.People;
+import com.nobodyhub.transcendence.hub.domain.People;
 import com.nobodyhub.transcendence.hub.people.repository.PeopleRepository;
 import com.nobodyhub.transcendence.hub.people.service.PeopleService;
 import com.nobodyhub.transcendence.zhihu.domain.ZhihuMember;

@@ -1,6 +1,6 @@
 package com.nobodyhub.transcendence.hub.people.repository;
 
-import com.nobodyhub.transcendence.hub.people.domain.People;
+import com.nobodyhub.transcendence.hub.domain.People;
 import com.nobodyhub.transcendence.zhihu.domain.ZhihuMember;
 import org.springframework.data.repository.CrudRepository;
 
