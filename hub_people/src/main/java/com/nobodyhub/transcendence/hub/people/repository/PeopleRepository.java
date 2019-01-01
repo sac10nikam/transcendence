@@ -1,12 +1,13 @@
 package com.nobodyhub.transcendence.hub.people.repository;
 
 import com.nobodyhub.transcendence.hub.domain.People;
+import com.nobodyhub.transcendence.hub.repository.HubRepository;
 import com.nobodyhub.transcendence.zhihu.domain.ZhihuMember;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.Optional;
 
-public interface PeopleRepository extends CrudRepository<People, String> {
+public interface PeopleRepository extends CrudRepository<People, String>, HubRepository<People, People.PeopleType> {
     /**
      * find people by name
      *

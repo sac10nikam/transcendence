@@ -17,7 +17,7 @@ public class Deed {
     @Id
     private String id;
     /**
-     * Id of including detail dat
+     * Id of including detail data
      * borrow from the id of corresponding detail
      * - {@link ZhihuAnswer#getId()}
      * - {@link ZhihuComment#getId()}

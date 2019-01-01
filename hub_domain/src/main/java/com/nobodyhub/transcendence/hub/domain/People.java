@@ -15,27 +15,31 @@ public class People {
     @Id
     private String id;
     /**
+     * Id of including detail data
+     * borrow from the id of corresponding detail
+     * - {@link ZhihuMember#getUrlToken()}
+     */
+    @Indexed
+    private String dataId;
+    /**
      * Name of Individual
      */
     @Indexed(unique = true)
     private String name;
+
     /**
      * Type of people
      * the corresponding detail should not be null
      */
-    private People type;
+    private PeopleType type;
 
     private ZhihuMember zhihuMember;
 
     public enum PeopleType {
         /**
-         * Zhihu Answer
+         * Zhihu Member
          */
-        ZHIHU_TOPIC,
-        /**
-         * Zhihu Comment
-         */
-        ZHIHU_QUESTION,
+        ZHIHU_MEMBER,
         ;
     }
 }

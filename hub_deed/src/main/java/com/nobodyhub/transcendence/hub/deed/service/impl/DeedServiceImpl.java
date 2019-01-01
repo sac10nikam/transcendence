@@ -1,6 +1,7 @@
 package com.nobodyhub.transcendence.hub.deed.service.impl;
 
 import com.nobodyhub.transcendence.common.merge.MergeUtils;
+import com.nobodyhub.transcendence.hub.deed.client.PeopleHubClient;
 import com.nobodyhub.transcendence.hub.deed.client.TopicHubClient;
 import com.nobodyhub.transcendence.hub.deed.repository.DeedRepository;
 import com.nobodyhub.transcendence.hub.deed.service.DeedService;
@@ -20,11 +21,14 @@ import static com.nobodyhub.transcendence.hub.domain.Deed.DeedType.ZHIHU_COMMENT
 public class DeedServiceImpl implements DeedService {
     private final DeedRepository deedRepository;
     private final TopicHubClient topicHubClient;
+    private final PeopleHubClient peopleHubClient;
 
     public DeedServiceImpl(DeedRepository deedRepository,
-                           TopicHubClient topicHubClient) {
+                           TopicHubClient topicHubClient,
+                           PeopleHubClient peopleHubClient) {
         this.deedRepository = deedRepository;
         this.topicHubClient = topicHubClient;
+        this.peopleHubClient = peopleHubClient;
     }
 
     @Override
@@ -49,9 +53,7 @@ public class DeedServiceImpl implements DeedService {
         deed.setContent(answer.getContent());
         deed.setExcerpt(answer.getExcerpt());
         deed.setTopic(topicHubClient.getByZhihuQuestion(answer.getQuestion()));
-//            newDeed.setTopic()
-        //TODO: get corresponding people
-//            newDeed.setPeople()
+        deed.setPeople(peopleHubClient.getByZhihuMember(answer.getAuthor()));
         deed.setCreatedAt(answer.getCreatedTime());
         deed.setType(ZHIHU_ANSWER);
         deed.setZhihuAnswer(answer);
@@ -80,8 +82,7 @@ public class DeedServiceImpl implements DeedService {
         deed.setContent(comment.getContent());
         deed.setExcerpt(comment.getContent());
         // topic is null, it should belong to answer, which is specified by the parentId
-        //TODO: get corresponding people
-//            newDeed.setPeople()
+        deed.setPeople(peopleHubClient.getByZhihuMember(comment.getAuthor().getMember()));
         deed.setCreatedAt(comment.getCreatedTime());
         deed.setType(ZHIHU_COMMENT);
         deed.setZhihuComment(comment);
