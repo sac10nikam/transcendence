@@ -11,18 +11,31 @@ import java.util.List;
 
 public interface DeedService {
     /**
-     * Saven Zhihu Answer
+     * Save Zhihu Answer
      *
      * @param answer
      */
-    void save(ZhihuAnswer answer);
+    Deed save(ZhihuAnswer answer);
 
+    /**
+     * Find by Zhihu Answer
+     *
+     * @param answer
+     */
+    Deed find(ZhihuAnswer answer);
     /**
      * Save Zhihu comment
      *
      * @param comment
      */
-    void save(ZhihuComment comment);
+    Deed save(ZhihuComment comment);
+
+    /**
+     * Find by Zhihu comment
+     *
+     * @param comment
+     */
+    Deed find(ZhihuComment comment);
 
     /**
      * Find all deeds belong to {@link Topic#getName()}
@@ -47,5 +60,5 @@ public interface DeedService {
      * @param pageable
      * @return
      */
-    List<Deed> findAllChilrent(String parentId, Pageable pageable);
+    List<Deed> findAllChildren(String parentId, Pageable pageable);
 }

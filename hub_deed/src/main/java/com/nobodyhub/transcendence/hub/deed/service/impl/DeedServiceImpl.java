@@ -32,19 +32,22 @@ public class DeedServiceImpl implements DeedService {
     }
 
     @Override
-    public void save(ZhihuAnswer answer) {
+    public Deed save(ZhihuAnswer answer) {
         Optional<Deed> deed = this.deedRepository.findFirstByDataIdAndType(answer.getId(), ZHIHU_ANSWER);
         if (deed.isPresent()) {
             Deed existDeed = deed.get();
-            if (ZHIHU_ANSWER.equals(existDeed.getType())) {
-                ZhihuAnswer exist = existDeed.getZhihuAnswer();
-                exist = MergeUtils.merge(answer, exist);
-                existDeed.setZhihuAnswer(exist);
-                deedRepository.save(existDeed);
-                return;
-            }
+            ZhihuAnswer exist = existDeed.getZhihuAnswer();
+            exist = MergeUtils.merge(answer, exist);
+            existDeed.setZhihuAnswer(exist);
+            return deedRepository.save(existDeed);
         }
-        createNewDeedByZhihuAnswer(answer);
+        return createNewDeedByZhihuAnswer(answer);
+    }
+
+    @Override
+    public Deed find(ZhihuAnswer answer) {
+        Optional<Deed> deed = this.deedRepository.findFirstByDataIdAndType(answer.getId(), ZHIHU_ANSWER);
+        return deed.orElseGet(() -> createNewDeedByZhihuAnswer(answer));
     }
 
     private Deed createNewDeedByZhihuAnswer(ZhihuAnswer answer) {
@@ -61,19 +64,23 @@ public class DeedServiceImpl implements DeedService {
     }
 
     @Override
-    public void save(ZhihuComment comment) {
+    public Deed save(ZhihuComment comment) {
         Optional<Deed> deed = this.deedRepository.findFirstByDataIdAndType(comment.getId(), ZHIHU_COMMENT);
         if (deed.isPresent()) {
             Deed existDeed = deed.get();
-            if (ZHIHU_COMMENT.equals(existDeed.getType())) {
-                ZhihuComment exist = existDeed.getZhihuComment();
-                exist = MergeUtils.merge(comment, exist);
-                existDeed.setZhihuComment(exist);
-                deedRepository.save(existDeed);
-                return;
-            }
+            ZhihuComment exist = existDeed.getZhihuComment();
+            exist = MergeUtils.merge(comment, exist);
+            existDeed.setZhihuComment(exist);
+            return deedRepository.save(existDeed);
+
         }
-        createNewDeedByZhihuComment(comment);
+        return createNewDeedByZhihuComment(comment);
+    }
+
+    @Override
+    public Deed find(ZhihuComment comment) {
+        Optional<Deed> deed = this.deedRepository.findFirstByDataIdAndType(comment.getId(), ZHIHU_COMMENT);
+        return deed.orElseGet(() -> createNewDeedByZhihuComment(comment));
     }
 
     private Deed createNewDeedByZhihuComment(ZhihuComment comment) {
@@ -101,7 +108,7 @@ public class DeedServiceImpl implements DeedService {
     }
 
     @Override
-    public List<Deed> findAllChilrent(String parentId, Pageable pageable) {
+    public List<Deed> findAllChildren(String parentId, Pageable pageable) {
         return deedRepository.findByParentIdOrderByCreatedAt(parentId, pageable);
     }
 }

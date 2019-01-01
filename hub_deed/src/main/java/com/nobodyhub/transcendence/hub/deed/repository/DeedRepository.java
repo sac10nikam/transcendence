@@ -1,13 +1,15 @@
 package com.nobodyhub.transcendence.hub.deed.repository;
 
 import com.nobodyhub.transcendence.hub.domain.Deed;
+import com.nobodyhub.transcendence.hub.domain.People;
+import com.nobodyhub.transcendence.hub.repository.HubRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 import java.awt.print.Pageable;
 import java.util.List;
 import java.util.Optional;
 
-public interface DeedRepository extends PagingAndSortingRepository<Deed, String> {
+public interface DeedRepository extends PagingAndSortingRepository<Deed, String>, HubRepository<People, People.PeopleType> {
     /**
      * find the deed by enclosing datail data id
      *
