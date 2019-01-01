@@ -1,7 +1,5 @@
-package com.nobodyhub.transcendence.hub.deed.domain;
+package com.nobodyhub.transcendence.hub.domain;
 
-import com.nobodyhub.transcendence.hub.domain.People;
-import com.nobodyhub.transcendence.hub.domain.Topic;
 import com.nobodyhub.transcendence.zhihu.domain.ZhihuAnswer;
 import com.nobodyhub.transcendence.zhihu.domain.ZhihuComment;
 import lombok.Data;

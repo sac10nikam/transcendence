@@ -1,6 +1,6 @@
 package com.nobodyhub.transcendence.hub.deed.repository;
 
-import com.nobodyhub.transcendence.hub.deed.domain.Deed;
+import com.nobodyhub.transcendence.hub.domain.Deed;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 import java.awt.print.Pageable;

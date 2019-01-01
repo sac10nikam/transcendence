@@ -1,9 +1,9 @@
 package com.nobodyhub.transcendence.hub.deed.service.impl;
 
 import com.nobodyhub.transcendence.common.merge.MergeUtils;
-import com.nobodyhub.transcendence.hub.deed.domain.Deed;
 import com.nobodyhub.transcendence.hub.deed.repository.DeedRepository;
 import com.nobodyhub.transcendence.hub.deed.service.DeedService;
+import com.nobodyhub.transcendence.hub.domain.Deed;
 import com.nobodyhub.transcendence.zhihu.domain.ZhihuAnswer;
 import com.nobodyhub.transcendence.zhihu.domain.ZhihuComment;
 import org.springframework.stereotype.Service;
