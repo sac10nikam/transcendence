@@ -4,6 +4,7 @@ import com.nobodyhub.transcendence.zhihu.domain.ZhihuAnswer;
 import com.nobodyhub.transcendence.zhihu.domain.ZhihuComment;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 
@@ -21,6 +22,7 @@ public class Deed {
      * - {@link ZhihuAnswer#getId()}
      * - {@link ZhihuComment#getId()}
      */
+    @Indexed
     private String dataId;
     /**
      * Contents of deed

@@ -19,6 +19,23 @@ public class People {
      */
     @Indexed(unique = true)
     private String name;
+    /**
+     * Type of people
+     * the corresponding detail should not be null
+     */
+    private People type;
 
     private ZhihuMember zhihuMember;
+
+    public enum PeopleType {
+        /**
+         * Zhihu Answer
+         */
+        ZHIHU_TOPIC,
+        /**
+         * Zhihu Comment
+         */
+        ZHIHU_QUESTION,
+        ;
+    }
 }
