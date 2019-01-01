@@ -71,11 +71,6 @@
         <artifactId>hub_domain</artifactId>
         <version>${transcendence.version}</version>
       </dependency>
-      <dependency>
-        <groupId>com.nobodyhub.transcendence</groupId>
-        <artifactId>mongodb_domain</artifactId>
-        <version>${transcendence.version}</version>
-      </dependency>
       <!--Zhihu-->
       <dependency>
         <groupId>com.nobodyhub.transcendence.zhihu</groupId>

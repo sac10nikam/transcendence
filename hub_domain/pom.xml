@@ -21,6 +21,11 @@
       <artifactId>spring-boot-starter-data-mongodb</artifactId>
     </dependency>
 
+    <dependency>
+      <groupId>joda-time</groupId>
+      <artifactId>joda-time</artifactId>
+    </dependency>
+
     <!--Zhihu-->
     <dependency>
       <groupId>com.nobodyhub.transcendence.zhihu</groupId>

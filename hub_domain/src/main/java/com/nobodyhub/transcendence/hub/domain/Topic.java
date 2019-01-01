@@ -1,5 +1,6 @@
 package com.nobodyhub.transcendence.hub.domain;
 
+import com.nobodyhub.transcendence.hub.domain.abstr.HubObject;
 import com.nobodyhub.transcendence.zhihu.domain.ZhihuQuestion;
 import com.nobodyhub.transcendence.zhihu.domain.ZhihuTopic;
 import lombok.Data;
@@ -9,7 +10,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document
 @Data
-public class Topic {
+public class Topic extends HubObject {
     /**
      * Unque id of document
      */

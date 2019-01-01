@@ -1,5 +1,6 @@
 package com.nobodyhub.transcendence.hub.domain;
 
+import com.nobodyhub.transcendence.hub.domain.abstr.HubObject;
 import com.nobodyhub.transcendence.zhihu.domain.ZhihuMember;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
@@ -8,7 +9,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document
 @Data
-public class People {
+public class People extends HubObject {
     /**
      * Unque id of document
      */

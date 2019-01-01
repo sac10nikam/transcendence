@@ -1,4 +1,4 @@
-package com.nobodyhub.transcendence.mongodb.domain.configuration;
+package com.nobodyhub.transcendence.hub.configuration;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.config.EnableMongoAuditing;
