@@ -19,7 +19,7 @@ public class PeopleController {
      *
      * @param zhihuMember
      */
-    @PostMapping(path = "/zhihu")
+    @PostMapping(path = "/zhihu-member")
     @ResponseStatus(HttpStatus.OK)
     void saveZhihuMember(@RequestBody ZhihuMember zhihuMember) {
         peopleService.saveZhihuMenber(zhihuMember);

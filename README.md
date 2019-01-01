@@ -11,6 +11,8 @@ A Generic Web Crawler.
 |9101|config|Configuration Server|
 |9110|zhihu-api|Zhihu API|
 |9810|hub-topic|Topic Hub|
+|9820|hub-people|People Hub|
+|9830|hub-deed|Deed Hub|
 |9900|api-executor|API Request Executor|
 
 ## How to Start
