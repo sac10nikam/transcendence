@@ -23,6 +23,4 @@ public class ZhihuQuestion implements Mergeable {
     protected String updatedTime;
     @JsonProperty("url")
     protected String url;
-    @JsonProperty("relationship")
-    protected Object relationship;
 }
