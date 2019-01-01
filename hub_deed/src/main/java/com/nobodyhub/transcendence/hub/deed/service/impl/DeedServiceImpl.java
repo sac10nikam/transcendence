@@ -1,6 +1,7 @@
 package com.nobodyhub.transcendence.hub.deed.service.impl;
 
 import com.nobodyhub.transcendence.common.merge.MergeUtils;
+import com.nobodyhub.transcendence.hub.deed.client.TopicHubClient;
 import com.nobodyhub.transcendence.hub.deed.repository.DeedRepository;
 import com.nobodyhub.transcendence.hub.deed.service.DeedService;
 import com.nobodyhub.transcendence.hub.domain.Deed;
@@ -15,9 +16,12 @@ import java.util.Optional;
 @Service
 public class DeedServiceImpl implements DeedService {
     private final DeedRepository deedRepository;
+    private final TopicHubClient topicHubClient;
 
-    public DeedServiceImpl(DeedRepository deedRepository) {
+    public DeedServiceImpl(DeedRepository deedRepository,
+                           TopicHubClient topicHubClient) {
         this.deedRepository = deedRepository;
+        this.topicHubClient = topicHubClient;
     }
 
     @Override
@@ -41,7 +45,8 @@ public class DeedServiceImpl implements DeedService {
         deed.setDataId(answer.getId());
         deed.setContent(answer.getContent());
         deed.setExcerpt(answer.getExcerpt());
-        //TODO: get corresponding topic
+        deed.setTopic(topicHubClient.getByZhihuQuestion(answer.getQuestion()));
+        ;
 //            newDeed.setTopic()
         //TODO: get corresponding people
 //            newDeed.setPeople()
@@ -72,13 +77,13 @@ public class DeedServiceImpl implements DeedService {
         deed.setDataId(comment.getId());
         deed.setContent(comment.getContent());
         deed.setExcerpt(comment.getContent());
-        //TODO: get corresponding topic
-//            newDeed.setTopic()
+        // topic is null, it should belong to answer, which is specified by the parentId
         //TODO: get corresponding people
 //            newDeed.setPeople()
         deed.setCreatedAt(comment.getCreatedTime());
         deed.setType(Deed.DeedType.ZHIHU_COMMENT);
         deed.setZhihuComment(comment);
+        deed.setParentId(comment.getAnswerId());
         return deed;
     }
 
