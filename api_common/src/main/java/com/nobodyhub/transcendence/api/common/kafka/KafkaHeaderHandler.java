@@ -3,8 +3,10 @@ package com.nobodyhub.transcendence.api.common.kafka;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Maps;
+import com.nobodyhub.transcendence.api.common.message.ApiRequestMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
@@ -14,6 +16,9 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.Optional;
 
+import static com.nobodyhub.transcendence.api.common.kafka.KafkaMessageHeader.ORIGIN_REQUEST;
+import static com.nobodyhub.transcendence.api.common.kafka.KafkaMessageHeader.RESPONSE_HEADERS;
+
 @Slf4j
 @Component
 public class KafkaHeaderHandler {
@@ -21,6 +26,26 @@ public class KafkaHeaderHandler {
 
     public KafkaHeaderHandler(ObjectMapper objectMapper) {
         this.objectMapper = objectMapper;
+    }
+
+    /**
+     * convenient method for get {@link KafkaMessageHeader#ORIGIN_REQUEST} in the header
+     *
+     * @param messageHeaders
+     * @return
+     */
+    public Optional<ApiRequestMessage> getOriginRequest(@NotNull MessageHeaders messageHeaders) {
+        return get(messageHeaders, ORIGIN_REQUEST);
+    }
+
+    /**
+     * convenient method for get {@link KafkaMessageHeader#RESPONSE_HEADERS} in the header
+     *
+     * @param messageHeaders
+     * @return
+     */
+    public Optional<HttpHeaders> getResponseHeader(@NotNull MessageHeaders messageHeaders) {
+        return get(messageHeaders, RESPONSE_HEADERS);
     }
 
     /**

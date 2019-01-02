@@ -42,7 +42,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
-import static com.nobodyhub.transcendence.api.common.kafka.KafkaMessageHeader.ORIGIN_REQUEST;
 import static com.nobodyhub.transcendence.zhihu.topic.service.ZhihuTopicApiChannel.*;
 
 @Slf4j
@@ -159,7 +158,7 @@ public class ZhihuTopicApiService extends ApiChannelBaseService<ZhihuTopicApiCha
                 }
             }
             if (!htmls.isEmpty()) {
-                Optional<ApiRequestMessage> originMsg = headerHandler.get(messageHeaders, ORIGIN_REQUEST);
+                Optional<ApiRequestMessage> originMsg = headerHandler.getOriginRequest(messageHeaders);
                 if (originMsg.isPresent()) {
                     List<Object> params = originMsg.get().getBody().get("params");
                     if (params != null && params.size() == 1) {

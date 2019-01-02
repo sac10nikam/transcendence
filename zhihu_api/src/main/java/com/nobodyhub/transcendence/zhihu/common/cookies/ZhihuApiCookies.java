@@ -14,9 +14,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import static com.nobodyhub.transcendence.api.common.kafka.KafkaMessageHeader.ORIGIN_REQUEST;
-import static com.nobodyhub.transcendence.api.common.kafka.KafkaMessageHeader.RESPONSE_HEADERS;
-
 @Slf4j
 @Component
 public class ZhihuApiCookies {
@@ -31,9 +28,9 @@ public class ZhihuApiCookies {
     }
 
     public void update(MessageHeaders messageHeaders) {
-        Optional<ApiRequestMessage> requestMessage = headerHandler.get(messageHeaders, ORIGIN_REQUEST);
+        Optional<ApiRequestMessage> requestMessage = headerHandler.getOriginRequest(messageHeaders);
         if (requestMessage.isPresent()) {
-            Optional<HttpHeaders> responseHeaders = headerHandler.get(messageHeaders, RESPONSE_HEADERS);
+            Optional<HttpHeaders> responseHeaders = headerHandler.getResponseHeader(messageHeaders);
             if (responseHeaders.isPresent()) {
                 List<String> newCookies = responseHeaders.get().get(HttpHeaders.SET_COOKIE);
                 if (newCookies != null) {
