@@ -40,6 +40,11 @@ public class PeopleServiceImpl implements PeopleService {
         return people.orElseGet(() -> createFromZhihuMember(zhihuMember));
     }
 
+    @Override
+    public Optional<People> find(String urlToken) {
+        return peopleRepository.findFirstByDataIdAndType(urlToken, ZHIHU_MEMBER);
+    }
+
     private People createFromZhihuMember(ZhihuMember zhihuMember) {
         People people = new People();
         people.setDataId(zhihuMember.getUrlToken());
