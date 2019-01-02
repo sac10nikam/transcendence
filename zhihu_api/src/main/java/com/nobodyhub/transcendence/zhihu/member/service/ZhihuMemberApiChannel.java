@@ -21,7 +21,7 @@ public interface ZhihuMemberApiChannel extends ApiChannel {
     SubscribableChannel receiveMemberRequest();
 
     /**
-     * Response received contains Zhihu mmember information
+     * Response received contains Zhihu member information
      */
     String IN_ZHIHU_MEMBER_CALLBACK_MEMBER = "in-zhihu-member-callback-member";
 
