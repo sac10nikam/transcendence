@@ -192,7 +192,7 @@ public class ZhihuTopicApiService extends ApiChannelBaseService<ZhihuTopicApiCha
                              @Headers MessageHeaders messageHeaders) {
         this.cookies.update(messageHeaders);
         Optional<ZhihuTopic> topic = converter.convert(message, ZhihuTopic.class);
-        topic.ifPresent(this.topicHubClient::saveZhihuTopic);
+        topic.ifPresent(this.topicHubClient::saveZhihuTopicNoReturn);
     }
 
     public void getTopicParents(String topicId) {
@@ -218,7 +218,7 @@ public class ZhihuTopicApiService extends ApiChannelBaseService<ZhihuTopicApiCha
             ZhihuTopicList list = topicList.get();
             if (!list.getData().isEmpty()) {
                 for (ZhihuTopic topic : list.getData()) {
-                    this.topicHubClient.saveZhihuTopic(topic);
+                    this.topicHubClient.saveZhihuTopicNoReturn(topic);
                 }
                 // request for more data
                 if (!list.getPaging().getIsEnd()) {
