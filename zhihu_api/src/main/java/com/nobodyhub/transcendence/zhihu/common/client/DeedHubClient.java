@@ -1,4 +1,4 @@
-package com.nobodyhub.transcendence.zhihu.client;
+package com.nobodyhub.transcendence.zhihu.common.client;
 
 import com.nobodyhub.transcendence.zhihu.domain.ZhihuAnswer;
 import com.nobodyhub.transcendence.zhihu.domain.ZhihuComment;
