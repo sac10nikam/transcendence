@@ -20,11 +20,6 @@ spring.cloud.stream.kafka:
 
 # Channel configuration
 spring.cloud.stream.bindings:
-  output:
-    destination: memberReqTopic
-    content-type: application/json
-  zhihu-member-callback:
-    group: zhihu-member
   # Topic
   zhihu-topic-request-channel:
     destination: out-zhihu-topic-request
@@ -51,6 +46,14 @@ spring.cloud.stream.bindings:
     group: zhihu-answer
   in-zhihu-answer-callback-comment:
     group: zhihu-answer
+  # Member
+  zhihu-member-request-channel:
+    destination: out-zhihu-member-request
+    group: zhihu-meber
+  out-zhihu-member-request:
+    content-type: application/json
+  in-zhihu-member-callback-member:
+    group: zhihu-meber
 
 
 feign.client.config.default:
