@@ -38,6 +38,12 @@ public class TopicController {
         return topicService.save(zhihuTopic);
     }
 
+    @PostMapping(path = "/zhihu-topic/save/no-return")
+    @ResponseStatus(HttpStatus.OK)
+    void saveZhihuTopicNoReturn(@RequestBody ZhihuTopic zhihuTopic) {
+        topicService.save(zhihuTopic);
+    }
+
     /**
      * Save zhihu parent topics
      *
@@ -82,5 +88,16 @@ public class TopicController {
     @PostMapping(path = "/zhihu-topic/save")
     Topic saveZhihuTopic(@RequestBody ZhihuQuestion zhihuQuestion) {
         return topicService.save(zhihuQuestion);
+    }
+
+    /**
+     * Save zhihu question without return value
+     *
+     * @param zhihuQuestion
+     */
+    @PostMapping(path = "/zhihu-topic/save/no-return")
+    @ResponseStatus(HttpStatus.OK)
+    void saveZhihuQuestionNoReturn(@RequestBody ZhihuQuestion zhihuQuestion) {
+        topicService.save(zhihuQuestion);
     }
 }

@@ -49,11 +49,19 @@ spring.cloud.stream.bindings:
   # Member
   zhihu-member-request-channel:
     destination: out-zhihu-member-request
-    group: zhihu-meber
+    group: zhihu-member
   out-zhihu-member-request:
     content-type: application/json
   in-zhihu-member-callback-member:
-    group: zhihu-meber
+    group: zhihu-member
+  # Question
+  zhihu-question-request-channel:
+    destination: out-zhihu-question-request
+    group: zhihu-question
+  out-zhihu-question-request:
+    content-type: application/json
+  in-zhihu-question-callback-question:
+    group: zhihu-question
 
 
 feign.client.config.default:
