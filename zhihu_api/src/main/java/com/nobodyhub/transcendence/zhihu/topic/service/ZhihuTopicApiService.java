@@ -24,8 +24,10 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.annotation.StreamListener;
+import org.springframework.cloud.stream.binder.PollableMessageSource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
@@ -53,25 +55,15 @@ public class ZhihuTopicApiService extends ZhihuApiChannelBaseService<ZhihuTopicA
 
     public ZhihuTopicApiService(ZhihuTopicApiChannel channel,
                                 ApiResponseConverter converter,
+                                ApiAsyncExecutor apiAsyncExecutor,
+                                KafkaHeaderHandler headerHandler,
+                                @Qualifier(ZHIHU_TOPIC_REQUEST_CHANNEL) PollableMessageSource requestMessageSource,
                                 ObjectMapper objectMapper,
                                 ZhihuApiProperties apiProperties,
-                                ApiAsyncExecutor apiAsyncExecutor,
                                 ZhihuApiCookies cookies,
-                                KafkaHeaderHandler headerHandler,
                                 TopicHubClient topicHubClient) {
-        super(channel, converter, apiAsyncExecutor, headerHandler, objectMapper, apiProperties, cookies);
+        super(channel, converter, apiAsyncExecutor, headerHandler, requestMessageSource, objectMapper, apiProperties, cookies);
         this.topicHubClient = topicHubClient;
-    }
-
-    /**
-     * Retrieve message from queue of outbound request
-     *
-     * @param message contents of request
-     * @throws InterruptedException
-     */
-    @StreamListener(ZHIHU_TOPIC_REQUEST_CHANNEL)
-    public void receiveTopicRequest(ApiRequestMessage message) throws InterruptedException {
-        makeOutboundRequest(message);
     }
 
     /**

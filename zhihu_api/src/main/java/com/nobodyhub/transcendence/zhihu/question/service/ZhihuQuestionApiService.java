@@ -11,8 +11,10 @@ import com.nobodyhub.transcendence.zhihu.common.service.ZhihuApiChannelBaseServi
 import com.nobodyhub.transcendence.zhihu.configuration.ZhihuApiProperties;
 import com.nobodyhub.transcendence.zhihu.domain.ZhihuQuestion;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.annotation.StreamListener;
+import org.springframework.cloud.stream.binder.PollableMessageSource;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.handler.annotation.Headers;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -32,25 +34,15 @@ public class ZhihuQuestionApiService extends ZhihuApiChannelBaseService<ZhihuQue
 
     protected ZhihuQuestionApiService(ZhihuQuestionApiChannel channel,
                                       ApiResponseConverter converter,
+                                      ApiAsyncExecutor apiAsyncExecutor,
+                                      KafkaHeaderHandler headerHandler,
+                                      @Qualifier(ZHIHU_QUESTION_REQUEST_CHANNEL) PollableMessageSource requestMessageSource,
                                       ObjectMapper objectMapper,
                                       ZhihuApiProperties apiProperties,
-                                      ApiAsyncExecutor apiAsyncExecutor,
                                       ZhihuApiCookies cookies,
-                                      KafkaHeaderHandler headerHandler,
                                       TopicHubClient topicHubClient) {
-        super(channel, converter, apiAsyncExecutor, headerHandler, objectMapper, apiProperties, cookies);
+        super(channel, converter, apiAsyncExecutor, headerHandler, requestMessageSource, objectMapper, apiProperties, cookies);
         this.topicHubClient = topicHubClient;
-    }
-
-    /**
-     * Retrieve message from queue of outbound request
-     *
-     * @param message contents of request
-     * @throws InterruptedException
-     */
-    @StreamListener(ZHIHU_QUESTION_REQUEST_CHANNEL)
-    public void receiveRequest(ApiRequestMessage message) throws InterruptedException {
-        makeOutboundRequest(message);
     }
 
     public void getQuestion(String questionId) {

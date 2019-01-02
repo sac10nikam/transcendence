@@ -11,8 +11,10 @@ import com.nobodyhub.transcendence.zhihu.common.service.ZhihuApiChannelBaseServi
 import com.nobodyhub.transcendence.zhihu.configuration.ZhihuApiProperties;
 import com.nobodyhub.transcendence.zhihu.domain.ZhihuMember;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.annotation.StreamListener;
+import org.springframework.cloud.stream.binder.PollableMessageSource;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.handler.annotation.Headers;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -33,25 +35,15 @@ public class ZhihuMemberApiService extends ZhihuApiChannelBaseService<ZhihuMembe
 
     protected ZhihuMemberApiService(ZhihuMemberApiChannel channel,
                                     ApiResponseConverter converter,
+                                    ApiAsyncExecutor apiAsyncExecutor,
+                                    KafkaHeaderHandler headerHandler,
+                                    @Qualifier(ZHIHU_MEMBER_REQUEST_CHANNEL) PollableMessageSource requestMessageSource,
                                     ObjectMapper objectMapper,
                                     ZhihuApiProperties apiProperties,
-                                    ApiAsyncExecutor apiAsyncExecutor,
                                     ZhihuApiCookies cookies,
-                                    KafkaHeaderHandler headerHandler,
                                     PeopleHubClient peopleHubClient) {
-        super(channel, converter, apiAsyncExecutor, headerHandler, objectMapper, apiProperties, cookies);
+        super(channel, converter, apiAsyncExecutor, headerHandler, requestMessageSource, objectMapper, apiProperties, cookies);
         this.peopleHubClient = peopleHubClient;
-    }
-
-    /**
-     * Retrieve message from queue of outbound request
-     *
-     * @param message contents of request
-     * @throws InterruptedException
-     */
-    @StreamListener(ZHIHU_MEMBER_REQUEST_CHANNEL)
-    public void receiveMemberRequest(ApiRequestMessage message) throws InterruptedException {
-        makeOutboundRequest(message);
     }
 
     /**
