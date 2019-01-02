@@ -7,7 +7,7 @@ import com.nobodyhub.transcendence.api.common.kafka.KafkaHeaderHandler;
 import com.nobodyhub.transcendence.api.common.message.ApiRequestMessage;
 import com.nobodyhub.transcendence.zhihu.common.client.PeopleHubClient;
 import com.nobodyhub.transcendence.zhihu.common.cookies.ZhihuApiCookies;
-import com.nobodyhub.transcendence.zhihu.common.service.ApiChannelBaseService;
+import com.nobodyhub.transcendence.zhihu.common.service.ZhihuApiChannelBaseService;
 import com.nobodyhub.transcendence.zhihu.configuration.ZhihuApiProperties;
 import com.nobodyhub.transcendence.zhihu.domain.ZhihuMember;
 import lombok.extern.slf4j.Slf4j;
@@ -27,7 +27,7 @@ import static com.nobodyhub.transcendence.zhihu.member.service.ZhihuMemberApiCha
 @Slf4j
 @Service
 @EnableBinding(ZhihuMemberApiChannel.class)
-public class ZhihuMemberApiService extends ApiChannelBaseService<ZhihuMemberApiChannel> {
+public class ZhihuMemberApiService extends ZhihuApiChannelBaseService<ZhihuMemberApiChannel> {
 
     private final PeopleHubClient peopleHubClient;
 
@@ -39,7 +39,7 @@ public class ZhihuMemberApiService extends ApiChannelBaseService<ZhihuMemberApiC
                                     ZhihuApiCookies cookies,
                                     KafkaHeaderHandler headerHandler,
                                     PeopleHubClient peopleHubClient) {
-        super(channel, converter, objectMapper, apiProperties, apiAsyncExecutor, cookies, headerHandler);
+        super(channel, converter, apiAsyncExecutor, headerHandler, objectMapper, apiProperties, cookies);
         this.peopleHubClient = peopleHubClient;
     }
 

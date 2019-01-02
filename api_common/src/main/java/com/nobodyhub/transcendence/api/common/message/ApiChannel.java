@@ -1,4 +1,4 @@
-package com.nobodyhub.transcendence.zhihu.common.service;
+package com.nobodyhub.transcendence.api.common.message;
 
 /**
  * Mark the class as API Channel

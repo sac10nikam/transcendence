@@ -10,7 +10,7 @@ import com.nobodyhub.transcendence.zhihu.answer.domain.ZhihuComments;
 import com.nobodyhub.transcendence.zhihu.common.client.DeedHubClient;
 import com.nobodyhub.transcendence.zhihu.common.cookies.ZhihuApiCookies;
 import com.nobodyhub.transcendence.zhihu.common.domain.ZhihuApiPaging;
-import com.nobodyhub.transcendence.zhihu.common.service.ApiChannelBaseService;
+import com.nobodyhub.transcendence.zhihu.common.service.ZhihuApiChannelBaseService;
 import com.nobodyhub.transcendence.zhihu.configuration.ZhihuApiProperties;
 import com.nobodyhub.transcendence.zhihu.domain.ZhihuAnswer;
 import com.nobodyhub.transcendence.zhihu.domain.ZhihuComment;
@@ -31,7 +31,7 @@ import static com.nobodyhub.transcendence.zhihu.answer.service.ZhihuAnswerApiCha
 @Slf4j
 @Service
 @EnableBinding(ZhihuAnswerApiChannel.class)
-public class ZhihuAnswerApiService extends ApiChannelBaseService<ZhihuAnswerApiChannel> {
+public class ZhihuAnswerApiService extends ZhihuApiChannelBaseService<ZhihuAnswerApiChannel> {
     private final DeedHubClient deedHubClient;
 
     public ZhihuAnswerApiService(ZhihuAnswerApiChannel channel,
@@ -42,7 +42,7 @@ public class ZhihuAnswerApiService extends ApiChannelBaseService<ZhihuAnswerApiC
                                  ZhihuApiCookies cookies,
                                  KafkaHeaderHandler headerHandler,
                                  DeedHubClient deedHubClient) {
-        super(channel, converter, objectMapper, apiProperties, apiAsyncExecutor, cookies, headerHandler);
+        super(channel, converter, apiAsyncExecutor, headerHandler, objectMapper, apiProperties, cookies);
         this.deedHubClient = deedHubClient;
     }
 

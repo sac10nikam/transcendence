@@ -1,6 +1,6 @@
 package com.nobodyhub.transcendence.zhihu.answer.service;
 
-import com.nobodyhub.transcendence.zhihu.common.service.ApiChannel;
+import com.nobodyhub.transcendence.api.common.message.ApiChannel;
 import org.springframework.cloud.stream.annotation.Input;
 import org.springframework.cloud.stream.annotation.Output;
 import org.springframework.messaging.MessageChannel;

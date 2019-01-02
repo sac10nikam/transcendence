@@ -27,6 +27,11 @@ public class ZhihuApiCookies {
         this.headerHandler = headerHandler;
     }
 
+    /**
+     * Update cookies using contents of message header
+     *
+     * @param messageHeaders
+     */
     public void update(MessageHeaders messageHeaders) {
         Optional<ApiRequestMessage> requestMessage = headerHandler.getOriginRequest(messageHeaders);
         if (requestMessage.isPresent()) {
@@ -40,6 +45,11 @@ public class ZhihuApiCookies {
         }
     }
 
+    /**
+     * inject corresponding cookies to the requst message
+     *
+     * @param message the request messgage
+     */
     public void inject(@NotNull ApiRequestMessage message) {
         String cookie = cookies.get(message.getTopic());
         if (cookie != null) {

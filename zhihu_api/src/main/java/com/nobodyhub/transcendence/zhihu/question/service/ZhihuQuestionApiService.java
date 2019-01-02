@@ -7,7 +7,7 @@ import com.nobodyhub.transcendence.api.common.kafka.KafkaHeaderHandler;
 import com.nobodyhub.transcendence.api.common.message.ApiRequestMessage;
 import com.nobodyhub.transcendence.zhihu.common.client.TopicHubClient;
 import com.nobodyhub.transcendence.zhihu.common.cookies.ZhihuApiCookies;
-import com.nobodyhub.transcendence.zhihu.common.service.ApiChannelBaseService;
+import com.nobodyhub.transcendence.zhihu.common.service.ZhihuApiChannelBaseService;
 import com.nobodyhub.transcendence.zhihu.configuration.ZhihuApiProperties;
 import com.nobodyhub.transcendence.zhihu.domain.ZhihuQuestion;
 import lombok.extern.slf4j.Slf4j;
@@ -27,7 +27,7 @@ import static com.nobodyhub.transcendence.zhihu.question.service.ZhihuQuestionAp
 @Slf4j
 @Service
 @EnableBinding(ZhihuQuestionApiChannel.class)
-public class ZhihuQuestionApiService extends ApiChannelBaseService<ZhihuQuestionApiChannel> {
+public class ZhihuQuestionApiService extends ZhihuApiChannelBaseService<ZhihuQuestionApiChannel> {
     private final TopicHubClient topicHubClient;
 
     protected ZhihuQuestionApiService(ZhihuQuestionApiChannel channel,
@@ -38,7 +38,7 @@ public class ZhihuQuestionApiService extends ApiChannelBaseService<ZhihuQuestion
                                       ZhihuApiCookies cookies,
                                       KafkaHeaderHandler headerHandler,
                                       TopicHubClient topicHubClient) {
-        super(channel, converter, objectMapper, apiProperties, apiAsyncExecutor, cookies, headerHandler);
+        super(channel, converter, apiAsyncExecutor, headerHandler, objectMapper, apiProperties, cookies);
         this.topicHubClient = topicHubClient;
     }
 

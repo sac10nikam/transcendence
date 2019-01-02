@@ -1,49 +1,50 @@
-package com.nobodyhub.transcendence.zhihu.common.service;
+package com.nobodyhub.transcendence.api.common.message;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nobodyhub.transcendence.api.common.converter.ApiResponseConverter;
 import com.nobodyhub.transcendence.api.common.executor.ApiAsyncExecutor;
 import com.nobodyhub.transcendence.api.common.kafka.KafkaHeaderHandler;
-import com.nobodyhub.transcendence.api.common.message.ApiRequestMessage;
-import com.nobodyhub.transcendence.zhihu.common.cookies.ZhihuApiCookies;
-import com.nobodyhub.transcendence.zhihu.configuration.ZhihuApiProperties;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public abstract class ApiChannelBaseService<T extends ApiChannel> {
     protected final T channel;
     protected final ApiResponseConverter converter;
-    protected final ObjectMapper objectMapper;
-    protected final ZhihuApiProperties apiProperties;
     protected final ApiAsyncExecutor apiAsyncExecutor;
-    protected final ZhihuApiCookies cookies;
     protected final KafkaHeaderHandler headerHandler;
 
     protected ApiChannelBaseService(T channel,
                                     ApiResponseConverter converter,
-                                    ObjectMapper objectMapper,
-                                    ZhihuApiProperties apiProperties,
                                     ApiAsyncExecutor apiAsyncExecutor,
-                                    ZhihuApiCookies cookies,
                                     KafkaHeaderHandler headerHandler) {
         this.channel = channel;
         this.converter = converter;
-        this.objectMapper = objectMapper;
-        this.apiProperties = apiProperties;
         this.apiAsyncExecutor = apiAsyncExecutor;
-        this.cookies = cookies;
         this.headerHandler = headerHandler;
     }
 
-    protected void makeOutboundRequest(ApiRequestMessage message) throws InterruptedException {
+    protected final void makeOutboundRequest(ApiRequestMessage message) throws InterruptedException {
         apiAsyncExecutor.execRequest(message);
         // append the latest cookies
-        cookies.inject(message);
+        injectCookies(message);
         try {
-            Thread.sleep(apiProperties.getDelay());
+            Thread.sleep(getDelay());
         } catch (InterruptedException e) {
             log.warn("Sleep interrupted by {}.", e);
             throw e;
         }
     }
+
+    /**
+     * Inject cookies into the request message
+     *
+     * @param message request message
+     */
+    protected abstract void injectCookies(ApiRequestMessage message);
+
+    /**
+     * Get the interval in millisecond between each request
+     *
+     * @return
+     */
+    protected abstract long getDelay();
 }
