@@ -26,7 +26,7 @@ public interface ZhihuAnswerApiChannel extends ApiChannel {
     String IN_ZHIHU_ANSWER_CALLBACK_ANSWER = "in-zhihu-answer-callback-answer";
 
     @Input(IN_ZHIHU_ANSWER_CALLBACK_ANSWER)
-    SubscribableChannel answerCallbackForAnswer();
+    SubscribableChannel answerCallback();
 
     /**
      * Response received contains answer comments
@@ -34,5 +34,21 @@ public interface ZhihuAnswerApiChannel extends ApiChannel {
     String IN_ZHIHU_ANSWER_CALLBACK_COMMENT = "in-zhihu-answer-callback-comment";
 
     @Input(IN_ZHIHU_ANSWER_CALLBACK_COMMENT)
-    SubscribableChannel answerCallbackForComment();
+    SubscribableChannel commentCallback();
+
+    /**
+     * Response received for answer of specific member
+     */
+    String IN_ZHIHU_ANSWER_CALLBACK_MEMBER_ANSWER = "in-zhihu-answer-callback-member-answer";
+
+    @Input(IN_ZHIHU_ANSWER_CALLBACK_MEMBER_ANSWER)
+    SubscribableChannel memberAnswerCallback();
+
+    /**
+     * Response received for answer of specific question
+     */
+    String IN_ZHIHU_ANSWER_CALLBACK_QUESTION_ANSWER = "in-zhihu-answer-callback-question-answer";
+
+    @Input(IN_ZHIHU_ANSWER_CALLBACK_QUESTION_ANSWER)
+    SubscribableChannel questionAnswerCallback();
 }
