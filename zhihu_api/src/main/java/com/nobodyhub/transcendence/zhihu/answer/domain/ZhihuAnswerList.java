@@ -1,4 +1,4 @@
-package com.nobodyhub.transcendence.zhihu.question.domain;
+package com.nobodyhub.transcendence.zhihu.answer.domain;
 
 import com.nobodyhub.transcendence.zhihu.common.domain.ZhihuApiPaging;
 import com.nobodyhub.transcendence.zhihu.domain.ZhihuAnswer;

@@ -5,6 +5,7 @@ import com.nobodyhub.transcendence.api.common.converter.ApiResponseConverter;
 import com.nobodyhub.transcendence.api.common.executor.ApiAsyncExecutor;
 import com.nobodyhub.transcendence.api.common.kafka.KafkaHeaderHandler;
 import com.nobodyhub.transcendence.api.common.message.ApiRequestMessage;
+import com.nobodyhub.transcendence.zhihu.client.DeedHubClient;
 import com.nobodyhub.transcendence.zhihu.common.cookies.ZhihuApiCookies;
 import com.nobodyhub.transcendence.zhihu.common.domain.ZhihuApiPaging;
 import com.nobodyhub.transcendence.zhihu.common.domain.ZhihuComments;
@@ -30,6 +31,7 @@ import static com.nobodyhub.transcendence.zhihu.answer.service.ZhihuAnswerApiCha
 @Service
 @EnableBinding(ZhihuAnswerApiChannel.class)
 public class ZhihuAnswerApiService extends ApiChannelBaseService<ZhihuAnswerApiChannel> {
+    private final DeedHubClient deedHubClient;
 
     public ZhihuAnswerApiService(ZhihuAnswerApiChannel channel,
                                  ApiResponseConverter converter,
@@ -37,8 +39,10 @@ public class ZhihuAnswerApiService extends ApiChannelBaseService<ZhihuAnswerApiC
                                  ZhihuApiProperties apiProperties,
                                  ApiAsyncExecutor apiAsyncExecutor,
                                  ZhihuApiCookies cookies,
-                                 KafkaHeaderHandler headerHandler) {
+                                 KafkaHeaderHandler headerHandler,
+                                 DeedHubClient deedHubClient) {
         super(channel, converter, objectMapper, apiProperties, apiAsyncExecutor, cookies, headerHandler);
+        this.deedHubClient = deedHubClient;
     }
 
     /**
@@ -70,7 +74,7 @@ public class ZhihuAnswerApiService extends ApiChannelBaseService<ZhihuAnswerApiC
         this.cookies.update(messageHeaders);
         Optional<ZhihuAnswer> answer = converter.convert(message, ZhihuAnswer.class);
         if (answer.isPresent()) {
-            //TODO: save as deed
+            deedHubClient.saveZhihuAnswerNoReturn(answer.get());
         }
     }
 
@@ -93,7 +97,7 @@ public class ZhihuAnswerApiService extends ApiChannelBaseService<ZhihuAnswerApiC
             List<ZhihuComment> commentList = comments.get().getData();
             if (commentList != null && !commentList.isEmpty()) {
                 for (ZhihuComment comment : commentList) {
-                    //TODO: save as deed
+                    deedHubClient.saveZhihuCommentNoReturn(comment);
                 }
                 // follow paging to ge more comments
                 ZhihuApiPaging paging = comments.get().getPaging();
