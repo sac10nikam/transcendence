@@ -27,11 +27,11 @@ public class ZhihuAnswerController {
     /**
      * Get comments of answer with given id
      *
-     * @param answerId
+     * @param commentId
      */
-    @GetMapping(path = "/answer/{answerId}")
+    @GetMapping(path = "/comment/{commentId}")
     @ResponseStatus(HttpStatus.OK)
-    void getAnswerComments(@PathVariable("answerId") String answerId) {
-        answerApiService.getCommentById(answerId);
+    void getAnswerComments(@PathVariable("commentId") String commentId) {
+        answerApiService.getCommentById(commentId);
     }
 }

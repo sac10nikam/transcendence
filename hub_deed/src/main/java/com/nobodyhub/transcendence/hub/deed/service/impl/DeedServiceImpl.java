@@ -3,6 +3,7 @@ package com.nobodyhub.transcendence.hub.deed.service.impl;
 import com.nobodyhub.transcendence.common.merge.MergeUtils;
 import com.nobodyhub.transcendence.hub.deed.client.PeopleHubClient;
 import com.nobodyhub.transcendence.hub.deed.client.TopicHubClient;
+import com.nobodyhub.transcendence.hub.deed.client.ZhihuAnswerApiClient;
 import com.nobodyhub.transcendence.hub.deed.repository.DeedRepository;
 import com.nobodyhub.transcendence.hub.deed.service.DeedService;
 import com.nobodyhub.transcendence.hub.domain.Deed;
@@ -20,15 +21,19 @@ import static com.nobodyhub.transcendence.hub.domain.Deed.DeedType.ZHIHU_COMMENT
 @Service
 public class DeedServiceImpl implements DeedService {
     private final DeedRepository deedRepository;
+
     private final TopicHubClient topicHubClient;
     private final PeopleHubClient peopleHubClient;
+    private final ZhihuAnswerApiClient zhihuAnswerApiClient;
 
     public DeedServiceImpl(DeedRepository deedRepository,
                            TopicHubClient topicHubClient,
-                           PeopleHubClient peopleHubClient) {
+                           PeopleHubClient peopleHubClient,
+                           ZhihuAnswerApiClient zhihuAnswerApiClient) {
         this.deedRepository = deedRepository;
         this.topicHubClient = topicHubClient;
         this.peopleHubClient = peopleHubClient;
+        this.zhihuAnswerApiClient = zhihuAnswerApiClient;
     }
 
     @Override
@@ -48,6 +53,15 @@ public class DeedServiceImpl implements DeedService {
     public Deed find(ZhihuAnswer answer) {
         Optional<Deed> deed = this.deedRepository.findFirstByDataIdAndType(answer.getId(), ZHIHU_ANSWER);
         return deed.orElseGet(() -> createNewDeedByZhihuAnswer(answer));
+    }
+
+    @Override
+    public Optional<Deed> findByZhihuAnswerId(String answerId) {
+        Optional<Deed> deed = this.deedRepository.findFirstByDataIdAndType(answerId, ZHIHU_ANSWER);
+        if (!deed.isPresent()) {
+            zhihuAnswerApiClient.getAnswerById(answerId);
+        }
+        return deed;
     }
 
     private Deed createNewDeedByZhihuAnswer(ZhihuAnswer answer) {
@@ -81,6 +95,15 @@ public class DeedServiceImpl implements DeedService {
     public Deed find(ZhihuComment comment) {
         Optional<Deed> deed = this.deedRepository.findFirstByDataIdAndType(comment.getId(), ZHIHU_COMMENT);
         return deed.orElseGet(() -> createNewDeedByZhihuComment(comment));
+    }
+
+    @Override
+    public Optional<Deed> findByZhihuCommentId(String commentId) {
+        Optional<Deed> deed = this.deedRepository.findFirstByDataIdAndType(commentId, ZHIHU_COMMENT);
+        if (!deed.isPresent()) {
+            zhihuAnswerApiClient.getAnswerComments(commentId);
+        }
+        return deed;
     }
 
     private Deed createNewDeedByZhihuComment(ZhihuComment comment) {
