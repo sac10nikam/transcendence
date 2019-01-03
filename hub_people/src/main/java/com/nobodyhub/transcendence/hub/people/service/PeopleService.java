@@ -28,5 +28,5 @@ public interface PeopleService {
      * @param urlToken
      * @return
      */
-    Optional<People> find(String urlToken);
+    Optional<People> findByUrlToken(String urlToken);
 }

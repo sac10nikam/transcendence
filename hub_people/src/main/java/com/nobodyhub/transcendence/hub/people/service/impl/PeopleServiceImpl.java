@@ -2,6 +2,7 @@ package com.nobodyhub.transcendence.hub.people.service.impl;
 
 import com.nobodyhub.transcendence.common.merge.MergeUtils;
 import com.nobodyhub.transcendence.hub.domain.People;
+import com.nobodyhub.transcendence.hub.people.client.ZhihuMemberApiClient;
 import com.nobodyhub.transcendence.hub.people.repository.PeopleRepository;
 import com.nobodyhub.transcendence.hub.people.service.PeopleService;
 import com.nobodyhub.transcendence.zhihu.domain.ZhihuMember;
@@ -17,8 +18,12 @@ import static com.nobodyhub.transcendence.hub.domain.People.PeopleType.ZHIHU_MEM
 public class PeopleServiceImpl implements PeopleService {
     private final PeopleRepository peopleRepository;
 
-    public PeopleServiceImpl(PeopleRepository peopleRepository) {
+    private final ZhihuMemberApiClient zhihuMemberApiClient;
+
+    public PeopleServiceImpl(PeopleRepository peopleRepository,
+                             ZhihuMemberApiClient zhihuMemberApiClient) {
         this.peopleRepository = peopleRepository;
+        this.zhihuMemberApiClient = zhihuMemberApiClient;
     }
 
     @Override
@@ -41,8 +46,12 @@ public class PeopleServiceImpl implements PeopleService {
     }
 
     @Override
-    public Optional<People> find(String urlToken) {
-        return peopleRepository.findFirstByDataIdAndType(urlToken, ZHIHU_MEMBER);
+    public Optional<People> findByUrlToken(String urlToken) {
+        Optional<People> people = peopleRepository.findFirstByDataIdAndType(urlToken, ZHIHU_MEMBER);
+        if (!people.isPresent()) {
+            zhihuMemberApiClient.getByMemberUrlToken(urlToken);
+        }
+        return people;
     }
 
     private People createFromZhihuMember(ZhihuMember zhihuMember) {
