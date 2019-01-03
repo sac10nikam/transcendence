@@ -2,6 +2,7 @@ package com.nobodyhub.transcendence.hub.topic.service.impl;
 
 import com.nobodyhub.transcendence.common.merge.MergeUtils;
 import com.nobodyhub.transcendence.hub.domain.Topic;
+import com.nobodyhub.transcendence.hub.topic.client.ZhihuQuestionApiClient;
 import com.nobodyhub.transcendence.hub.topic.client.ZhihuTopicApiClient;
 import com.nobodyhub.transcendence.hub.topic.repository.TopicRepository;
 import com.nobodyhub.transcendence.hub.topic.service.TopicService;
@@ -9,6 +10,7 @@ import com.nobodyhub.transcendence.zhihu.domain.ZhihuQuestion;
 import com.nobodyhub.transcendence.zhihu.domain.ZhihuTopic;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -18,12 +20,16 @@ import static com.nobodyhub.transcendence.hub.domain.Topic.TopicType.ZHIHU_TOPIC
 @Service
 public class TopicServiceImpl implements TopicService {
     private final TopicRepository topicRepository;
+
     private final ZhihuTopicApiClient zhihuTopicApiClient;
+    private final ZhihuQuestionApiClient zhihuQuestionApiClient;
 
     public TopicServiceImpl(TopicRepository topicRepository,
-                            ZhihuTopicApiClient zhihuTopicApiClient) {
+                            ZhihuTopicApiClient zhihuTopicApiClient,
+                            ZhihuQuestionApiClient zhihuQuestionApiClient) {
         this.topicRepository = topicRepository;
         this.zhihuTopicApiClient = zhihuTopicApiClient;
+        this.zhihuQuestionApiClient = zhihuQuestionApiClient;
     }
 
     @Override
@@ -85,6 +91,15 @@ public class TopicServiceImpl implements TopicService {
         return this.topicRepository.save(topic);
     }
 
+    @Override
+    public Optional<Topic> findByZhihuQuestionId(String questionId) {
+        Optional<Topic> topic = topicRepository.findFirstByDataIdAndType(questionId, ZHIHU_QUESTION);
+        if (!topic.isPresent()) {
+            zhihuQuestionApiClient.getQuestionById(questionId);
+        }
+        return topic;
+    }
+
     private Topic createFromZhihuTopic(ZhihuTopic zhihuTopic) {
         Topic topic = new Topic();
         topic.setType(ZHIHU_TOPIC);
@@ -133,5 +148,19 @@ public class TopicServiceImpl implements TopicService {
         }
         // saven parents
         children.forEach(this::save);
+    }
+
+    @Override
+    public Optional<Topic> findByZhihuTopicId(String topicId) {
+        Optional<Topic> topic = topicRepository.findFirstByDataIdAndType(topicId, ZHIHU_QUESTION);
+        if (!topic.isPresent()) {
+            zhihuTopicApiClient.getTopicById(topicId);
+        }
+        return topic;
+    }
+
+    @Override
+    public List<Topic> findByName(String name) {
+        return topicRepository.findByName(name);
     }
 }
