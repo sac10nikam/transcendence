@@ -9,6 +9,7 @@ import com.nobodyhub.transcendence.zhihu.domain.ZhihuMember;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 import static com.nobodyhub.transcendence.hub.domain.People.PeopleType.ZHIHU_MEMBER;
@@ -46,7 +47,7 @@ public class PeopleServiceImpl implements PeopleService {
     }
 
     @Override
-    public Optional<People> findByUrlToken(String urlToken) {
+    public Optional<People> findByZhihuMemberUrlToken(String urlToken) {
         Optional<People> people = peopleRepository.findFirstByDataIdAndType(urlToken, ZHIHU_MEMBER);
         if (!people.isPresent()) {
             zhihuMemberApiClient.getByMemberUrlToken(urlToken);
@@ -61,5 +62,10 @@ public class PeopleServiceImpl implements PeopleService {
         people.setType(ZHIHU_MEMBER);
         people.setZhihuMember(zhihuMember);
         return peopleRepository.save(people);
+    }
+
+    @Override
+    public List<People> findByPeopleName(String name) {
+        return peopleRepository.findByName(name);
     }
 }

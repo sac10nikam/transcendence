@@ -1,32 +1,16 @@
 package com.nobodyhub.transcendence.hub.people.service;
 
 import com.nobodyhub.transcendence.hub.domain.People;
-import com.nobodyhub.transcendence.zhihu.domain.ZhihuMember;
+import com.nobodyhub.transcendence.hub.people.service.sub.ZhihuMemberService;
 
-import java.util.Optional;
+import java.util.List;
 
-public interface PeopleService {
+public interface PeopleService extends ZhihuMemberService {
     /**
-     * Save people with the contents of Zhihu member
+     * Find a list of people with given name
      *
-     * @param zhihuMember zhihu member to corresponding individual
+     * @param name
      * @return
      */
-    People save(ZhihuMember zhihuMember);
-
-    /**
-     * Find People by Zhihu member
-     *
-     * @param zhihuMember
-     * @return
-     */
-    People find(ZhihuMember zhihuMember);
-
-    /**
-     * Find People by Zhihu member urlToken{@link ZhihuMember#getUrlToken()}
-     *
-     * @param urlToken
-     * @return
-     */
-    Optional<People> findByUrlToken(String urlToken);
+    List<People> findByPeopleName(String name);
 }

@@ -25,7 +25,7 @@ public class People extends HubObject {
     /**
      * Name of Individual
      */
-    @Indexed(unique = true)
+    @Indexed
     private String name;
 
     /**

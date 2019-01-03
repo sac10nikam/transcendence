@@ -55,7 +55,7 @@ public class PeopleController {
     @GetMapping(path = "/zhihu-member/get/{urlToken}")
     @ResponseStatus(HttpStatus.OK)
     ResponseEntity<People> getByZhihuMemberToken(@PathVariable String urlToken) {
-        Optional<People> people = peopleService.findByUrlToken(urlToken);
+        Optional<People> people = peopleService.findByZhihuMemberUrlToken(urlToken);
         return people.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
             .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
