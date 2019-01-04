@@ -26,45 +26,58 @@ spring.cloud.stream.kafka:
 spring.cloud.stream.bindings:
   # Topic
   zhihu-topic-request-channel:
+    content-type: application/json
     destination: out-zhihu-topic-request
     group: zhihu-topic
   out-zhihu-topic-request:
     content-type: application/json
   in-zhihu-topic-callback-topic-page:
+    content-type: application/octet-stream
     group: zhihu-topic
   in-zhihu-topic-callback-topic:
+    content-type: application/octet-stream
     group: zhihu-topic
   in-zhihu-topic-callback-topic-list:
+    content-type: application/octet-stream
     group: zhihu-topic
   in-zhihu-topic-callback-plazza-list:
+    content-type: application/octet-stream
     group: zhihu-topic
   in-zhihu-topic-callback-feed-list:
+    content-type: application/octet-stream
     group: zhihu-topic
   # Answer
   zhihu-answer-request-channel:
+    content-type: application/json
     destination: out-zhihu-answer-request
     group: zhihu-answer
   out-zhihu-answer-request:
     content-type: application/json
   in-zhihu-answer-callback-answer:
+    content-type: application/octet-stream
     group: zhihu-answer
   in-zhihu-answer-callback-comment:
+    content-type: application/octet-stream
     group: zhihu-answer
   # Member
   zhihu-member-request-channel:
+    content-type: application/json
     destination: out-zhihu-member-request
     group: zhihu-member
   out-zhihu-member-request:
     content-type: application/json
   in-zhihu-member-callback-member:
+    content-type: application/octet-stream
     group: zhihu-member
   # Question
   zhihu-question-request-channel:
+    content-type: application/json
     destination: out-zhihu-question-request
     group: zhihu-question
   out-zhihu-question-request:
     content-type: application/json
   in-zhihu-question-callback-question:
+    content-type: application/octet-stream
     group: zhihu-question
 
 
