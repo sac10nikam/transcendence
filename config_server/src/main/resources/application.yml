@@ -10,4 +10,4 @@ spring:
           clone-on-start: true
           force-pull: true
           delete-untracked-branches: true
-          search-paths: config-repo
+          search-paths: config_repo
