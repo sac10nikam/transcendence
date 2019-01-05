@@ -120,13 +120,15 @@ public class TopicServiceImpl implements TopicService {
 
     @Override
     public void saveZhihuTopicParents(String topicId, Set<ZhihuTopic> parents) {
-        Optional<Topic> topic = topicRepository.findFirstByDataIdAndType(topicId, ZHIHU_TOPIC);
-        if (topic.isPresent()) {
+        Optional<Topic> optional = topicRepository.findFirstByDataIdAndType(topicId, ZHIHU_TOPIC);
+        if (optional.isPresent()) {
+            Topic topic = optional.get();
             // if exist, update zhihu topic
-            ZhihuTopic exist = topic.get().getZhihuTopic();
+            ZhihuTopic exist = topic.getZhihuTopic();
             if (exist != null) {
                 exist.setParents(parents);
             }
+            topicRepository.save(topic);
         } else {
             zhihuTopicApiClient.getTopicById(topicId);
         }
@@ -136,13 +138,15 @@ public class TopicServiceImpl implements TopicService {
 
     @Override
     public void saveZhihuTopicChildren(String topicId, Set<ZhihuTopic> children) {
-        Optional<Topic> topic = topicRepository.findFirstByDataIdAndType(topicId, ZHIHU_TOPIC);
-        if (topic.isPresent()) {
+        Optional<Topic> optional = topicRepository.findFirstByDataIdAndType(topicId, ZHIHU_TOPIC);
+        if (optional.isPresent()) {
+            Topic topic = optional.get();
             // if exist, update zhihu topic
-            ZhihuTopic exist = topic.get().getZhihuTopic();
+            ZhihuTopic exist = topic.getZhihuTopic();
             if (exist != null) {
                 exist.setChildren(children);
             }
+            zhihuTopicApiClient.getTopicById(topicId);
         } else {
             zhihuTopicApiClient.getTopicById(topicId);
         }
