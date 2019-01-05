@@ -17,6 +17,6 @@ public interface TopicHubClient {
     void saveZhihuTopicNoReturn(@RequestBody ZhihuTopic zhihuTopic);
 
     @Async
-    @PostMapping(path = "/zhihu-topic/save/no-return")
+    @PostMapping(path = "/zhihu-question/save/no-return")
     void saveZhihuQuestionNoReturn(@RequestBody ZhihuQuestion zhihuQuestion);
 }

@@ -85,7 +85,7 @@ public class TopicController {
      *
      * @param zhihuQuestion
      */
-    @PostMapping(path = "/zhihu-topic/save")
+    @PostMapping(path = "/zhihu-question/save")
     Topic saveZhihuTopic(@RequestBody ZhihuQuestion zhihuQuestion) {
         return topicService.save(zhihuQuestion);
     }
@@ -95,7 +95,7 @@ public class TopicController {
      *
      * @param zhihuQuestion
      */
-    @PostMapping(path = "/zhihu-topic/save/no-return")
+    @PostMapping(path = "/zhihu-question/save/no-return")
     @ResponseStatus(HttpStatus.OK)
     void saveZhihuQuestionNoReturn(@RequestBody ZhihuQuestion zhihuQuestion) {
         topicService.save(zhihuQuestion);
