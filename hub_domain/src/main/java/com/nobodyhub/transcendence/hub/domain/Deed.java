@@ -2,6 +2,7 @@ package com.nobodyhub.transcendence.hub.domain;
 
 import com.nobodyhub.transcendence.hub.domain.abstr.HubObject;
 import com.nobodyhub.transcendence.zhihu.domain.ZhihuAnswer;
+import com.nobodyhub.transcendence.zhihu.domain.ZhihuArticle;
 import com.nobodyhub.transcendence.zhihu.domain.ZhihuComment;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
@@ -68,6 +69,11 @@ public class Deed extends HubObject {
      * not null if {@link #type} == {@link DeedType#ZHIHU_COMMENT}
      */
     private ZhihuComment zhihuComment;
+    /**
+     * Zhihu Article
+     * not null if {@link #type} == {@link DeedType#ZHIHU_ARTICLE}
+     */
+    private ZhihuArticle zhihuArticle;
 
     public enum DeedType {
         /**
@@ -78,6 +84,10 @@ public class Deed extends HubObject {
          * Zhihu Comment
          */
         ZHIHU_COMMENT,
+        /**
+         * Zhihu Article
+         */
+        ZHIHU_ARTICLE,
         ;
     }
 }

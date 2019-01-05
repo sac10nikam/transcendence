@@ -8,10 +8,13 @@ import com.nobodyhub.transcendence.api.common.message.ApiChannel;
 import com.nobodyhub.transcendence.api.common.message.ApiChannelBaseService;
 import com.nobodyhub.transcendence.api.common.message.ApiRequestMessage;
 import com.nobodyhub.transcendence.zhihu.common.cookies.ZhihuApiCookies;
+import com.nobodyhub.transcendence.zhihu.common.domain.ZhihuApiPaging;
 import com.nobodyhub.transcendence.zhihu.configuration.ZhihuApiProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.stream.binder.PollableMessageSource;
 import org.springframework.scheduling.annotation.Scheduled;
+
+import java.util.Optional;
 
 @Slf4j
 public abstract class ZhihuApiChannelBaseService<T extends ApiChannel> extends ApiChannelBaseService<T> {
@@ -49,5 +52,14 @@ public abstract class ZhihuApiChannelBaseService<T extends ApiChannel> extends A
     @Override
     protected long getDelay() {
         return apiProperties.getDelay();
+    }
+
+    protected Optional<ApiRequestMessage> getNextUrl(ZhihuApiPaging paging, String targetChannel) {
+        if (paging != null
+            && paging.getNext() != null
+            && !paging.getIsEnd()) {
+            return Optional.of(new ApiRequestMessage(targetChannel, paging.getNext()));
+        }
+        return Optional.empty();
     }
 }

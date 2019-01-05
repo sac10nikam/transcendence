@@ -1,6 +1,7 @@
 package com.nobodyhub.transcendence.zhihu.common.client;
 
 import com.nobodyhub.transcendence.zhihu.domain.ZhihuAnswer;
+import com.nobodyhub.transcendence.zhihu.domain.ZhihuArticle;
 import com.nobodyhub.transcendence.zhihu.domain.ZhihuComment;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.scheduling.annotation.Async;
@@ -15,4 +16,8 @@ public interface DeedHubClient {
     @Async
     @PostMapping("/zhihu-comment/save/no-return")
     void saveZhihuCommentNoReturn(ZhihuComment zhihuComment);
+
+    @Async
+    @PostMapping("/zhihu-article/save/no-return")
+    void saveZhihuArticleNoReturn(ZhihuArticle zhihuArticle);
 }

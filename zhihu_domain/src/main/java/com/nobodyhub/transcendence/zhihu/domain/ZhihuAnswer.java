@@ -8,12 +8,9 @@ import lombok.Data;
  * Zhihu Answer from API
  */
 @Data
-public class ZhihuAnswer implements Mergeable {
+public class ZhihuAnswer extends ZhihuFeedContent implements Mergeable {
     @JsonProperty("id")
     protected String id;
-
-    @JsonProperty("type")
-    protected String type;
     @JsonProperty("question")
     protected ZhihuQuestion question;
     @JsonProperty("author")

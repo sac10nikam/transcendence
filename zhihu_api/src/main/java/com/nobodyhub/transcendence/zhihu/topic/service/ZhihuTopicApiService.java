@@ -7,10 +7,14 @@ import com.nobodyhub.transcendence.api.common.converter.ApiResponseConverter;
 import com.nobodyhub.transcendence.api.common.executor.ApiAsyncExecutor;
 import com.nobodyhub.transcendence.api.common.kafka.KafkaHeaderHandler;
 import com.nobodyhub.transcendence.api.common.message.ApiRequestMessage;
+import com.nobodyhub.transcendence.zhihu.common.client.DeedHubClient;
 import com.nobodyhub.transcendence.zhihu.common.client.TopicHubClient;
 import com.nobodyhub.transcendence.zhihu.common.cookies.ZhihuApiCookies;
 import com.nobodyhub.transcendence.zhihu.common.service.ZhihuApiChannelBaseService;
 import com.nobodyhub.transcendence.zhihu.configuration.ZhihuApiProperties;
+import com.nobodyhub.transcendence.zhihu.domain.ZhihuAnswer;
+import com.nobodyhub.transcendence.zhihu.domain.ZhihuArticle;
+import com.nobodyhub.transcendence.zhihu.domain.ZhihuFeedContent;
 import com.nobodyhub.transcendence.zhihu.domain.ZhihuTopic;
 import com.nobodyhub.transcendence.zhihu.topic.domain.ZhihuTopicCategory;
 import com.nobodyhub.transcendence.zhihu.topic.domain.feed.ZhihuTopicFeed;
@@ -51,7 +55,9 @@ import static com.nobodyhub.transcendence.zhihu.topic.service.ZhihuTopicApiChann
 @EnableBinding(ZhihuTopicApiChannel.class)
 public class ZhihuTopicApiService extends ZhihuApiChannelBaseService<ZhihuTopicApiChannel> {
 
-    protected final TopicHubClient topicHubClient;
+    private final TopicHubClient topicHubClient;
+    private final DeedHubClient deedHubClient;
+
 
     public ZhihuTopicApiService(ZhihuTopicApiChannel channel,
                                 ApiResponseConverter converter,
@@ -61,9 +67,11 @@ public class ZhihuTopicApiService extends ZhihuApiChannelBaseService<ZhihuTopicA
                                 ObjectMapper objectMapper,
                                 ZhihuApiProperties apiProperties,
                                 ZhihuApiCookies cookies,
-                                TopicHubClient topicHubClient) {
+                                TopicHubClient topicHubClient,
+                                DeedHubClient deedHubClient) {
         super(channel, converter, apiAsyncExecutor, headerHandler, requestMessageSource, objectMapper, apiProperties, cookies);
         this.topicHubClient = topicHubClient;
+        this.deedHubClient = deedHubClient;
     }
 
     /**
@@ -237,7 +245,22 @@ public class ZhihuTopicApiService extends ZhihuApiChannelBaseService<ZhihuTopicA
             ZhihuTopicFeedList list = feedList.get();
             if (!list.getData().isEmpty()) {
                 for (ZhihuTopicFeed feed : list.getData()) {
-                    //TODO: save answer
+                    ZhihuFeedContent content = feed.getTarget();
+                    switch (content.getType()) {
+                        case "answer": {
+                            deedHubClient.saveZhihuAnswerNoReturn((ZhihuAnswer) content);
+                            break;
+                        }
+                        case "article": {
+                            deedHubClient.saveZhihuArticleNoReturn((ZhihuArticle) content);
+                            break;
+                        }
+                        default: {
+                            // do nothing
+                            break;
+                        }
+                    }
+
                 }
                 // request for more data
                 if (!list.getPaging().getIsEnd()) {
