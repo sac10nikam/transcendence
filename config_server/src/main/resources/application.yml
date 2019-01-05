@@ -3,6 +3,7 @@ server:
 spring:
   cloud:
     config:
+      allowOverride: true
       server:
         git:
           uri: git@bitbucket.org:yan_h/transcendence.git
