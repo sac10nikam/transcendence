@@ -30,13 +30,11 @@ A Generic Web Crawler.
 ## How to Start
 1. Start Kafka Service
   ```bash
-   docker run -d \
-     -p 2181:2181 \
-     -p 9092:9092 \
-     --name kafka \
-     --env ADVERTISED_HOST=localhost \
-     --env ADVERTISED_PORT=9092 \
-     spotify/kafka
+   docker run -d --network host --env ADVERTISED_HOST=localhost --env ADVERTISED_PORT=9092 transcendence/kafka
   ```
+1. Start [Service Registry Server](/infra_service_registry)
+1. Start [Api Request Executor Server](/api_executor)
+1. Start [Zhihu API Server](/zhihu_api)
+1. Start 
 
 

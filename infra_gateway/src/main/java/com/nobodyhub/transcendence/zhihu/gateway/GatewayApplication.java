@@ -11,9 +11,9 @@ import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
 @EnableZuulProxy
 @SpringBootApplication
 @RibbonClients(defaultConfiguration = RibbonConfiguration.class)
-public class ZhihuGatewayApplication {
+public class GatewayApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(ZhihuGatewayApplication.class, args);
+        SpringApplication.run(GatewayApplication.class, args);
     }
 }
