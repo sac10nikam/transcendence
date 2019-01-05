@@ -1,9 +1,0 @@
-location: root
-profile: default
-test:
-  property1: 1
-  property2: 'yes'
-  property3:
-    - 1
-    - 2
-    - 3
