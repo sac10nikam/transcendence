@@ -7,6 +7,9 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.util.LinkedMultiValueMap;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+
 @ToString
 public class ApiRequestMessage {
     /**
@@ -55,7 +58,11 @@ public class ApiRequestMessage {
 
     public ApiRequestMessage(String topic, String urlTemplate, String... urlVariables) {
         this.topic = topic;
-        this.urlTemplate = urlTemplate;
+        try {
+            this.urlTemplate = URLDecoder.decode(urlTemplate, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            this.urlTemplate = urlTemplate;
+        }
         this.urlVariables = urlVariables;
     }
 
