@@ -15,10 +15,10 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableEurekaClient
 @SpringBootApplication
 @Import(ApiCommonConfiguration.class)
-public class ZhihuApplication {
+public class ZhihuApiApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(ZhihuApplication.class, args);
+        SpringApplication.run(ZhihuApiApplication.class, args);
     }
 
 }
