@@ -1,0 +1,3 @@
+# Server configuraion
+server:
+    port: 9110
