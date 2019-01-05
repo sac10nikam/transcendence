@@ -6,10 +6,10 @@ import com.nobodyhub.transcendence.api.common.executor.ApiAsyncExecutor;
 import com.nobodyhub.transcendence.api.common.kafka.KafkaHeaderHandler;
 import com.nobodyhub.transcendence.api.common.message.ApiRequestMessage;
 import com.nobodyhub.transcendence.zhihu.answer.domain.ZhihuAnswerList;
-import com.nobodyhub.transcendence.zhihu.answer.domain.ZhihuComments;
 import com.nobodyhub.transcendence.zhihu.common.client.DeedHubClient;
 import com.nobodyhub.transcendence.zhihu.common.cookies.ZhihuApiCookies;
 import com.nobodyhub.transcendence.zhihu.common.domain.ZhihuApiPaging;
+import com.nobodyhub.transcendence.zhihu.common.domain.ZhihuComments;
 import com.nobodyhub.transcendence.zhihu.common.service.ZhihuApiChannelBaseService;
 import com.nobodyhub.transcendence.zhihu.configuration.ZhihuApiProperties;
 import com.nobodyhub.transcendence.zhihu.domain.ZhihuAnswer;
@@ -86,7 +86,7 @@ public class ZhihuAnswerApiService extends ZhihuApiChannelBaseService<ZhihuAnswe
         this.cookies.update(messageHeaders);
         Optional<ZhihuComments> comments = converter.convert(message, ZhihuComments.class);
         if (comments.isPresent()) {
-            List<ZhihuComment> commentList = comments.get().getData();
+            List<ZhihuComment> commentList = prepareZhihuComments(comments.get(), messageHeaders);
             if (commentList != null && !commentList.isEmpty()) {
                 for (ZhihuComment comment : commentList) {
                     deedHubClient.saveZhihuCommentNoReturn(comment);

@@ -26,7 +26,7 @@ public class ZhihuComment implements Mergeable {
     private Long voteCount;
 
     /**
-     * id of belonging answer, not included in the response json
+     * id of parent content, can be either answer, question, article
      */
-    private String answerId;
+    private String parentId;
 }

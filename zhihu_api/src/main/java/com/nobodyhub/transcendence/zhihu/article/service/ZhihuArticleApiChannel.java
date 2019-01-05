@@ -36,4 +36,12 @@ public interface ZhihuArticleApiChannel extends ApiChannel {
 
     @Input(IN_ZHIHU_ARTICLE_CALLBACK_COLUMN_ARTICLE)
     SubscribableChannel columnArticleCallback();
+
+    /**
+     * Response received contains article comments
+     */
+    String IN_ZHIHU_ARTICLE_CALLBACK_COMMENT = "in-zhihu-article-callback-comment";
+
+    @Input(IN_ZHIHU_ARTICLE_CALLBACK_COMMENT)
+    SubscribableChannel commentCallback();
 }
