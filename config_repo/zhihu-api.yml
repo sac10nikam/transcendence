@@ -45,7 +45,10 @@ spring.cloud.stream.bindings:
   in-zhihu-answer-callback-answer:
     content-type: application/octet-stream
     group: zhihu-answer
-  in-zhihu-answer-callback-comment:
+  in-zhihu-answer-callback-member-answer:
+    content-type: application/octet-stream
+    group: zhihu-answer
+  in-zhihu-answer-callback-question-answer:
     content-type: application/octet-stream
     group: zhihu-answer
   # Member
@@ -81,9 +84,6 @@ spring.cloud.stream.bindings:
   in-zhihu-article-callback-column-article:
     content-type: application/octet-stream
     group: zhihu-article
-  in-zhihu-article-callback-comment:
-    content-type: application/octet-stream
-    group: zhihu-article
   # Column
   zhihu-column-request-channel:
     content-type: application/json
@@ -94,7 +94,24 @@ spring.cloud.stream.bindings:
   in-zhihu-column-callback-column:
     content-type: application/octet-stream
     group: zhihu-column
-
+  # Comment
+  zhihu-comment-request-channel:
+    content-type: application/json
+    destination: out-zhihu-comment-request
+  out-zhihu-comment-request:
+    content-type: application/json
+  in-zhihu-comment-callback-answer-comment:
+    in-zhihu-column-callback-column:
+    content-type: application/octet-stream
+    group: zhihu-comment
+  in-zhihu-comment-callback-article-comment:
+    in-zhihu-column-callback-column:
+    content-type: application/octet-stream
+    group: zhihu-comment
+  in-zhihu-comment-callback-question-comment:
+    in-zhihu-column-callback-column:
+    content-type: application/octet-stream
+    group: zhihu-comment
 
 # Feign Client Configuration
 feign.client.config.default:
