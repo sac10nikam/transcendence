@@ -68,6 +68,33 @@ spring.cloud.stream.bindings:
   in-zhihu-question-callback-question:
     content-type: application/octet-stream
     group: zhihu-question
+  # Article
+  zhihu-article-request-channel:
+    content-type: application/json
+    destination: out-zhihu-article-request
+    group: zhihu-article
+  out-zhihu-article-request:
+    content-type: application/json
+  in-zhihu-article-callback-article:
+    content-type: application/octet-stream
+    group: zhihu-article
+  in-zhihu-article-callback-column-article:
+    content-type: application/octet-stream
+    group: zhihu-article
+  in-zhihu-article-callback-comment:
+    content-type: application/octet-stream
+    group: zhihu-article
+  # Column
+  zhihu-column-request-channel:
+    content-type: application/json
+    destination: out-zhihu-column-request
+    group: zhihu-column
+  out-zhihu-column-request:
+    content-type: application/json
+  in-zhihu-column-callback-column:
+    content-type: application/octet-stream
+    group: zhihu-column
+
 
 # Feign Client Configuration
 feign.client.config.default:
