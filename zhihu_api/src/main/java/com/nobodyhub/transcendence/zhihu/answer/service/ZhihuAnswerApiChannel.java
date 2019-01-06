@@ -30,14 +30,6 @@ public interface ZhihuAnswerApiChannel extends ApiChannel {
     SubscribableChannel answerCallback();
 
     /**
-     * Response received contains answer comments
-     */
-    String IN_ZHIHU_ANSWER_CALLBACK_COMMENT = "in-zhihu-answer-callback-comment";
-
-    @Input(IN_ZHIHU_ANSWER_CALLBACK_COMMENT)
-    SubscribableChannel commentCallback();
-
-    /**
      * Response received for answer of specific member
      */
     String IN_ZHIHU_ANSWER_CALLBACK_MEMBER_ANSWER = "in-zhihu-answer-callback-member-answer";

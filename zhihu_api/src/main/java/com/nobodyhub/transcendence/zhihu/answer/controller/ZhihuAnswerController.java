@@ -23,15 +23,4 @@ public class ZhihuAnswerController {
     void getAnswerById(@PathVariable("answerId") String answerId) {
         answerApiService.getById(answerId);
     }
-
-    /**
-     * Get comments of answer with given id
-     *
-     * @param commentId
-     */
-    @GetMapping(path = "/comment/{commentId}")
-    @ResponseStatus(HttpStatus.OK)
-    void getAnswerComments(@PathVariable("commentId") String commentId) {
-        answerApiService.getCommentById(commentId);
-    }
 }

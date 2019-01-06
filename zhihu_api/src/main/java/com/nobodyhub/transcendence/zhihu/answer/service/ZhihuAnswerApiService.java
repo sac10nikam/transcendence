@@ -10,10 +10,8 @@ import com.nobodyhub.transcendence.zhihu.common.client.DeedHubClient;
 import com.nobodyhub.transcendence.zhihu.common.configuration.ZhihuApiProperties;
 import com.nobodyhub.transcendence.zhihu.common.cookies.ZhihuApiCookies;
 import com.nobodyhub.transcendence.zhihu.common.domain.ZhihuApiPaging;
-import com.nobodyhub.transcendence.zhihu.common.domain.ZhihuComments;
 import com.nobodyhub.transcendence.zhihu.common.service.ZhihuApiChannelBaseService;
 import com.nobodyhub.transcendence.zhihu.domain.ZhihuAnswer;
-import com.nobodyhub.transcendence.zhihu.domain.ZhihuComment;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cloud.stream.annotation.EnableBinding;
@@ -70,46 +68,21 @@ public class ZhihuAnswerApiService extends ZhihuApiChannelBaseService<ZhihuAnswe
     }
 
     /**
-     * Get the comment of answer with given id
-     *
-     * @param answerId
-     */
-    public void getCommentById(String answerId) {
-        String urlTemplate = "https://www.zhihu.com/api/v4/answers/{answerId}/root_comments?include=data%5B*%5D.author%2Ccollapsed%2Creply_to_author%2Cdisliked%2Ccontent%2Cvoting%2Cvote_count%2Cis_parent_author%2Cis_author&order=normal&limit=20&offset=0&status=open";
-        ApiRequestMessage message = new ApiRequestMessage(IN_ZHIHU_ANSWER_CALLBACK_COMMENT, urlTemplate, answerId);
-        channel.sendAnswerRequest().send(MessageBuilder.withPayload(message).build());
-    }
-
-    @StreamListener(IN_ZHIHU_ANSWER_CALLBACK_COMMENT)
-    public void receiveComments(@Payload byte[] message,
-                                @Headers MessageHeaders messageHeaders) {
-        this.cookies.update(messageHeaders);
-        Optional<ZhihuComments> comments = converter.convert(message, ZhihuComments.class);
-        if (comments.isPresent()) {
-            List<ZhihuComment> commentList = prepareZhihuComments(comments.get(), messageHeaders);
-            if (commentList != null && !commentList.isEmpty()) {
-                for (ZhihuComment comment : commentList) {
-                    deedHubClient.saveZhihuCommentNoReturn(comment);
-                }
-                // follow paging to ge more comments
-                ZhihuApiPaging paging = comments.get().getPaging();
-                if (paging != null
-                    && paging.getNext() != null
-                    && !paging.getIsEnd()) {
-                    ApiRequestMessage next = new ApiRequestMessage(IN_ZHIHU_ANSWER_CALLBACK_COMMENT, paging.getNext());
-                    channel.sendAnswerRequest().send(MessageBuilder.withPayload(next).build());
-                }
-            }
-        }
-    }
-
-    /**
      * Get answers for member with given urlToken
      *
      * @param urlToken
      */
     public void getByMember(String urlToken) {
-        getByMember(urlToken, "0");
+        getByMember(urlToken, 0);
+    }
+
+    private void getByMember(String urlToken, int offset) {
+        String urlTemplate = "https://www.zhihu.com/api/v4/members/{urlToken}/answers?sort_by=default&include=data%5B%2A%5D.is_normal%2Cis_collapsed%2Ccollapse_reason%2Csuggest_edit%2Ccomment_count%2Ccan_comment%2Ccontent%2Cvoteup_count%2Creshipment_settings%2Ccomment_permission%2Cmark_infos%2Ccreated_time%2Cupdated_time%2Crelationship.is_authorized%2Cvoting%2Cis_author%2Cis_thanked%2Cis_nothelp%2Cupvoted_followees&limit=20&offset={offset}&data%5B%2A%5D.author.badge%5B%3F%28type%3Dbest_answerer%29%5D.topics=";
+        ApiRequestMessage message = new ApiRequestMessage(IN_ZHIHU_ANSWER_CALLBACK_MEMBER_ANSWER,
+            urlTemplate,
+            urlToken,
+            String.valueOf(offset));
+        channel.sendAnswerRequest().send(MessageBuilder.withPayload(message).build());
     }
 
     @StreamListener(IN_ZHIHU_ANSWER_CALLBACK_MEMBER_ANSWER)
@@ -127,19 +100,11 @@ public class ZhihuAnswerApiService extends ZhihuApiChannelBaseService<ZhihuAnswe
                 if (paging != null && !paging.getIsEnd()) {
                     // the url in paging.getNext() is invalid
                     Optional<ApiRequestMessage> originMsg = headerHandler.getOriginRequest(messageHeaders);
-                    originMsg.ifPresent(msg -> getByMember(msg.getUrlVariables()[0], msg.getUrlVariables()[1]));
+                    originMsg.ifPresent(msg -> getByMember(msg.getUrlVariables()[0],
+                        Integer.valueOf(msg.getUrlVariables()[1]) + data.size()));
                 }
             }
         });
-    }
-
-    private void getByMember(String urlToken, String offset) {
-        String urlTemplate = "https://www.zhihu.com/api/v4/members/{urlToken}/answers?sort_by=default&include=data%5B%2A%5D.is_normal%2Cis_collapsed%2Ccollapse_reason%2Csuggest_edit%2Ccomment_count%2Ccan_comment%2Ccontent%2Cvoteup_count%2Creshipment_settings%2Ccomment_permission%2Cmark_infos%2Ccreated_time%2Cupdated_time%2Crelationship.is_authorized%2Cvoting%2Cis_author%2Cis_thanked%2Cis_nothelp%2Cupvoted_followees&limit=20&offset={offset}&data%5B%2A%5D.author.badge%5B%3F%28type%3Dbest_answerer%29%5D.topics=";
-        ApiRequestMessage message = new ApiRequestMessage(IN_ZHIHU_ANSWER_CALLBACK_MEMBER_ANSWER,
-            urlTemplate,
-            urlToken,
-            offset);
-        channel.sendAnswerRequest().send(MessageBuilder.withPayload(message).build());
     }
 
     public void getByQuestion(String questionId) {
@@ -166,7 +131,7 @@ public class ZhihuAnswerApiService extends ZhihuApiChannelBaseService<ZhihuAnswe
                     && !paging.getIsEnd()
                     && paging.getNext() != null) {
                     channel.sendAnswerRequest().send(MessageBuilder.withPayload(
-                        new ApiRequestMessage(IN_ZHIHU_ANSWER_CALLBACK_COMMENT, paging.getNext())
+                        new ApiRequestMessage(IN_ZHIHU_ANSWER_CALLBACK_QUESTION_ANSWER, paging.getNext())
                     ).build());
                 }
             }
