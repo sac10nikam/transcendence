@@ -1,4 +1,4 @@
-package com.nobodyhub.transcendence.zhihu.configuration;
+package com.nobodyhub.transcendence.zhihu.common.configuration;
 
 import lombok.Data;
 import lombok.Getter;
