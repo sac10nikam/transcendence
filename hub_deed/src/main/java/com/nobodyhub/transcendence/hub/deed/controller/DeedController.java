@@ -3,6 +3,7 @@ package com.nobodyhub.transcendence.hub.deed.controller;
 import com.nobodyhub.transcendence.hub.deed.service.DeedService;
 import com.nobodyhub.transcendence.hub.domain.Deed;
 import com.nobodyhub.transcendence.zhihu.domain.ZhihuAnswer;
+import com.nobodyhub.transcendence.zhihu.domain.ZhihuArticle;
 import com.nobodyhub.transcendence.zhihu.domain.ZhihuComment;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -64,6 +65,29 @@ public class DeedController {
     @GetMapping("/zhihu-comment/{commentId}")
     ResponseEntity<Deed> getByZhihuCommentById(@PathVariable("commentId") String commentId) {
         Optional<Deed> deed = this.deedService.findByZhihuCommentId(commentId);
+        return deed.map(value -> new ResponseEntity<>(value, OK))
+            .orElseGet(() -> new ResponseEntity<>(NOT_FOUND));
+    }
+
+    @PostMapping("/zhihu-article/save")
+    Deed saveZhihuArticle(ZhihuArticle zhihuArticle) {
+        return this.deedService.save(zhihuArticle);
+    }
+
+    @PostMapping("/zhihu-article/save/no-return")
+    @ResponseStatus(OK)
+    void saveZhihuArticleNoReturn(ZhihuArticle zhihuArticle) {
+        this.deedService.save(zhihuArticle);
+    }
+
+    @PostMapping("/zhihu-article/get")
+    Deed getByZhihuArticle(ZhihuArticle zhihuArticle) {
+        return this.deedService.find(zhihuArticle);
+    }
+
+    @GetMapping("/zhihu-article/{articleId}")
+    ResponseEntity<Deed> getByZhihuArticletById(@PathVariable("articleId") String articleId) {
+        Optional<Deed> deed = this.deedService.findByZhihuArticleId(articleId);
         return deed.map(value -> new ResponseEntity<>(value, OK))
             .orElseGet(() -> new ResponseEntity<>(NOT_FOUND));
     }

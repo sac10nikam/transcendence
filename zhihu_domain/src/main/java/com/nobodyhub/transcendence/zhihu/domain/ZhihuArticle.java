@@ -35,5 +35,15 @@ public class ZhihuArticle extends ZhihuFeedContent implements Mergeable {
     @JsonProperty("updated")
     private Long updated;
 
+    /**
+     * Plain text contents of the article
+     * Not returned by API, parsed from HTML page
+     */
+    private String contentText;
 
+    /**
+     * Rich text contents of the article
+     * Not returned by API, parsed from HTML page
+     */
+    private String contentHtml;
 }

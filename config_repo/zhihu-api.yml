@@ -81,6 +81,9 @@ spring.cloud.stream.bindings:
   in-zhihu-article-callback-article:
     content-type: application/octet-stream
     group: zhihu-article
+  in-zhihu-article-callback-article-content:
+    content-type: application/octet-stream
+    group: zhihu-article
   in-zhihu-article-callback-column-article:
     content-type: application/octet-stream
     group: zhihu-article

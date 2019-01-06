@@ -20,7 +20,7 @@ public class ZhihuArticleController {
     @GetMapping(path = "/id/{id}")
     @ResponseStatus(HttpStatus.OK)
     void getArticleById(String articleId) {
-        articleApiService.getById(articleId);
+        articleApiService.getArticleBasics(articleId);
     }
 
     @GetMapping(path = "/columnId/{columnId}")

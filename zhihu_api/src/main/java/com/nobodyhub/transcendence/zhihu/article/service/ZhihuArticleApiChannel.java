@@ -22,12 +22,20 @@ public interface ZhihuArticleApiChannel extends ApiChannel {
     PollableMessageSource receiveRequest();
 
     /**
-     * Response received contains article contents
+     * Response received contains article basics via API
      */
     String IN_ZHIHU_ARTICLE_CALLBACK_ARTICLE = "in-zhihu-article-callback-article";
 
     @Input(IN_ZHIHU_ARTICLE_CALLBACK_ARTICLE)
     SubscribableChannel articleCallback();
+
+    /**
+     * Response received contains article contents via html
+     */
+    String IN_ZHIHU_ARTICLE_CALLBACK_ARTICLE_CONTENT = "in-zhihu-article-callback-article-content";
+
+    @Input(IN_ZHIHU_ARTICLE_CALLBACK_ARTICLE_CONTENT)
+    SubscribableChannel articleContentCallback();
 
     /**
      * Response received for article of specific column

@@ -12,6 +12,10 @@ import com.nobodyhub.transcendence.zhihu.common.cookies.ZhihuApiCookies;
 import com.nobodyhub.transcendence.zhihu.common.service.ZhihuApiChannelBaseService;
 import com.nobodyhub.transcendence.zhihu.domain.ZhihuArticle;
 import lombok.extern.slf4j.Slf4j;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.annotation.StreamListener;
@@ -47,22 +51,60 @@ public class ZhihuArticleApiService extends ZhihuApiChannelBaseService<ZhihuArti
     }
 
     /**
-     * Get article of given id
+     * Get article basics of given id
      *
      * @param articleId
      */
-    public void getById(String articleId) {
+    public void getArticleBasics(String articleId) {
         String urlTemplate = "https://www.zhihu.com/api/v4/articles/{articleId}";
         ApiRequestMessage message = new ApiRequestMessage(IN_ZHIHU_ARTICLE_CALLBACK_ARTICLE, urlTemplate, articleId);
         channel.sendRequest().send(MessageBuilder.withPayload(message).build());
     }
 
     @StreamListener(IN_ZHIHU_ARTICLE_CALLBACK_ARTICLE)
-    public void receiveArticle(@Payload byte[] message,
-                               @Headers MessageHeaders messageHeaders) {
+    public void receiveArticleBasics(@Payload byte[] message,
+                                     @Headers MessageHeaders messageHeaders) {
         this.cookies.update(messageHeaders);
         Optional<ZhihuArticle> article = converter.convert(message, ZhihuArticle.class);
         article.ifPresent(deedHubClient::saveZhihuArticleNoReturn);
+    }
+
+    /**
+     * Get article content of given id
+     *
+     * @param articleId
+     */
+    public void getArticleContents(String articleId) {
+        String urlTemplate = "https://zhuanlan.zhihu.com/p/{articleId}";
+        ApiRequestMessage message = new ApiRequestMessage(IN_ZHIHU_ARTICLE_CALLBACK_ARTICLE_CONTENT, urlTemplate, articleId);
+        channel.sendRequest().send(MessageBuilder.withPayload(message).build());
+    }
+
+    @StreamListener(IN_ZHIHU_ARTICLE_CALLBACK_ARTICLE_CONTENT)
+    public void receiveArticleContents(@Payload byte[] message,
+                                       @Headers MessageHeaders messageHeaders) {
+        this.cookies.update(messageHeaders);
+        Optional<ApiRequestMessage> origMsg = headerHandler.getOriginRequest(messageHeaders);
+        if (origMsg.isPresent() && origMsg.get().getUrlVariables().length == 1) {
+            Optional<String> html = converter.convert(message, String.class);
+            if (html.isPresent()) {
+                Document document = Jsoup.parse(html.get());
+                Elements contents = document.select("article div.RichText.ztext.Post-RichText");
+                Elements titles = document.select("article header.Post-Header h1.Post-Title");
+                if (contents.size() == 1 && titles.size() == 1) {
+                    Element content = contents.first();
+                    Element title = titles.first();
+                    String articleId = origMsg.get().getUrlVariables()[0];
+                    // create new article
+                    ZhihuArticle article = new ZhihuArticle();
+                    article.setId(articleId);
+                    article.setTitle(title.text());
+                    article.setContentText(content.text());
+                    article.setContentHtml(content.html());
+                    deedHubClient.saveZhihuArticleNoReturn(article);
+                }
+            }
+        }
     }
 
     /**
