@@ -2,10 +2,12 @@ package com.nobodyhub.transcendence.hub.topic.service.impl;
 
 import com.nobodyhub.transcendence.common.merge.MergeUtils;
 import com.nobodyhub.transcendence.hub.domain.Topic;
+import com.nobodyhub.transcendence.hub.topic.client.ZhihuColumnApiClient;
 import com.nobodyhub.transcendence.hub.topic.client.ZhihuQuestionApiClient;
 import com.nobodyhub.transcendence.hub.topic.client.ZhihuTopicApiClient;
 import com.nobodyhub.transcendence.hub.topic.repository.TopicRepository;
 import com.nobodyhub.transcendence.hub.topic.service.TopicService;
+import com.nobodyhub.transcendence.zhihu.domain.ZhihuColumn;
 import com.nobodyhub.transcendence.zhihu.domain.ZhihuQuestion;
 import com.nobodyhub.transcendence.zhihu.domain.ZhihuTopic;
 import org.springframework.stereotype.Service;
@@ -14,8 +16,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-import static com.nobodyhub.transcendence.hub.domain.Topic.TopicType.ZHIHU_QUESTION;
-import static com.nobodyhub.transcendence.hub.domain.Topic.TopicType.ZHIHU_TOPIC;
+import static com.nobodyhub.transcendence.hub.domain.Topic.TopicType.*;
 
 @Service
 public class TopicServiceImpl implements TopicService {
@@ -23,13 +24,16 @@ public class TopicServiceImpl implements TopicService {
 
     private final ZhihuTopicApiClient zhihuTopicApiClient;
     private final ZhihuQuestionApiClient zhihuQuestionApiClient;
+    private final ZhihuColumnApiClient zhihuColumnApiClient;
 
     public TopicServiceImpl(TopicRepository topicRepository,
                             ZhihuTopicApiClient zhihuTopicApiClient,
-                            ZhihuQuestionApiClient zhihuQuestionApiClient) {
+                            ZhihuQuestionApiClient zhihuQuestionApiClient,
+                            ZhihuColumnApiClient zhihuColumnApiClient) {
         this.topicRepository = topicRepository;
         this.zhihuTopicApiClient = zhihuTopicApiClient;
         this.zhihuQuestionApiClient = zhihuQuestionApiClient;
+        this.zhihuColumnApiClient = zhihuColumnApiClient;
     }
 
     @Override
@@ -166,5 +170,52 @@ public class TopicServiceImpl implements TopicService {
     @Override
     public List<Topic> findByName(String name) {
         return topicRepository.findByName(name);
+    }
+
+    @Override
+    public Topic find(ZhihuColumn zhihuColumn) {
+        Optional<Topic> exist = topicRepository.findFirstByDataIdAndType(zhihuColumn.getId(), ZHIHU_COLUMN);
+        if (exist.isPresent()) {
+            return exist.get();
+        }
+        // if non-exist, create new one with zhihu column
+        Topic topic = createFromZhihuColumn(zhihuColumn);
+        return this.topicRepository.save(topic);
+    }
+
+    private Topic createFromZhihuColumn(ZhihuColumn zhihuColumn) {
+        Topic topic = new Topic();
+        topic.setType(ZHIHU_COLUMN);
+        topic.setDataId(zhihuColumn.getId());
+        topic.setName(zhihuColumn.getTitle());
+        topic.setZhihuColumn(zhihuColumn);
+        return topic;
+    }
+
+    @Override
+    public Topic save(ZhihuColumn zhihuColumn) {
+        // find existing topic if any
+        Optional<Topic> exist = topicRepository.findFirstByDataIdAndType(zhihuColumn.getId(), ZHIHU_COLUMN);
+        if (exist.isPresent()) {
+            Topic existTopic = exist.get();
+            if (existTopic.getType() == ZHIHU_TOPIC) {
+                // if exist, merge with exist
+                ZhihuColumn existZhihuColumn = existTopic.getZhihuColumn();
+                existTopic.setZhihuColumn(MergeUtils.merge(zhihuColumn, existZhihuColumn));
+                return this.topicRepository.save(existTopic);
+            }
+        }
+        // if non-exist, create new one with zhihu topic
+        Topic topic = createFromZhihuColumn(zhihuColumn);
+        return this.topicRepository.save(topic);
+    }
+
+    @Override
+    public Optional<Topic> findByZhihuColumnId(String columnId) {
+        Optional<Topic> topic = topicRepository.findFirstByDataIdAndType(columnId, ZHIHU_COLUMN);
+        if (!topic.isPresent()) {
+            zhihuColumnApiClient.getColumnById(columnId);
+        }
+        return topic;
     }
 }

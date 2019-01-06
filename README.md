@@ -19,6 +19,7 @@ A Generic Web Crawler.
 ### Topic
 * Zhihu Topic
 * Zhihu Question
+* Zhihu Column
 
 ### People
 * Zhihu Member
@@ -26,6 +27,7 @@ A Generic Web Crawler.
 ### Deed
 * Zhihu Answer
 * Zhihu Comment
+* Zhihu Article
 
 ## How to Start
 1. Start Kafka Service

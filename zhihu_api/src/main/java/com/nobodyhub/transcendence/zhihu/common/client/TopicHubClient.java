@@ -1,5 +1,6 @@
 package com.nobodyhub.transcendence.zhihu.common.client;
 
+import com.nobodyhub.transcendence.zhihu.domain.ZhihuColumn;
 import com.nobodyhub.transcendence.zhihu.domain.ZhihuQuestion;
 import com.nobodyhub.transcendence.zhihu.domain.ZhihuTopic;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -19,4 +20,8 @@ public interface TopicHubClient {
     @Async
     @PostMapping(path = "/zhihu-question/save/no-return")
     void saveZhihuQuestionNoReturn(@RequestBody ZhihuQuestion zhihuQuestion);
+
+    @Async
+    @PostMapping(path = "/zhihu-column/save/no-return")
+    void saveColumnNoReturn(@RequestBody ZhihuColumn zhihuColumn);
 }

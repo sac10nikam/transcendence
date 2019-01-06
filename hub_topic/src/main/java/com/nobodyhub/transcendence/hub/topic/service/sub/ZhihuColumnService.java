@@ -1,33 +1,33 @@
 package com.nobodyhub.transcendence.hub.topic.service.sub;
 
 import com.nobodyhub.transcendence.hub.domain.Topic;
-import com.nobodyhub.transcendence.zhihu.domain.ZhihuQuestion;
+import com.nobodyhub.transcendence.zhihu.domain.ZhihuColumn;
 
 import java.util.Optional;
 
-public interface ZhihuQuestionService {
+public interface ZhihuColumnService {
     /**
-     * Find existing topic related with given Zhihu question
+     * Find existing topic related with given Zhihu column
      *
-     * @param zhihuQuestion
+     * @param zhihuColumn
      * @return if found, return directly without merging.
      * if not found, will return newly created one.
      */
-    Topic find(ZhihuQuestion zhihuQuestion);
+    Topic find(ZhihuColumn zhihuColumn);
 
     /**
      * Save zhihu topic to corresponding topic
      *
-     * @param zhihuQuestion
+     * @param zhihuColumn
      * @return if found, merge with exsiting one. if not found, create new one
      */
-    Topic save(ZhihuQuestion zhihuQuestion);
+    Topic save(ZhihuColumn zhihuColumn);
 
     /**
-     * Find topic for given Zhihu question id
+     * Find topic for given Zhihu column id
      *
-     * @param questionId
+     * @param columnId
      * @return
      */
-    Optional<Topic> findByZhihuQuestionId(String questionId);
+    Optional<Topic> findByZhihuColumnId(String columnId);
 }

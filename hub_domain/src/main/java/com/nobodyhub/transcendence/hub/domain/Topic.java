@@ -1,6 +1,7 @@
 package com.nobodyhub.transcendence.hub.domain;
 
 import com.nobodyhub.transcendence.hub.domain.abstr.HubObject;
+import com.nobodyhub.transcendence.zhihu.domain.ZhihuColumn;
 import com.nobodyhub.transcendence.zhihu.domain.ZhihuQuestion;
 import com.nobodyhub.transcendence.zhihu.domain.ZhihuTopic;
 import lombok.Data;
@@ -41,6 +42,8 @@ public class Topic extends HubObject {
 
     private ZhihuQuestion zhihuQuestion;
 
+    private ZhihuColumn zhihuColumn;
+
     public enum TopicType {
         /**
          * Zhihu Answer
@@ -50,6 +53,10 @@ public class Topic extends HubObject {
          * Zhihu Comment
          */
         ZHIHU_QUESTION,
+        /**
+         * Zhihu Column
+         */
+        ZHIHU_COLUMN,
         ;
     }
 }

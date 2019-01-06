@@ -1,6 +1,7 @@
 package com.nobodyhub.transcendence.hub.deed.service;
 
 import com.nobodyhub.transcendence.hub.deed.service.sub.ZhihuAnswerService;
+import com.nobodyhub.transcendence.hub.deed.service.sub.ZhihuArticleService;
 import com.nobodyhub.transcendence.hub.deed.service.sub.ZhihuCommentService;
 import com.nobodyhub.transcendence.hub.domain.Deed;
 import com.nobodyhub.transcendence.hub.domain.People;
@@ -9,9 +10,7 @@ import com.nobodyhub.transcendence.hub.domain.Topic;
 import java.awt.print.Pageable;
 import java.util.List;
 
-public interface DeedService extends ZhihuCommentService, ZhihuAnswerService {
-
-
+public interface DeedService extends ZhihuCommentService, ZhihuAnswerService, ZhihuArticleService {
 
     /**
      * Find all deeds belong to {@link Topic#getName()}

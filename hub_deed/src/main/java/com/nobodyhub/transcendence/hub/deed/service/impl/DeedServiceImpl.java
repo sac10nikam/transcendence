@@ -4,10 +4,12 @@ import com.nobodyhub.transcendence.common.merge.MergeUtils;
 import com.nobodyhub.transcendence.hub.deed.client.PeopleHubClient;
 import com.nobodyhub.transcendence.hub.deed.client.TopicHubClient;
 import com.nobodyhub.transcendence.hub.deed.client.ZhihuAnswerApiClient;
+import com.nobodyhub.transcendence.hub.deed.client.ZhihuArticleApiClient;
 import com.nobodyhub.transcendence.hub.deed.repository.DeedRepository;
 import com.nobodyhub.transcendence.hub.deed.service.DeedService;
 import com.nobodyhub.transcendence.hub.domain.Deed;
 import com.nobodyhub.transcendence.zhihu.domain.ZhihuAnswer;
+import com.nobodyhub.transcendence.zhihu.domain.ZhihuArticle;
 import com.nobodyhub.transcendence.zhihu.domain.ZhihuComment;
 import org.springframework.stereotype.Service;
 
@@ -15,8 +17,7 @@ import java.awt.print.Pageable;
 import java.util.List;
 import java.util.Optional;
 
-import static com.nobodyhub.transcendence.hub.domain.Deed.DeedType.ZHIHU_ANSWER;
-import static com.nobodyhub.transcendence.hub.domain.Deed.DeedType.ZHIHU_COMMENT;
+import static com.nobodyhub.transcendence.hub.domain.Deed.DeedType.*;
 
 @Service
 public class DeedServiceImpl implements DeedService {
@@ -25,15 +26,18 @@ public class DeedServiceImpl implements DeedService {
     private final TopicHubClient topicHubClient;
     private final PeopleHubClient peopleHubClient;
     private final ZhihuAnswerApiClient zhihuAnswerApiClient;
+    private final ZhihuArticleApiClient zhihuArticleApiClient;
 
     public DeedServiceImpl(DeedRepository deedRepository,
                            TopicHubClient topicHubClient,
                            PeopleHubClient peopleHubClient,
-                           ZhihuAnswerApiClient zhihuAnswerApiClient) {
+                           ZhihuAnswerApiClient zhihuAnswerApiClient,
+                           ZhihuArticleApiClient zhihuArticleApiClient) {
         this.deedRepository = deedRepository;
         this.topicHubClient = topicHubClient;
         this.peopleHubClient = peopleHubClient;
         this.zhihuAnswerApiClient = zhihuAnswerApiClient;
+        this.zhihuArticleApiClient = zhihuArticleApiClient;
     }
 
     @Override
@@ -116,7 +120,7 @@ public class DeedServiceImpl implements DeedService {
         deed.setCreatedAt(comment.getCreatedTime());
         deed.setType(ZHIHU_COMMENT);
         deed.setZhihuComment(comment);
-        deed.setParentId(comment.getAnswerId());
+        deed.setParentId(comment.getParentId());
         return deed;
     }
 
@@ -133,5 +137,46 @@ public class DeedServiceImpl implements DeedService {
     @Override
     public List<Deed> findAllChildren(String parentId, Pageable pageable) {
         return deedRepository.findByParentIdOrderByCreatedAt(parentId, pageable);
+    }
+
+    @Override
+    public Deed save(ZhihuArticle article) {
+        Optional<Deed> deed = this.deedRepository.findFirstByDataIdAndType(article.getId(), ZHIHU_ARTICLE);
+        if (deed.isPresent()) {
+            Deed existDeed = deed.get();
+            ZhihuArticle exist = existDeed.getZhihuArticle();
+            exist = MergeUtils.merge(article, exist);
+            existDeed.setZhihuArticle(exist);
+            return deedRepository.save(existDeed);
+        }
+        return createNewDeedByZhihuArticle(article);
+    }
+
+    @Override
+    public Deed find(ZhihuArticle article) {
+        Optional<Deed> deed = this.deedRepository.findFirstByDataIdAndType(article.getId(), ZHIHU_ARTICLE);
+        return deed.orElseGet(() -> createNewDeedByZhihuArticle(article));
+    }
+
+    @Override
+    public Optional<Deed> findByZhihuArticleId(String articleId) {
+        Optional<Deed> deed = this.deedRepository.findFirstByDataIdAndType(articleId, ZHIHU_ARTICLE);
+        if (!deed.isPresent()) {
+            zhihuArticleApiClient.getArticleById(articleId);
+        }
+        return deed;
+    }
+
+    private Deed createNewDeedByZhihuArticle(ZhihuArticle article) {
+        Deed deed = new Deed();
+        deed.setDataId(article.getId());
+        deed.setContent(article.getExcerpt());
+        deed.setExcerpt(article.getExcerpt());
+        deed.setTopic(topicHubClient.getByZhihuColumn(article.getColumn()));
+        deed.setPeople(peopleHubClient.getByZhihuMember(article.getAuthor()));
+        deed.setCreatedAt(article.getCreated());
+        deed.setType(ZHIHU_ARTICLE);
+        deed.setZhihuArticle(article);
+        return deed;
     }
 }

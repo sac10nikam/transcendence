@@ -2,6 +2,7 @@ package com.nobodyhub.transcendence.hub.topic.controller;
 
 import com.nobodyhub.transcendence.hub.domain.Topic;
 import com.nobodyhub.transcendence.hub.topic.service.TopicService;
+import com.nobodyhub.transcendence.zhihu.domain.ZhihuColumn;
 import com.nobodyhub.transcendence.zhihu.domain.ZhihuQuestion;
 import com.nobodyhub.transcendence.zhihu.domain.ZhihuTopic;
 import org.springframework.http.HttpStatus;
@@ -86,7 +87,7 @@ public class TopicController {
      * @param zhihuQuestion
      */
     @PostMapping(path = "/zhihu-question/save")
-    Topic saveZhihuTopic(@RequestBody ZhihuQuestion zhihuQuestion) {
+    Topic saveZhihuQuestion(@RequestBody ZhihuQuestion zhihuQuestion) {
         return topicService.save(zhihuQuestion);
     }
 
@@ -99,5 +100,36 @@ public class TopicController {
     @ResponseStatus(HttpStatus.OK)
     void saveZhihuQuestionNoReturn(@RequestBody ZhihuQuestion zhihuQuestion) {
         topicService.save(zhihuQuestion);
+    }
+
+    /**
+     * Get by zhihu column
+     *
+     * @param zhihuColumn
+     */
+    @PostMapping(path = "/zhihu-column/get")
+    Topic getByZhihuColumn(@RequestBody ZhihuColumn zhihuColumn) {
+        return topicService.find(zhihuColumn);
+    }
+
+    /**
+     * Save zhihu column
+     *
+     * @param zhihuColumn
+     */
+    @PostMapping(path = "/zhihu-column/save")
+    Topic saveZhihuQuestion(@RequestBody ZhihuColumn zhihuColumn) {
+        return topicService.save(zhihuColumn);
+    }
+
+    /**
+     * Save zhihu column without return value
+     *
+     * @param zhihuColumn
+     */
+    @PostMapping(path = "/zhihu-column/save/no-return")
+    @ResponseStatus(HttpStatus.OK)
+    void saveZhihuQuestionNoReturn(@RequestBody ZhihuColumn zhihuColumn) {
+        topicService.save(zhihuColumn);
     }
 }
