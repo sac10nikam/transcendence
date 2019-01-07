@@ -1,4 +1,4 @@
-package com.nobodyhub.transcendence.zhihu.api_throttle;
+package com.nobodyhub.transcendence.zhihu.throttle;
 
 import com.nobodyhub.transcendence.api.common.ApiCommonConfiguration;
 import org.springframework.boot.SpringApplication;

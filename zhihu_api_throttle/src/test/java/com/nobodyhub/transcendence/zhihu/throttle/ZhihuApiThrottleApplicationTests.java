@@ -1,4 +1,4 @@
-package com.nobodyhub.transcendence.zhihu.api_throttle;
+package com.nobodyhub.transcendence.zhihu.throttle;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

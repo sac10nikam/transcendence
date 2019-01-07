@@ -1,4 +1,4 @@
-package com.nobodyhub.transcendence.zhihu.api_throttle.service;
+package com.nobodyhub.transcendence.zhihu.throttle.service;
 
 import com.nobodyhub.transcendence.api.common.message.ApiChannel;
 

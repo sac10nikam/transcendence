@@ -1,4 +1,4 @@
-package com.nobodyhub.transcendence.zhihu.api_throttle.service;
+package com.nobodyhub.transcendence.zhihu.throttle.service;
 
 import com.nobodyhub.transcendence.api.common.message.ApiChannelBaseService;
 import lombok.extern.slf4j.Slf4j;
