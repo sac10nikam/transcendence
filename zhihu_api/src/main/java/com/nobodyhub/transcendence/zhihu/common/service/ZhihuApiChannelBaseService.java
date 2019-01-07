@@ -2,13 +2,13 @@ package com.nobodyhub.transcendence.zhihu.common.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nobodyhub.transcendence.api.common.converter.ApiResponseConverter;
+import com.nobodyhub.transcendence.api.common.cookies.ApiCookies;
 import com.nobodyhub.transcendence.api.common.executor.ApiAsyncExecutor;
 import com.nobodyhub.transcendence.api.common.kafka.KafkaHeaderHandler;
 import com.nobodyhub.transcendence.api.common.message.ApiChannel;
 import com.nobodyhub.transcendence.api.common.message.ApiChannelBaseService;
 import com.nobodyhub.transcendence.api.common.message.ApiRequestMessage;
 import com.nobodyhub.transcendence.zhihu.common.configuration.ZhihuApiProperties;
-import com.nobodyhub.transcendence.zhihu.common.cookies.ZhihuApiCookies;
 import com.nobodyhub.transcendence.zhihu.common.domain.ZhihuApiPaging;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.stream.binder.PollableMessageSource;
@@ -20,7 +20,7 @@ import java.util.Optional;
 public abstract class ZhihuApiChannelBaseService<T extends ApiChannel> extends ApiChannelBaseService<T> {
     protected final ObjectMapper objectMapper;
     protected final ZhihuApiProperties apiProperties;
-    protected final ZhihuApiCookies cookies;
+    protected final ApiCookies cookies;
 
     protected ZhihuApiChannelBaseService(T channel,
                                          ApiResponseConverter converter,
@@ -29,7 +29,7 @@ public abstract class ZhihuApiChannelBaseService<T extends ApiChannel> extends A
                                          PollableMessageSource requestMessageSource,
                                          ObjectMapper objectMapper,
                                          ZhihuApiProperties apiProperties,
-                                         ZhihuApiCookies cookies) {
+                                         ApiCookies cookies) {
         super(channel, converter, apiAsyncExecutor, headerHandler, requestMessageSource);
         this.objectMapper = objectMapper;
         this.apiProperties = apiProperties;

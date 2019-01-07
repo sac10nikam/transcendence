@@ -4,13 +4,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nobodyhub.transcendence.api.common.converter.ApiResponseConverter;
+import com.nobodyhub.transcendence.api.common.cookies.ApiCookies;
 import com.nobodyhub.transcendence.api.common.executor.ApiAsyncExecutor;
 import com.nobodyhub.transcendence.api.common.kafka.KafkaHeaderHandler;
 import com.nobodyhub.transcendence.api.common.message.ApiRequestMessage;
 import com.nobodyhub.transcendence.zhihu.common.client.DeedHubClient;
 import com.nobodyhub.transcendence.zhihu.common.client.TopicHubClient;
 import com.nobodyhub.transcendence.zhihu.common.configuration.ZhihuApiProperties;
-import com.nobodyhub.transcendence.zhihu.common.cookies.ZhihuApiCookies;
 import com.nobodyhub.transcendence.zhihu.common.service.ZhihuApiChannelBaseService;
 import com.nobodyhub.transcendence.zhihu.domain.ZhihuAnswer;
 import com.nobodyhub.transcendence.zhihu.domain.ZhihuArticle;
@@ -66,7 +66,7 @@ public class ZhihuTopicApiService extends ZhihuApiChannelBaseService<ZhihuTopicA
                                 @Qualifier(ZHIHU_TOPIC_REQUEST_CHANNEL) PollableMessageSource requestMessageSource,
                                 ObjectMapper objectMapper,
                                 ZhihuApiProperties apiProperties,
-                                ZhihuApiCookies cookies,
+                                ApiCookies cookies,
                                 TopicHubClient topicHubClient,
                                 DeedHubClient deedHubClient) {
         super(channel, converter, apiAsyncExecutor, headerHandler, requestMessageSource, objectMapper, apiProperties, cookies);
@@ -86,7 +86,7 @@ public class ZhihuTopicApiService extends ZhihuApiChannelBaseService<ZhihuTopicA
     @StreamListener(IN_ZHIHU_TOPIC_CALLBACK_TOPIC_PAGE)
     public void receiveTopicHtmlPage(@Payload byte[] message,
                                      @Headers MessageHeaders messageHeaders) {
-        this.cookies.update(messageHeaders);
+        this.cookies.extract(messageHeaders);
         Optional<String> html = converter.convert(message, String.class);
         if (html.isPresent()) {
             Document doc = Jsoup.parse(html.get());
@@ -141,7 +141,7 @@ public class ZhihuTopicApiService extends ZhihuApiChannelBaseService<ZhihuTopicA
     @StreamListener(IN_ZHIHU_TOPIC_CALLBACK_PLAZZA_LIST)
     public void receiveTopicPlazzaList(@Payload byte[] message,
                                        @Headers MessageHeaders messageHeaders) {
-        this.cookies.update(messageHeaders);
+        this.cookies.extract(messageHeaders);
         Optional<ZhihuTopicPlazzaList> plazzaList = converter.convert(message, ZhihuTopicPlazzaList.class);
         if (plazzaList.isPresent()) {
             List<String> htmls = plazzaList.get().getMsg();
@@ -190,7 +190,7 @@ public class ZhihuTopicApiService extends ZhihuApiChannelBaseService<ZhihuTopicA
     @StreamListener(IN_ZHIHU_TOPIC_CALLBACK_TOPIC)
     public void receiveTopic(@Payload byte[] message,
                              @Headers MessageHeaders messageHeaders) {
-        this.cookies.update(messageHeaders);
+        this.cookies.extract(messageHeaders);
         Optional<ZhihuTopic> topic = converter.convert(message, ZhihuTopic.class);
         topic.ifPresent(this.topicHubClient::saveZhihuTopicNoReturn);
     }
@@ -212,7 +212,7 @@ public class ZhihuTopicApiService extends ZhihuApiChannelBaseService<ZhihuTopicA
     @StreamListener(IN_ZHIHU_TOPIC_CALLBACK_TOPIC_LIST)
     public void receiveTopicList(@Payload byte[] message,
                                  @Headers MessageHeaders messageHeaders) {
-        this.cookies.update(messageHeaders);
+        this.cookies.extract(messageHeaders);
         Optional<ZhihuTopicList> topicList = converter.convert(message, ZhihuTopicList.class);
         if (topicList.isPresent()) {
             ZhihuTopicList list = topicList.get();
@@ -239,7 +239,7 @@ public class ZhihuTopicApiService extends ZhihuApiChannelBaseService<ZhihuTopicA
     @StreamListener(IN_ZHIHU_TOPIC_CALLBACK_FEED_LIST)
     public void receiveTopicFeeds(@Payload byte[] message,
                                   @Headers MessageHeaders messageHeaders) {
-        this.cookies.update(messageHeaders);
+        this.cookies.extract(messageHeaders);
         Optional<ZhihuTopicFeedList> feedList = converter.convert(message, ZhihuTopicFeedList.class);
         if (feedList.isPresent()) {
             ZhihuTopicFeedList list = feedList.get();

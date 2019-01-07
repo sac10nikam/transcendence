@@ -2,13 +2,13 @@ package com.nobodyhub.transcendence.zhihu.answer.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nobodyhub.transcendence.api.common.converter.ApiResponseConverter;
+import com.nobodyhub.transcendence.api.common.cookies.ApiCookies;
 import com.nobodyhub.transcendence.api.common.executor.ApiAsyncExecutor;
 import com.nobodyhub.transcendence.api.common.kafka.KafkaHeaderHandler;
 import com.nobodyhub.transcendence.api.common.message.ApiRequestMessage;
 import com.nobodyhub.transcendence.zhihu.answer.domain.ZhihuAnswerList;
 import com.nobodyhub.transcendence.zhihu.common.client.DeedHubClient;
 import com.nobodyhub.transcendence.zhihu.common.configuration.ZhihuApiProperties;
-import com.nobodyhub.transcendence.zhihu.common.cookies.ZhihuApiCookies;
 import com.nobodyhub.transcendence.zhihu.common.domain.ZhihuApiPaging;
 import com.nobodyhub.transcendence.zhihu.common.service.ZhihuApiChannelBaseService;
 import com.nobodyhub.transcendence.zhihu.domain.ZhihuAnswer;
@@ -41,7 +41,7 @@ public class ZhihuAnswerApiService extends ZhihuApiChannelBaseService<ZhihuAnswe
                                  @Qualifier(ZHIHU_ANSWER_REQUEST_CHANNEL) PollableMessageSource requestMessageSource,
                                  ObjectMapper objectMapper,
                                  ZhihuApiProperties apiProperties,
-                                 ZhihuApiCookies cookies,
+                                 ApiCookies cookies,
                                  DeedHubClient deedHubClient) {
         super(channel, converter, apiAsyncExecutor, headerHandler, requestMessageSource, objectMapper, apiProperties, cookies);
         this.deedHubClient = deedHubClient;
@@ -62,7 +62,7 @@ public class ZhihuAnswerApiService extends ZhihuApiChannelBaseService<ZhihuAnswe
     @StreamListener(IN_ZHIHU_ANSWER_CALLBACK_ANSWER)
     public void receiveAnswer(@Payload byte[] message,
                               @Headers MessageHeaders messageHeaders) {
-        this.cookies.update(messageHeaders);
+        this.cookies.extract(messageHeaders);
         Optional<ZhihuAnswer> answer = converter.convert(message, ZhihuAnswer.class);
         answer.ifPresent(deedHubClient::saveZhihuAnswerNoReturn);
     }
@@ -88,7 +88,7 @@ public class ZhihuAnswerApiService extends ZhihuApiChannelBaseService<ZhihuAnswe
     @StreamListener(IN_ZHIHU_ANSWER_CALLBACK_MEMBER_ANSWER)
     public void receiveMemberAnswer(@Payload byte[] message,
                                     @Headers MessageHeaders messageHeaders) {
-        this.cookies.update(messageHeaders);
+        this.cookies.extract(messageHeaders);
         Optional<ZhihuAnswerList> zhihuAnswerList = converter.convert(message, ZhihuAnswerList.class);
         zhihuAnswerList.ifPresent((answerList) -> {
             ZhihuApiPaging paging = answerList.getPaging();
@@ -118,7 +118,7 @@ public class ZhihuAnswerApiService extends ZhihuApiChannelBaseService<ZhihuAnswe
     @StreamListener(IN_ZHIHU_ANSWER_CALLBACK_QUESTION_ANSWER)
     public void receiveQuestionAnswer(@Payload byte[] message,
                                       @Headers MessageHeaders messageHeaders) {
-        this.cookies.update(messageHeaders);
+        this.cookies.extract(messageHeaders);
         Optional<ZhihuAnswerList> zhihuAnswerList = converter.convert(message, ZhihuAnswerList.class);
         zhihuAnswerList.ifPresent((answerList) -> {
             ZhihuApiPaging paging = answerList.getPaging();

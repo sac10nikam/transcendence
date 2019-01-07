@@ -2,13 +2,13 @@ package com.nobodyhub.transcendence.zhihu.article.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nobodyhub.transcendence.api.common.converter.ApiResponseConverter;
+import com.nobodyhub.transcendence.api.common.cookies.ApiCookies;
 import com.nobodyhub.transcendence.api.common.executor.ApiAsyncExecutor;
 import com.nobodyhub.transcendence.api.common.kafka.KafkaHeaderHandler;
 import com.nobodyhub.transcendence.api.common.message.ApiRequestMessage;
 import com.nobodyhub.transcendence.zhihu.article.domain.ZhihuColumnArticles;
 import com.nobodyhub.transcendence.zhihu.common.client.DeedHubClient;
 import com.nobodyhub.transcendence.zhihu.common.configuration.ZhihuApiProperties;
-import com.nobodyhub.transcendence.zhihu.common.cookies.ZhihuApiCookies;
 import com.nobodyhub.transcendence.zhihu.common.service.ZhihuApiChannelBaseService;
 import com.nobodyhub.transcendence.zhihu.domain.ZhihuArticle;
 import lombok.extern.slf4j.Slf4j;
@@ -44,7 +44,7 @@ public class ZhihuArticleApiService extends ZhihuApiChannelBaseService<ZhihuArti
                                      @Qualifier(ZHIHU_ARTICLE_REQUEST_CHANNEL) PollableMessageSource requestMessageSource,
                                      ObjectMapper objectMapper,
                                      ZhihuApiProperties apiProperties,
-                                     ZhihuApiCookies cookies,
+                                     ApiCookies cookies,
                                      DeedHubClient deedHubClient) {
         super(channel, converter, apiAsyncExecutor, headerHandler, requestMessageSource, objectMapper, apiProperties, cookies);
         this.deedHubClient = deedHubClient;
@@ -64,7 +64,7 @@ public class ZhihuArticleApiService extends ZhihuApiChannelBaseService<ZhihuArti
     @StreamListener(IN_ZHIHU_ARTICLE_CALLBACK_ARTICLE)
     public void receiveArticleBasics(@Payload byte[] message,
                                      @Headers MessageHeaders messageHeaders) {
-        this.cookies.update(messageHeaders);
+        this.cookies.extract(messageHeaders);
         Optional<ZhihuArticle> article = converter.convert(message, ZhihuArticle.class);
         article.ifPresent(deedHubClient::saveZhihuArticleNoReturn);
     }
@@ -83,7 +83,7 @@ public class ZhihuArticleApiService extends ZhihuApiChannelBaseService<ZhihuArti
     @StreamListener(IN_ZHIHU_ARTICLE_CALLBACK_ARTICLE_CONTENT)
     public void receiveArticleContents(@Payload byte[] message,
                                        @Headers MessageHeaders messageHeaders) {
-        this.cookies.update(messageHeaders);
+        this.cookies.extract(messageHeaders);
         Optional<ApiRequestMessage> origMsg = headerHandler.getOriginRequest(messageHeaders);
         if (origMsg.isPresent() && origMsg.get().getUrlVariables().length == 1) {
             Optional<String> html = converter.convert(message, String.class);
@@ -121,7 +121,7 @@ public class ZhihuArticleApiService extends ZhihuApiChannelBaseService<ZhihuArti
     @StreamListener(IN_ZHIHU_ARTICLE_CALLBACK_COLUMN_ARTICLE)
     public void receiveArticleOfColumn(@Payload byte[] message,
                                        @Headers MessageHeaders messageHeaders) {
-        this.cookies.update(messageHeaders);
+        this.cookies.extract(messageHeaders);
         Optional<ZhihuColumnArticles> columnArticles = converter.convert(message, ZhihuColumnArticles.class);
         if (columnArticles.isPresent()) {
             List<ZhihuArticle> articleList = columnArticles.get().getData();

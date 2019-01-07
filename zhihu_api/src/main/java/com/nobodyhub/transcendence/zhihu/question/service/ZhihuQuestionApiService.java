@@ -2,12 +2,12 @@ package com.nobodyhub.transcendence.zhihu.question.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nobodyhub.transcendence.api.common.converter.ApiResponseConverter;
+import com.nobodyhub.transcendence.api.common.cookies.ApiCookies;
 import com.nobodyhub.transcendence.api.common.executor.ApiAsyncExecutor;
 import com.nobodyhub.transcendence.api.common.kafka.KafkaHeaderHandler;
 import com.nobodyhub.transcendence.api.common.message.ApiRequestMessage;
 import com.nobodyhub.transcendence.zhihu.common.client.TopicHubClient;
 import com.nobodyhub.transcendence.zhihu.common.configuration.ZhihuApiProperties;
-import com.nobodyhub.transcendence.zhihu.common.cookies.ZhihuApiCookies;
 import com.nobodyhub.transcendence.zhihu.common.service.ZhihuApiChannelBaseService;
 import com.nobodyhub.transcendence.zhihu.domain.ZhihuQuestion;
 import lombok.extern.slf4j.Slf4j;
@@ -39,7 +39,7 @@ public class ZhihuQuestionApiService extends ZhihuApiChannelBaseService<ZhihuQue
                                       @Qualifier(ZHIHU_QUESTION_REQUEST_CHANNEL) PollableMessageSource requestMessageSource,
                                       ObjectMapper objectMapper,
                                       ZhihuApiProperties apiProperties,
-                                      ZhihuApiCookies cookies,
+                                      ApiCookies cookies,
                                       TopicHubClient topicHubClient) {
         super(channel, converter, apiAsyncExecutor, headerHandler, requestMessageSource, objectMapper, apiProperties, cookies);
         this.topicHubClient = topicHubClient;
@@ -54,7 +54,7 @@ public class ZhihuQuestionApiService extends ZhihuApiChannelBaseService<ZhihuQue
     @StreamListener(IN_ZHIHU_QUESTION_CALLBACK_QUESTION)
     public void receiveQuestion(@Payload byte[] message,
                                 @Headers MessageHeaders messageHeaders) {
-        this.cookies.update(messageHeaders);
+        this.cookies.extract(messageHeaders);
         Optional<ZhihuQuestion> question = converter.convert(message, ZhihuQuestion.class);
         question.ifPresent(topicHubClient::saveZhihuQuestionNoReturn);
     }

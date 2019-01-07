@@ -2,12 +2,12 @@ package com.nobodyhub.transcendence.zhihu.member.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nobodyhub.transcendence.api.common.converter.ApiResponseConverter;
+import com.nobodyhub.transcendence.api.common.cookies.ApiCookies;
 import com.nobodyhub.transcendence.api.common.executor.ApiAsyncExecutor;
 import com.nobodyhub.transcendence.api.common.kafka.KafkaHeaderHandler;
 import com.nobodyhub.transcendence.api.common.message.ApiRequestMessage;
 import com.nobodyhub.transcendence.zhihu.common.client.PeopleHubClient;
 import com.nobodyhub.transcendence.zhihu.common.configuration.ZhihuApiProperties;
-import com.nobodyhub.transcendence.zhihu.common.cookies.ZhihuApiCookies;
 import com.nobodyhub.transcendence.zhihu.common.service.ZhihuApiChannelBaseService;
 import com.nobodyhub.transcendence.zhihu.domain.ZhihuMember;
 import lombok.extern.slf4j.Slf4j;
@@ -40,7 +40,7 @@ public class ZhihuMemberApiService extends ZhihuApiChannelBaseService<ZhihuMembe
                                     @Qualifier(ZHIHU_MEMBER_REQUEST_CHANNEL) PollableMessageSource requestMessageSource,
                                     ObjectMapper objectMapper,
                                     ZhihuApiProperties apiProperties,
-                                    ZhihuApiCookies cookies,
+                                    ApiCookies cookies,
                                     PeopleHubClient peopleHubClient) {
         super(channel, converter, apiAsyncExecutor, headerHandler, requestMessageSource, objectMapper, apiProperties, cookies);
         this.peopleHubClient = peopleHubClient;
@@ -60,7 +60,7 @@ public class ZhihuMemberApiService extends ZhihuApiChannelBaseService<ZhihuMembe
     @StreamListener(IN_ZHIHU_MEMBER_CALLBACK_MEMBER)
     public void receiveMember(@Payload byte[] message,
                               @Headers MessageHeaders messageHeaders) {
-        this.cookies.update(messageHeaders);
+        this.cookies.extract(messageHeaders);
         Optional<ZhihuMember> member = converter.convert(message, ZhihuMember.class);
         member.ifPresent(peopleHubClient::saveZhihuMemberNoReturn);
     }
