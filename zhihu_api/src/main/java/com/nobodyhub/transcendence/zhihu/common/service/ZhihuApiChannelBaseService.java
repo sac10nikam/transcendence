@@ -2,7 +2,6 @@ package com.nobodyhub.transcendence.zhihu.common.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nobodyhub.transcendence.api.common.converter.ApiResponseConverter;
-import com.nobodyhub.transcendence.api.common.cookies.ApiCookies;
 import com.nobodyhub.transcendence.api.common.executor.ApiAsyncExecutor;
 import com.nobodyhub.transcendence.api.common.kafka.KafkaHeaderHandler;
 import com.nobodyhub.transcendence.api.common.message.ApiChannel;
@@ -16,17 +15,14 @@ import java.util.Optional;
 @Slf4j
 public abstract class ZhihuApiChannelBaseService<T extends ApiChannel> extends ApiChannelBaseService<T> {
     protected final ObjectMapper objectMapper;
-    protected final ApiCookies cookies;
 
     protected ZhihuApiChannelBaseService(T channel,
                                          ApiResponseConverter converter,
                                          ApiAsyncExecutor apiAsyncExecutor,
                                          KafkaHeaderHandler headerHandler,
-                                         ObjectMapper objectMapper,
-                                         ApiCookies cookies) {
+                                         ObjectMapper objectMapper) {
         super(channel, converter, apiAsyncExecutor, headerHandler);
         this.objectMapper = objectMapper;
-        this.cookies = cookies;
     }
 
     /**

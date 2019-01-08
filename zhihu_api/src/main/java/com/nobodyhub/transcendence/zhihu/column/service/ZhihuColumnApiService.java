@@ -2,7 +2,6 @@ package com.nobodyhub.transcendence.zhihu.column.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nobodyhub.transcendence.api.common.converter.ApiResponseConverter;
-import com.nobodyhub.transcendence.api.common.cookies.ApiCookies;
 import com.nobodyhub.transcendence.api.common.executor.ApiAsyncExecutor;
 import com.nobodyhub.transcendence.api.common.kafka.KafkaHeaderHandler;
 import com.nobodyhub.transcendence.api.common.message.ApiRequestMessage;
@@ -12,8 +11,6 @@ import com.nobodyhub.transcendence.zhihu.domain.ZhihuColumn;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.annotation.StreamListener;
-import org.springframework.messaging.MessageHeaders;
-import org.springframework.messaging.handler.annotation.Headers;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Service;
@@ -33,9 +30,8 @@ public class ZhihuColumnApiService extends ZhihuApiChannelBaseService<ZhihuColum
                                     ApiAsyncExecutor apiAsyncExecutor,
                                     KafkaHeaderHandler headerHandler,
                                     ObjectMapper objectMapper,
-                                    ApiCookies cookies,
                                     TopicHubClient topicHubClient) {
-        super(channel, converter, apiAsyncExecutor, headerHandler, objectMapper, cookies);
+        super(channel, converter, apiAsyncExecutor, headerHandler, objectMapper);
         this.topicHubClient = topicHubClient;
     }
 
@@ -51,9 +47,7 @@ public class ZhihuColumnApiService extends ZhihuApiChannelBaseService<ZhihuColum
     }
 
     @StreamListener(IN_ZHIHU_COLUMN_CALLBACK_COLUMN)
-    public void receiveArticle(@Payload byte[] message,
-                               @Headers MessageHeaders messageHeaders) {
-        this.cookies.extract(messageHeaders);
+    public void receiveArticle(@Payload byte[] message) {
         Optional<ZhihuColumn> column = converter.convert(message, ZhihuColumn.class);
         column.ifPresent(topicHubClient::saveColumnNoReturn);
     }

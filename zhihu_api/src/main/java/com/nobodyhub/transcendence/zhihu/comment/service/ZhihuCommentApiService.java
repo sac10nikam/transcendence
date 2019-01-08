@@ -3,7 +3,6 @@ package com.nobodyhub.transcendence.zhihu.comment.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
 import com.nobodyhub.transcendence.api.common.converter.ApiResponseConverter;
-import com.nobodyhub.transcendence.api.common.cookies.ApiCookies;
 import com.nobodyhub.transcendence.api.common.executor.ApiAsyncExecutor;
 import com.nobodyhub.transcendence.api.common.kafka.KafkaHeaderHandler;
 import com.nobodyhub.transcendence.api.common.message.ApiRequestMessage;
@@ -38,9 +37,8 @@ public class ZhihuCommentApiService extends ZhihuApiChannelBaseService<ZhihuComm
                                   ApiAsyncExecutor apiAsyncExecutor,
                                   KafkaHeaderHandler headerHandler,
                                   ObjectMapper objectMapper,
-                                  ApiCookies cookies,
                                   DeedHubClient deedHubClient) {
-        super(channel, converter, apiAsyncExecutor, headerHandler, objectMapper, cookies);
+        super(channel, converter, apiAsyncExecutor, headerHandler, objectMapper);
         this.deedHubClient = deedHubClient;
     }
 
@@ -62,7 +60,6 @@ public class ZhihuCommentApiService extends ZhihuApiChannelBaseService<ZhihuComm
     @StreamListener(IN_ZHIHU_COMMENT_CALLBACK_ANSWER_COMMENT)
     public void receiveAnswerComments(@Payload byte[] message,
                                       @Headers MessageHeaders messageHeaders) {
-        this.cookies.extract(messageHeaders);
         Optional<ZhihuComments> comments = converter.convert(message, ZhihuComments.class);
         Optional<Offset> offset = getOffset(messageHeaders);
         if (comments.isPresent() && offset.isPresent()) {
@@ -95,7 +92,6 @@ public class ZhihuCommentApiService extends ZhihuApiChannelBaseService<ZhihuComm
     @StreamListener(IN_ZHIHU_COMMENT_CALLBACK_ARTICLE_COMMENT)
     public void receiveArticleComments(@Payload byte[] message,
                                        @Headers MessageHeaders messageHeaders) {
-        this.cookies.extract(messageHeaders);
         Optional<ZhihuComments> comments = converter.convert(message, ZhihuComments.class);
         Optional<Offset> offset = getOffset(messageHeaders);
         if (comments.isPresent() && offset.isPresent()) {
@@ -128,7 +124,6 @@ public class ZhihuCommentApiService extends ZhihuApiChannelBaseService<ZhihuComm
     @StreamListener(IN_ZHIHU_COMMENT_CALLBACK_QUESTION_COMMENT)
     public void receiveQuestionComments(@Payload byte[] message,
                                         @Headers MessageHeaders messageHeaders) {
-        this.cookies.extract(messageHeaders);
         Optional<ZhihuComments> comments = converter.convert(message, ZhihuComments.class);
         Optional<Offset> offset = getOffset(messageHeaders);
         if (comments.isPresent() && offset.isPresent()) {
