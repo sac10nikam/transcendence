@@ -1,0 +1,11 @@
+# Server configuraion
+server:
+  port: 9110
+
+# #######
+# Throttle Configuration
+# #######
+zhihu:
+  api:
+    # This value should be set according to the zhihu api
+    delay: 200

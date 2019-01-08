@@ -10,6 +10,7 @@ A Generic Web Crawler.
 |9100|gateway|Gateway Server|
 |9101|config|Configuration Server|
 |9110|zhihu-api|Zhihu API|
+|9120|zhihu-api-throttle|Zhihu API Throttle|
 |9810|hub-topic|Topic Hub|
 |9820|hub-people|People Hub|
 |9830|hub-deed|Deed Hub|
