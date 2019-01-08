@@ -15,7 +15,6 @@ public class ApiRedisConfiguration {
 
     @Bean
     public StringRedisTemplate redisTemplate() {
-        StringRedisTemplate template = new StringRedisTemplate(redisConnectionFactory());
-        return template;
+        return new StringRedisTemplate(redisConnectionFactory());
     }
 }
