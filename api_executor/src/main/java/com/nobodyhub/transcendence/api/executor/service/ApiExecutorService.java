@@ -3,6 +3,7 @@ package com.nobodyhub.transcendence.api.executor.service;
 
 import com.nobodyhub.transcendence.api.common.kafka.KafkaHeaderHandler;
 import com.nobodyhub.transcendence.api.common.message.ApiRequestMessage;
+import com.nobodyhub.transcendence.api.executor.cookies.ApiCookies;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.stream.binding.BinderAwareChannelResolver;
 import org.springframework.http.HttpEntity;
@@ -31,18 +32,22 @@ public class ApiExecutorService {
     private final RestTemplate restTemplate;
     private final BinderAwareChannelResolver resolver;
     private final KafkaHeaderHandler headerHandler;
+    private final ApiCookies cookies;
 
     public ApiExecutorService(RestTemplate restTemplate,
                               BinderAwareChannelResolver resolver,
-                              KafkaHeaderHandler headerHandler) {
+                              KafkaHeaderHandler headerHandler,
+                              ApiCookies cookies) {
         this.restTemplate = restTemplate;
         this.resolver = resolver;
         this.headerHandler = headerHandler;
+        this.cookies = cookies;
     }
 
     @Async
     public void fetchAndDispatch(ApiRequestMessage requestMessage) {
         // make http request
+        cookies.inject(requestMessage);
         HttpEntity<MultiValueMap<String, Object>> entity = new HttpEntity<>(requestMessage.getBody(), requestMessage.getHeaders());
         byte[] respBody = null;
         HttpHeaders respHeaders = null;
@@ -56,6 +61,7 @@ public class ApiExecutorService {
                 byte[].class);
             respBody = responseEntity.getBody();
             respHeaders = responseEntity.getHeaders();
+            this.cookies.extract(respHeaders, requestMessage.getTopic());
         } catch (RestClientException e) {
             log.error("Fail to process request message {}!", requestMessage);
             log.error("with error", e);

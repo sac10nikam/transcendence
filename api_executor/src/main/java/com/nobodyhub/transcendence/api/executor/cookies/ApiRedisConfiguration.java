@@ -1,4 +1,4 @@
-package com.nobodyhub.transcendence.api.common.cookies;
+package com.nobodyhub.transcendence.api.executor.cookies;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

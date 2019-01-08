@@ -1,6 +1,7 @@
 package com.nobodyhub.transcendence.api.executor;
 
 import com.nobodyhub.transcendence.api.common.ApiCommonConfiguration;
+import com.nobodyhub.transcendence.api.executor.cookies.ApiRedisConfiguration;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -15,7 +16,7 @@ import org.springframework.web.client.RestTemplate;
 @EnableFeignClients
 @SpringBootApplication
 @EnableBinding
-@Import(ApiCommonConfiguration.class)
+@Import({ApiCommonConfiguration.class, ApiRedisConfiguration.class})
 public class ApiExecutorApplication {
 
     public static void main(String[] args) {
