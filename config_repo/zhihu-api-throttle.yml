@@ -1,0 +1,20 @@
+# Channel configuration
+spring.cloud.stream:
+  default:
+    content-type: application/json
+    group: zhihu-api-throttle
+  bindings:
+    zhihu-answer-request-channel:
+      destination: out-zhihu-answer-request
+    zhihu-article-request-channel:
+      destination: out-zhihu-article-request
+    zhihu-column-request-channel:
+      destination: out-zhihu-column-request
+    zhihu-comment-request-channel:
+      destination: out-zhihu-comment-request
+    zhihu-member-request-channel:
+      destination: out-zhihu-member-request
+    zhihu-question-request-channel:
+      destination: out-zhihu-question-request
+    zhihu-topic-request-channel:
+      destination: out-zhihu-topic-request

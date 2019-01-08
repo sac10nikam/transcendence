@@ -1,9 +1,3 @@
-# Database Configuration
-spring:
-  data:
-    mongodb:
-      database: transcendence
-
 # Kafka Configuration
 spring.cloud.stream.kafka:
   streams:
@@ -14,10 +8,6 @@ spring.cloud.stream.kafka:
 # Channel configuration
 spring.cloud.stream.bindings:
   # Topic
-  zhihu-topic-request-channel:
-    content-type: application/json
-    destination: out-zhihu-topic-request
-    group: zhihu-topic
   out-zhihu-topic-request:
     content-type: application/json
   in-zhihu-topic-callback-topic-page:
@@ -36,10 +26,6 @@ spring.cloud.stream.bindings:
     content-type: application/octet-stream
     group: zhihu-topic
   # Answer
-  zhihu-answer-request-channel:
-    content-type: application/json
-    destination: out-zhihu-answer-request
-    group: zhihu-answer
   out-zhihu-answer-request:
     content-type: application/json
   in-zhihu-answer-callback-answer:
@@ -52,30 +38,18 @@ spring.cloud.stream.bindings:
     content-type: application/octet-stream
     group: zhihu-answer
   # Member
-  zhihu-member-request-channel:
-    content-type: application/json
-    destination: out-zhihu-member-request
-    group: zhihu-member
   out-zhihu-member-request:
     content-type: application/json
   in-zhihu-member-callback-member:
     content-type: application/octet-stream
     group: zhihu-member
   # Question
-  zhihu-question-request-channel:
-    content-type: application/json
-    destination: out-zhihu-question-request
-    group: zhihu-question
   out-zhihu-question-request:
     content-type: application/json
   in-zhihu-question-callback-question:
     content-type: application/octet-stream
     group: zhihu-question
   # Article
-  zhihu-article-request-channel:
-    content-type: application/json
-    destination: out-zhihu-article-request
-    group: zhihu-article
   out-zhihu-article-request:
     content-type: application/json
   in-zhihu-article-callback-article:
@@ -88,19 +62,12 @@ spring.cloud.stream.bindings:
     content-type: application/octet-stream
     group: zhihu-article
   # Column
-  zhihu-column-request-channel:
-    content-type: application/json
-    destination: out-zhihu-column-request
-    group: zhihu-column
   out-zhihu-column-request:
     content-type: application/json
   in-zhihu-column-callback-column:
     content-type: application/octet-stream
     group: zhihu-column
   # Comment
-  zhihu-comment-request-channel:
-    content-type: application/json
-    destination: out-zhihu-comment-request
   out-zhihu-comment-request:
     content-type: application/json
   in-zhihu-comment-callback-answer-comment:

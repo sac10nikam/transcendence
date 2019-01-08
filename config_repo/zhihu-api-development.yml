@@ -1,12 +1,3 @@
-# Database Configuration
-spring:
-  data:
-    mongodb:
-      host: javis-server
-      port: 27017
-      #username:
-      #password:
-
 # Kafka Configuration
 spring.cloud.stream.kafka:
   binder:
