@@ -1,7 +1,6 @@
 package com.nobodyhub.transcendence.zhihu.throttle.service;
 
 import com.nobodyhub.transcendence.api.common.converter.ApiResponseConverter;
-import com.nobodyhub.transcendence.api.common.cookies.ApiCookies;
 import com.nobodyhub.transcendence.api.common.executor.ApiAsyncExecutor;
 import com.nobodyhub.transcendence.api.common.kafka.KafkaHeaderHandler;
 import com.nobodyhub.transcendence.api.common.message.ApiChannelBaseService;
@@ -20,7 +19,6 @@ import static com.nobodyhub.transcendence.zhihu.throttle.service.ZhihuApiChannel
 @Service
 @EnableBinding(ZhihuApiChannel.class)
 public class ZhihuApiThrottleService extends ApiChannelBaseService<ZhihuApiChannel> {
-    private final ApiCookies cookies;
     private final PollableMessageSource answerRequestSource;
     private final PollableMessageSource articleRequestSource;
     private final PollableMessageSource columnRequestSource;
@@ -34,7 +32,6 @@ public class ZhihuApiThrottleService extends ApiChannelBaseService<ZhihuApiChann
                                       ApiResponseConverter converter,
                                       ApiAsyncExecutor apiAsyncExecutor,
                                       KafkaHeaderHandler headerHandler,
-                                      ApiCookies cookies,
                                       @Qualifier(ZHIHU_ANSWER_REQUEST_CHANNEL) PollableMessageSource answerRequestSource,
                                       @Qualifier(ZHIHU_ARTICLE_REQUEST_CHANNEL) PollableMessageSource articleRequestSource,
                                       @Qualifier(ZHIHU_COLUMN_REQUEST_CHANNEL) PollableMessageSource columnRequestSource,
@@ -43,7 +40,6 @@ public class ZhihuApiThrottleService extends ApiChannelBaseService<ZhihuApiChann
                                       @Qualifier(ZHIHU_QUESTION_REQUEST_CHANNEL) PollableMessageSource questionRequestSource,
                                       @Qualifier(ZHIHU_TOPIC_REQUEST_CHANNEL) PollableMessageSource topicRequestSource) {
         super(channel, converter, apiAsyncExecutor, headerHandler);
-        this.cookies = cookies;
         this.answerRequestSource = answerRequestSource;
         this.articleRequestSource = articleRequestSource;
         this.columnRequestSource = columnRequestSource;
@@ -93,8 +89,6 @@ public class ZhihuApiThrottleService extends ApiChannelBaseService<ZhihuApiChann
             requestMessageSource.poll(m -> {
                     ApiRequestMessage message = ((ApiRequestMessage) m.getPayload());
                     apiAsyncExecutor.execRequest(message);
-                    // append the latest cookies
-                    cookies.inject(message);
                 },
                 new ParameterizedTypeReference<ApiRequestMessage>() {
                 });
