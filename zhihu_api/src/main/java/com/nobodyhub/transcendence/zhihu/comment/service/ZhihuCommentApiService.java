@@ -8,17 +8,14 @@ import com.nobodyhub.transcendence.api.common.executor.ApiAsyncExecutor;
 import com.nobodyhub.transcendence.api.common.kafka.KafkaHeaderHandler;
 import com.nobodyhub.transcendence.api.common.message.ApiRequestMessage;
 import com.nobodyhub.transcendence.zhihu.common.client.DeedHubClient;
-import com.nobodyhub.transcendence.zhihu.common.configuration.ZhihuApiProperties;
 import com.nobodyhub.transcendence.zhihu.common.domain.ZhihuComments;
 import com.nobodyhub.transcendence.zhihu.common.service.ZhihuApiChannelBaseService;
 import com.nobodyhub.transcendence.zhihu.domain.ZhihuComment;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.annotation.StreamListener;
-import org.springframework.cloud.stream.binder.PollableMessageSource;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.handler.annotation.Headers;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -40,12 +37,10 @@ public class ZhihuCommentApiService extends ZhihuApiChannelBaseService<ZhihuComm
                                   ApiResponseConverter converter,
                                   ApiAsyncExecutor apiAsyncExecutor,
                                   KafkaHeaderHandler headerHandler,
-                                  @Qualifier(ZHIHU_COMMENT_REQUEST_CHANNEL) PollableMessageSource requestMessageSource,
                                   ObjectMapper objectMapper,
-                                  ZhihuApiProperties apiProperties,
                                   ApiCookies cookies,
                                   DeedHubClient deedHubClient) {
-        super(channel, converter, apiAsyncExecutor, headerHandler, requestMessageSource, objectMapper, apiProperties, cookies);
+        super(channel, converter, apiAsyncExecutor, headerHandler, objectMapper, cookies);
         this.deedHubClient = deedHubClient;
     }
 

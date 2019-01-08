@@ -8,15 +8,12 @@ import com.nobodyhub.transcendence.api.common.kafka.KafkaHeaderHandler;
 import com.nobodyhub.transcendence.api.common.message.ApiRequestMessage;
 import com.nobodyhub.transcendence.zhihu.answer.domain.ZhihuAnswerList;
 import com.nobodyhub.transcendence.zhihu.common.client.DeedHubClient;
-import com.nobodyhub.transcendence.zhihu.common.configuration.ZhihuApiProperties;
 import com.nobodyhub.transcendence.zhihu.common.domain.ZhihuApiPaging;
 import com.nobodyhub.transcendence.zhihu.common.service.ZhihuApiChannelBaseService;
 import com.nobodyhub.transcendence.zhihu.domain.ZhihuAnswer;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.annotation.StreamListener;
-import org.springframework.cloud.stream.binder.PollableMessageSource;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.handler.annotation.Headers;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -38,12 +35,10 @@ public class ZhihuAnswerApiService extends ZhihuApiChannelBaseService<ZhihuAnswe
                                  ApiResponseConverter converter,
                                  ApiAsyncExecutor apiAsyncExecutor,
                                  KafkaHeaderHandler headerHandler,
-                                 @Qualifier(ZHIHU_ANSWER_REQUEST_CHANNEL) PollableMessageSource requestMessageSource,
                                  ObjectMapper objectMapper,
-                                 ZhihuApiProperties apiProperties,
                                  ApiCookies cookies,
                                  DeedHubClient deedHubClient) {
-        super(channel, converter, apiAsyncExecutor, headerHandler, requestMessageSource, objectMapper, apiProperties, cookies);
+        super(channel, converter, apiAsyncExecutor, headerHandler, objectMapper, cookies);
         this.deedHubClient = deedHubClient;
     }
 

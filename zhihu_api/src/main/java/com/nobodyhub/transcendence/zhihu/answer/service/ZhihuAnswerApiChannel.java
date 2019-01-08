@@ -3,7 +3,6 @@ package com.nobodyhub.transcendence.zhihu.answer.service;
 import com.nobodyhub.transcendence.api.common.message.ApiChannel;
 import org.springframework.cloud.stream.annotation.Input;
 import org.springframework.cloud.stream.annotation.Output;
-import org.springframework.cloud.stream.binder.PollableMessageSource;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.SubscribableChannel;
 
@@ -15,11 +14,6 @@ public interface ZhihuAnswerApiChannel extends ApiChannel {
 
     @Output(OUT_ZHIHU_ANSWER_REQUEST)
     MessageChannel sendAnswerRequest();
-
-    String ZHIHU_ANSWER_REQUEST_CHANNEL = "zhihu-answer-request-channel";
-
-    @Input(ZHIHU_ANSWER_REQUEST_CHANNEL)
-    PollableMessageSource receiveAnswerRequest();
 
     /**
      * Response received contains answer contents

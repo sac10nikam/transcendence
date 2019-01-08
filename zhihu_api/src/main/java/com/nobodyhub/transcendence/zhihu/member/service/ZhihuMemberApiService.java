@@ -7,14 +7,11 @@ import com.nobodyhub.transcendence.api.common.executor.ApiAsyncExecutor;
 import com.nobodyhub.transcendence.api.common.kafka.KafkaHeaderHandler;
 import com.nobodyhub.transcendence.api.common.message.ApiRequestMessage;
 import com.nobodyhub.transcendence.zhihu.common.client.PeopleHubClient;
-import com.nobodyhub.transcendence.zhihu.common.configuration.ZhihuApiProperties;
 import com.nobodyhub.transcendence.zhihu.common.service.ZhihuApiChannelBaseService;
 import com.nobodyhub.transcendence.zhihu.domain.ZhihuMember;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.annotation.StreamListener;
-import org.springframework.cloud.stream.binder.PollableMessageSource;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.handler.annotation.Headers;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -24,7 +21,6 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 import static com.nobodyhub.transcendence.zhihu.member.service.ZhihuMemberApiChannel.IN_ZHIHU_MEMBER_CALLBACK_MEMBER;
-import static com.nobodyhub.transcendence.zhihu.member.service.ZhihuMemberApiChannel.ZHIHU_MEMBER_REQUEST_CHANNEL;
 
 @Slf4j
 @Service
@@ -37,12 +33,10 @@ public class ZhihuMemberApiService extends ZhihuApiChannelBaseService<ZhihuMembe
                                     ApiResponseConverter converter,
                                     ApiAsyncExecutor apiAsyncExecutor,
                                     KafkaHeaderHandler headerHandler,
-                                    @Qualifier(ZHIHU_MEMBER_REQUEST_CHANNEL) PollableMessageSource requestMessageSource,
                                     ObjectMapper objectMapper,
-                                    ZhihuApiProperties apiProperties,
                                     ApiCookies cookies,
                                     PeopleHubClient peopleHubClient) {
-        super(channel, converter, apiAsyncExecutor, headerHandler, requestMessageSource, objectMapper, apiProperties, cookies);
+        super(channel, converter, apiAsyncExecutor, headerHandler, objectMapper, cookies);
         this.peopleHubClient = peopleHubClient;
     }
 

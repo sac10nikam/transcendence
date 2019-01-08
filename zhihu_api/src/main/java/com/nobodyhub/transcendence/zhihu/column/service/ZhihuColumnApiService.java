@@ -7,14 +7,11 @@ import com.nobodyhub.transcendence.api.common.executor.ApiAsyncExecutor;
 import com.nobodyhub.transcendence.api.common.kafka.KafkaHeaderHandler;
 import com.nobodyhub.transcendence.api.common.message.ApiRequestMessage;
 import com.nobodyhub.transcendence.zhihu.common.client.TopicHubClient;
-import com.nobodyhub.transcendence.zhihu.common.configuration.ZhihuApiProperties;
 import com.nobodyhub.transcendence.zhihu.common.service.ZhihuApiChannelBaseService;
 import com.nobodyhub.transcendence.zhihu.domain.ZhihuColumn;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.annotation.StreamListener;
-import org.springframework.cloud.stream.binder.PollableMessageSource;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.handler.annotation.Headers;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -24,7 +21,6 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 import static com.nobodyhub.transcendence.zhihu.column.service.ZhihuColumnApiChannel.IN_ZHIHU_COLUMN_CALLBACK_COLUMN;
-import static com.nobodyhub.transcendence.zhihu.column.service.ZhihuColumnApiChannel.ZHIHU_COLUMN_REQUEST_CHANNEL;
 
 @Slf4j
 @Service
@@ -36,12 +32,10 @@ public class ZhihuColumnApiService extends ZhihuApiChannelBaseService<ZhihuColum
                                     ApiResponseConverter converter,
                                     ApiAsyncExecutor apiAsyncExecutor,
                                     KafkaHeaderHandler headerHandler,
-                                    @Qualifier(ZHIHU_COLUMN_REQUEST_CHANNEL) PollableMessageSource requestMessageSource,
                                     ObjectMapper objectMapper,
-                                    ZhihuApiProperties apiProperties,
                                     ApiCookies cookies,
                                     TopicHubClient topicHubClient) {
-        super(channel, converter, apiAsyncExecutor, headerHandler, requestMessageSource, objectMapper, apiProperties, cookies);
+        super(channel, converter, apiAsyncExecutor, headerHandler, objectMapper, cookies);
         this.topicHubClient = topicHubClient;
     }
 

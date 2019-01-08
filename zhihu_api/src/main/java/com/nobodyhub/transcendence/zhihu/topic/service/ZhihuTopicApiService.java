@@ -10,7 +10,6 @@ import com.nobodyhub.transcendence.api.common.kafka.KafkaHeaderHandler;
 import com.nobodyhub.transcendence.api.common.message.ApiRequestMessage;
 import com.nobodyhub.transcendence.zhihu.common.client.DeedHubClient;
 import com.nobodyhub.transcendence.zhihu.common.client.TopicHubClient;
-import com.nobodyhub.transcendence.zhihu.common.configuration.ZhihuApiProperties;
 import com.nobodyhub.transcendence.zhihu.common.service.ZhihuApiChannelBaseService;
 import com.nobodyhub.transcendence.zhihu.domain.ZhihuAnswer;
 import com.nobodyhub.transcendence.zhihu.domain.ZhihuArticle;
@@ -28,10 +27,8 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.annotation.StreamListener;
-import org.springframework.cloud.stream.binder.PollableMessageSource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
@@ -63,13 +60,11 @@ public class ZhihuTopicApiService extends ZhihuApiChannelBaseService<ZhihuTopicA
                                 ApiResponseConverter converter,
                                 ApiAsyncExecutor apiAsyncExecutor,
                                 KafkaHeaderHandler headerHandler,
-                                @Qualifier(ZHIHU_TOPIC_REQUEST_CHANNEL) PollableMessageSource requestMessageSource,
                                 ObjectMapper objectMapper,
-                                ZhihuApiProperties apiProperties,
                                 ApiCookies cookies,
                                 TopicHubClient topicHubClient,
                                 DeedHubClient deedHubClient) {
-        super(channel, converter, apiAsyncExecutor, headerHandler, requestMessageSource, objectMapper, apiProperties, cookies);
+        super(channel, converter, apiAsyncExecutor, headerHandler, objectMapper, cookies);
         this.topicHubClient = topicHubClient;
         this.deedHubClient = deedHubClient;
     }
