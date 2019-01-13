@@ -7,6 +7,12 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+/**
+ * The individual that performs independently on expressing their opinions.
+ *
+ * @see Topic
+ * @see Deed
+ */
 @Document
 @Data
 public class People extends HubObject {
