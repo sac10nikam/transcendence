@@ -1,47 +1,41 @@
 package com.nobodyhub.transcendence.hub.topic.controller;
 
 import com.nobodyhub.transcendence.hub.domain.Topic;
+import com.nobodyhub.transcendence.hub.topic.controller.dto.TopicDtoConverter;
+import com.nobodyhub.transcendence.hub.topic.controller.request.RequestUtil;
+import com.nobodyhub.transcendence.hub.topic.controller.resp.TopicListResp;
 import com.nobodyhub.transcendence.hub.topic.service.TopicService;
-import lombok.Data;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import javax.servlet.http.HttpServletRequest;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/topics")
 public class TopicController {
+    private final HttpServletRequest httpRequest;
     private final TopicService topicService;
 
-    private static final int PAGE_SIZE = 20;
+    private static final String PAGE_SIZE = "20";
 
-    public TopicController(TopicService topicService) {
+    public TopicController(HttpServletRequest httpRequest,
+                           TopicService topicService) {
+        this.httpRequest = httpRequest;
         this.topicService = topicService;
     }
 
-    @PostMapping("/search")
-    List<Topic> searchByName(@RequestBody SearchParam searchParam) {
-        return topicService.findByName(searchParam.getName(),
-            PageRequest.of(searchParam.getPage(), searchParam.getSize()));
+    @GetMapping("/search/name/{name}")
+    TopicListResp searchByName(@PathVariable("name") String name,
+                               @RequestParam(value = "page", required = false, defaultValue = "0") int page,
+                               @RequestParam(value = "size", required = false, defaultValue = PAGE_SIZE) int size) {
+
+        Page<Topic> topics = topicService.findByName(name, PageRequest.of(page, size));
+        return TopicListResp.of(
+            RequestUtil.getPaging(httpRequest, topics),
+            topics.getContent().stream().map(TopicDtoConverter::from).collect(Collectors.toList())
+        );
     }
 
-    @Data
-    private static class SearchParam {
-        /**
-         * topic name
-         */
-        private String name;
-        /**
-         * page number to be queried
-         */
-        private int page = 0;
-        /**
-         * the page size to be queried
-         */
-        private int size = PAGE_SIZE;
-
-    }
 }

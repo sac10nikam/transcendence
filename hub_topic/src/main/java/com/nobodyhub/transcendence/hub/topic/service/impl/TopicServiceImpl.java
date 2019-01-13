@@ -11,10 +11,10 @@ import com.nobodyhub.transcendence.hub.topic.service.TopicService;
 import com.nobodyhub.transcendence.zhihu.domain.ZhihuColumn;
 import com.nobodyhub.transcendence.zhihu.domain.ZhihuQuestion;
 import com.nobodyhub.transcendence.zhihu.domain.ZhihuTopic;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -167,7 +167,7 @@ public class TopicServiceImpl implements TopicService {
     }
 
     @Override
-    public List<Topic> findByName(String name, Pageable pageable) {
+    public Page<Topic> findByName(String name, Pageable pageable) {
         return topicFuzzyRepository.findByNameLike(name, pageable);
     }
 
