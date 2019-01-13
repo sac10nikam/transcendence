@@ -1,6 +1,7 @@
 package com.nobodyhub.transcendence.zhihu.domain;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.nobodyhub.transcendence.common.domain.TopicData;
 import com.nobodyhub.transcendence.common.merge.Mergeable;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -11,7 +12,7 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 @EqualsAndHashCode(of = "id")
-public class ZhihuTopic implements Mergeable {
+public class ZhihuTopic implements Mergeable, TopicData {
     /**
      * Unique id in zhihu topics
      */

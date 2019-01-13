@@ -1,11 +1,12 @@
 package com.nobodyhub.transcendence.zhihu.domain;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.nobodyhub.transcendence.common.domain.TopicData;
 import com.nobodyhub.transcendence.common.merge.Mergeable;
 import lombok.Data;
 
 @Data
-public class ZhihuColumn implements Mergeable {
+public class ZhihuColumn implements Mergeable, TopicData {
     @JsonProperty("id")
     private String id;
     @JsonProperty("type")
