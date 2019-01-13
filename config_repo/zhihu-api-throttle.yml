@@ -1,3 +1,10 @@
+# Kafka Configuration
+spring.cloud.stream.kafka:
+  streams:
+    default:
+      consumer:
+        startOffset: latest
+
 # Channel configuration
 spring.cloud.stream:
   default:
