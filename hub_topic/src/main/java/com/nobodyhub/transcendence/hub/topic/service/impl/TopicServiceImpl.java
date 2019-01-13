@@ -5,11 +5,13 @@ import com.nobodyhub.transcendence.hub.domain.Topic;
 import com.nobodyhub.transcendence.hub.topic.client.ZhihuColumnApiClient;
 import com.nobodyhub.transcendence.hub.topic.client.ZhihuQuestionApiClient;
 import com.nobodyhub.transcendence.hub.topic.client.ZhihuTopicApiClient;
+import com.nobodyhub.transcendence.hub.topic.repository.TopicFuzzyRepository;
 import com.nobodyhub.transcendence.hub.topic.repository.TopicRepository;
 import com.nobodyhub.transcendence.hub.topic.service.TopicService;
 import com.nobodyhub.transcendence.zhihu.domain.ZhihuColumn;
 import com.nobodyhub.transcendence.zhihu.domain.ZhihuQuestion;
 import com.nobodyhub.transcendence.zhihu.domain.ZhihuTopic;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,16 +23,19 @@ import static com.nobodyhub.transcendence.hub.domain.Topic.TopicType.*;
 @Service
 public class TopicServiceImpl implements TopicService {
     private final TopicRepository topicRepository;
+    private final TopicFuzzyRepository topicFuzzyRepository;
 
     private final ZhihuTopicApiClient zhihuTopicApiClient;
     private final ZhihuQuestionApiClient zhihuQuestionApiClient;
     private final ZhihuColumnApiClient zhihuColumnApiClient;
 
     public TopicServiceImpl(TopicRepository topicRepository,
+                            TopicFuzzyRepository topicFuzzyRepository,
                             ZhihuTopicApiClient zhihuTopicApiClient,
                             ZhihuQuestionApiClient zhihuQuestionApiClient,
                             ZhihuColumnApiClient zhihuColumnApiClient) {
         this.topicRepository = topicRepository;
+        this.topicFuzzyRepository = topicFuzzyRepository;
         this.zhihuTopicApiClient = zhihuTopicApiClient;
         this.zhihuQuestionApiClient = zhihuQuestionApiClient;
         this.zhihuColumnApiClient = zhihuColumnApiClient;
@@ -162,8 +167,8 @@ public class TopicServiceImpl implements TopicService {
     }
 
     @Override
-    public List<Topic> findByName(String name) {
-        return topicRepository.findByNameLike(name);
+    public List<Topic> findByName(String name, Pageable pageable) {
+        return topicFuzzyRepository.findByNameLike(name, pageable);
     }
 
     @Override
