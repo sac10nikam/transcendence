@@ -38,9 +38,10 @@ A Generic Web Crawler.
    docker run -d --network host --env ADVERTISED_HOST=localhost --env ADVERTISED_PORT=9092 transcendence/kafka
   ```
 1. Start [Service Registry Server](/infra_service_registry)
+1. Start [Config Server](/config_server)
 1. Start [Api Request Executor Server](/api_executor)
 1. Start Hub Servers([Topic Hub](hub_topic), [People Hub](hub_people), [Deed Hub](hub_deed)) (Just in case after starting the Api Servers, they start to deal with the unprocessed messages and try to save to Hub Servers)
-1. Start Api Servers([Zhihu API Server](/zhihu_api))
+1. Start Api Servers([Zhihu API Server](/zhihu_api)&[Azhihu API Throttle Server](/zhihu_api_throttle)) 
 1. Start [Gateway Server](/infra_gateway)
 
 
