@@ -9,7 +9,12 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-
+/**
+ * The verbal actions of each individual showing their attitudes towards topics.
+ *
+ * @see Topic
+ * @see People
+ */
 @Document
 @Data
 public class Deed extends HubObject {
