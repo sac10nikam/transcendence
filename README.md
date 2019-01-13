@@ -19,10 +19,15 @@ A Generic Web Crawler.
 |9900|api-executor|API Request Executor|
 
 ## Category
+The information collected is classified into 3 categories, topic, people, and deed.
+**Topic**: a subject or matter towards which people can express their opinions.
+**People**: the individual that performs independently on expressing their opinions.
+**Deed**: the verbal actions of each individual showing their attitudes towards topics. 
+
 ### Topic
-* Zhihu Topic
-* Zhihu Question
-* Zhihu Column
+* Zhihu Topic(知乎话题)
+* Zhihu Question(知乎问题)
+* Zhihu Column(知乎专栏)
 
 ### People
 * Zhihu Member
