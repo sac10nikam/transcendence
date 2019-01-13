@@ -105,19 +105,13 @@ public class TopicServiceImpl implements TopicService {
     }
 
     private Topic createFromZhihuTopic(ZhihuTopic zhihuTopic) {
-        Topic topic = new Topic();
-        topic.setType(ZHIHU_TOPIC);
-        topic.setDataId(zhihuTopic.getId());
-        topic.setName(zhihuTopic.getName());
+        Topic topic = new Topic(zhihuTopic.getName(), ZHIHU_TOPIC, zhihuTopic.getId());
         topic.setZhihuTopic(zhihuTopic);
         return topic;
     }
 
     private Topic createFromZhihuQuestion(ZhihuQuestion zhihuQuestion) {
-        Topic topic = new Topic();
-        topic.setType(Topic.TopicType.ZHIHU_QUESTION);
-        topic.setDataId(zhihuQuestion.getId());
-        topic.setName(zhihuQuestion.getTitle());
+        Topic topic = new Topic(zhihuQuestion.getTitle(), ZHIHU_QUESTION, zhihuQuestion.getId());
         topic.setZhihuQuestion(zhihuQuestion);
         return topic;
     }
@@ -169,7 +163,7 @@ public class TopicServiceImpl implements TopicService {
 
     @Override
     public List<Topic> findByName(String name) {
-        return topicRepository.findByName(name);
+        return topicRepository.findByNameLike(name);
     }
 
     @Override
@@ -184,10 +178,7 @@ public class TopicServiceImpl implements TopicService {
     }
 
     private Topic createFromZhihuColumn(ZhihuColumn zhihuColumn) {
-        Topic topic = new Topic();
-        topic.setType(ZHIHU_COLUMN);
-        topic.setDataId(zhihuColumn.getId());
-        topic.setName(zhihuColumn.getTitle());
+        Topic topic = new Topic(zhihuColumn.getTitle(), ZHIHU_COLUMN, zhihuColumn.getId());
         topic.setZhihuColumn(zhihuColumn);
         return topic;
     }

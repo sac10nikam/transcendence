@@ -15,7 +15,7 @@ public interface TopicRepository extends CrudRepository<Topic, String>, HubRepos
      * @param name
      * @return
      */
-    List<Topic> findByName(String name);
+    List<Topic> findByNameLike(String name);
 
     /**
      * find topic by {@link Topic#getDataId()}
