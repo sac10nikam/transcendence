@@ -7,7 +7,7 @@ spring:
       overrideNone: true
       server:
         git:
-          uri: git@bitbucket.org:yan_h/transcendence.git
+          uri: git@github.com:yan-hai/transcendence.git
           clone-on-start: true
           force-pull: true
           delete-untracked-branches: true
