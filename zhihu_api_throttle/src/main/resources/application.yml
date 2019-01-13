@@ -1,6 +1,6 @@
 # Server configuraion
 server:
-  port: 9110
+  port: 9310
 
 # #######
 # Throttle Configuration
