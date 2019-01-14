@@ -1,6 +1,7 @@
 package com.nobodyhub.transcendence.hub.domain;
 
 import com.nobodyhub.transcendence.hub.domain.abstr.HubObject;
+import com.nobodyhub.transcendence.hub.domain.abstr.TopicDataExcerpt;
 import com.nobodyhub.transcendence.zhihu.domain.ZhihuColumn;
 import com.nobodyhub.transcendence.zhihu.domain.ZhihuQuestion;
 import com.nobodyhub.transcendence.zhihu.domain.ZhihuTopic;
@@ -11,6 +12,8 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.lang.NonNull;
 
+import java.util.Set;
+
 /**
  * A subject or matter towards which people can express their opinions.
  *
@@ -20,45 +23,38 @@ import org.springframework.lang.NonNull;
 @Document
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class Topic extends HubObject {
+public class Topic extends HubObject<TopicDataExcerpt> {
     /**
      * Unque id of document
      */
     @Id
     private String id;
-
     /**
-     * Topic name or a simple description of the topic
+     * Topic name
+     * not-null
      */
     @Indexed
     @NonNull
     private String name;
-    /**
-     * Supported Topic type
-     * the corresponding detail should not be null
-     *
-     * @see TopicType
-     */
-    @Indexed
-    @NonNull
-    private TopicType type;
 
     /**
-     * Id of including detail data
-     * <p>
-     * borrow from the logical id of corresponding detail
-     * - {@link ZhihuTopic#getId()}
-     * - {@link ZhihuQuestion#getId()}
-     * - {@link ZhihuColumn#getId()}
+     * A excerpt of data included
      */
-    @Indexed
-    @NonNull
-    private String dataId;
+    private Set<TopicDataExcerpt> excerpts;
 
+    /**
+     * @see TopicType#ZHIHU_TOPIC
+     */
     private ZhihuTopic zhihuTopic;
 
+    /**
+     * @see TopicType#ZHIHU_QUESTION
+     */
     private ZhihuQuestion zhihuQuestion;
 
+    /**
+     * @see TopicType#ZHIHU_COLUMN
+     */
     private ZhihuColumn zhihuColumn;
 
     public enum TopicType {
