@@ -1,15 +1,21 @@
 package com.nobodyhub.transcendence.hub.repository;
 
+import com.nobodyhub.transcendence.common.domain.DataExcerpt;
+
 import java.util.Optional;
 
-public interface HubRepository<T, TYPE> {
+/**
+ * Hub common repository
+ *
+ * @param <T> Entity Type
+ * @param <E> Excerpt Type
+ */
+public interface HubRepository<T, E extends DataExcerpt> {
     /**
-     * Find the data with given id and of given type
+     * Find Topic by excerpt information
      *
-     * @param id   unqiue id of given detail type
-     * @param type target detail type
+     * @param excerpt
      * @return
      */
-    @Deprecated
-    Optional<T> findFirstByDataIdAndType(String id, TYPE type);
+    Optional<T> findFirstByExcerptsContains(E excerpt);
 }
