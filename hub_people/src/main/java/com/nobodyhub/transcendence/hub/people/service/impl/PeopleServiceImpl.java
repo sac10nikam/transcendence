@@ -2,6 +2,7 @@ package com.nobodyhub.transcendence.hub.people.service.impl;
 
 import com.nobodyhub.transcendence.common.merge.MergeUtils;
 import com.nobodyhub.transcendence.hub.domain.People;
+import com.nobodyhub.transcendence.hub.domain.excerpt.PeopleDataExcerpt;
 import com.nobodyhub.transcendence.hub.people.client.ZhihuMemberApiClient;
 import com.nobodyhub.transcendence.hub.people.repository.PeopleRepository;
 import com.nobodyhub.transcendence.hub.people.service.PeopleService;
@@ -29,7 +30,7 @@ public class PeopleServiceImpl implements PeopleService {
 
     @Override
     public People save(ZhihuMember zhihuMember) {
-        Optional<People> people = peopleRepository.findFirstByDataIdAndType(zhihuMember.getUrlToken(), ZHIHU_MEMBER);
+        Optional<People> people = peopleRepository.findFirstByExcerptsContains(PeopleDataExcerpt.of(ZHIHU_MEMBER, zhihuMember.getUrlToken()));
         if (people.isPresent()) {
             People existPeople = people.get();
             ZhihuMember exist = existPeople.getZhihuMember();
@@ -42,13 +43,13 @@ public class PeopleServiceImpl implements PeopleService {
 
     @Override
     public People find(ZhihuMember zhihuMember) {
-        Optional<People> people = peopleRepository.findFirstByDataIdAndType(zhihuMember.getUrlToken(), ZHIHU_MEMBER);
+        Optional<People> people = peopleRepository.findFirstByExcerptsContains(PeopleDataExcerpt.of(ZHIHU_MEMBER, zhihuMember.getUrlToken()));
         return people.orElseGet(() -> createFromZhihuMember(zhihuMember));
     }
 
     @Override
     public Optional<People> findByZhihuMemberUrlToken(String urlToken) {
-        Optional<People> people = peopleRepository.findFirstByDataIdAndType(urlToken, ZHIHU_MEMBER);
+        Optional<People> people = peopleRepository.findFirstByExcerptsContains(PeopleDataExcerpt.of(ZHIHU_MEMBER, urlToken));
         if (!people.isPresent()) {
             zhihuMemberApiClient.getByMemberUrlToken(urlToken);
         }
@@ -57,9 +58,8 @@ public class PeopleServiceImpl implements PeopleService {
 
     private People createFromZhihuMember(ZhihuMember zhihuMember) {
         People people = new People();
-        people.setDataId(zhihuMember.getUrlToken());
         people.setName(zhihuMember.getName());
-        people.setType(ZHIHU_MEMBER);
+        people.addExcerpt(PeopleDataExcerpt.of(ZHIHU_MEMBER, zhihuMember.getUrlToken()));
         people.setZhihuMember(zhihuMember);
         return peopleRepository.save(people);
     }
