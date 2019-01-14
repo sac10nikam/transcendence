@@ -10,5 +10,6 @@ public interface HubRepository<T, TYPE> {
      * @param type target detail type
      * @return
      */
+    @Deprecated
     Optional<T> findFirstByDataIdAndType(String id, TYPE type);
 }

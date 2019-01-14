@@ -11,8 +11,6 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.Set;
-
 /**
  * A subject or matter towards which people can express their opinions.
  *
@@ -34,11 +32,6 @@ public class Topic extends HubObject<TopicDataExcerpt> {
      */
     @Indexed
     private String name;
-
-    /**
-     * A excerpt of data included
-     */
-    private Set<TopicDataExcerpt> excerpts;
 
     /**
      * @see TopicType#ZHIHU_TOPIC
