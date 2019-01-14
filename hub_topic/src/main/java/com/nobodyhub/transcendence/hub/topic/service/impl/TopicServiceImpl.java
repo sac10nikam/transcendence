@@ -44,7 +44,7 @@ public class TopicServiceImpl implements TopicService {
 
     @Override
     public Topic find(ZhihuTopic zhihuTopic) {
-        Optional<Topic> exist = topicRepository.findFirstByDataIdAndType(zhihuTopic.getId(), ZHIHU_TOPIC);
+        Optional<Topic> exist = topicRepository.findFirstByExcerptsContains(TopicDataExcerpt.of(ZHIHU_TOPIC, zhihuTopic.getId()));
         if (exist.isPresent()) {
             return exist.get();
         }
@@ -55,7 +55,7 @@ public class TopicServiceImpl implements TopicService {
 
     @Override
     public Topic find(ZhihuQuestion zhihuQuestion) {
-        Optional<Topic> exist = topicRepository.findFirstByDataIdAndType(zhihuQuestion.getId(), ZHIHU_QUESTION);
+        Optional<Topic> exist = topicRepository.findFirstByExcerptsContains(TopicDataExcerpt.of(ZHIHU_QUESTION, zhihuQuestion.getId()));
         if (exist.isPresent()) {
             return exist.get();
         }
@@ -67,9 +67,8 @@ public class TopicServiceImpl implements TopicService {
 
     @Override
     public Topic save(ZhihuTopic zhihuTopic) {
-        TopicDataExcerpt excerpt = TopicDataExcerpt.of(ZHIHU_TOPIC, zhihuTopic.getId());
         // find existing topic if any
-        Optional<Topic> exist = topicRepository.findFirstByExcerptsContains(excerpt);
+        Optional<Topic> exist = topicRepository.findFirstByExcerptsContains(TopicDataExcerpt.of(ZHIHU_TOPIC, zhihuTopic.getId()));
         if (exist.isPresent()) {
             Topic existTopic = exist.get();
             // if exist, merge with exist
@@ -84,9 +83,8 @@ public class TopicServiceImpl implements TopicService {
 
     @Override
     public Topic save(ZhihuQuestion zhihuQuestion) {
-        TopicDataExcerpt excerpt = TopicDataExcerpt.of(ZHIHU_QUESTION, zhihuQuestion.getId());
         // find existing topic if any
-        Optional<Topic> exist = topicRepository.findFirstByExcerptsContains(excerpt);
+        Optional<Topic> exist = topicRepository.findFirstByExcerptsContains(TopicDataExcerpt.of(ZHIHU_QUESTION, zhihuQuestion.getId()));
         if (exist.isPresent()) {
             Topic existTopic = exist.get();
             // if exist, merge with exist
@@ -102,7 +100,7 @@ public class TopicServiceImpl implements TopicService {
 
     @Override
     public Optional<Topic> findByZhihuQuestionId(String questionId) {
-        Optional<Topic> topic = topicRepository.findFirstByDataIdAndType(questionId, ZHIHU_QUESTION);
+        Optional<Topic> topic = topicRepository.findFirstByExcerptsContains(TopicDataExcerpt.of(ZHIHU_QUESTION, questionId));
         if (!topic.isPresent()) {
             zhihuQuestionApiClient.getQuestionById(questionId);
         }
@@ -119,17 +117,16 @@ public class TopicServiceImpl implements TopicService {
     }
 
     private Topic createFromZhihuQuestion(ZhihuQuestion zhihuQuestion) {
-        TopicDataExcerpt excerpt = TopicDataExcerpt.of(ZHIHU_QUESTION, zhihuQuestion.getId());
         Topic topic = new Topic();
-        topic.addExcerpt(excerpt);
         topic.setName(zhihuQuestion.getTitle());
+        topic.addExcerpt(TopicDataExcerpt.of(ZHIHU_QUESTION, zhihuQuestion.getId()));
         topic.setZhihuQuestion(zhihuQuestion);
         return topic;
     }
 
     @Override
     public void saveZhihuTopicParents(String topicId, Set<ZhihuTopic> parents) {
-        Optional<Topic> optional = topicRepository.findFirstByDataIdAndType(topicId, ZHIHU_TOPIC);
+        Optional<Topic> optional = topicRepository.findFirstByExcerptsContains(TopicDataExcerpt.of(ZHIHU_TOPIC, topicId));
         if (optional.isPresent()) {
             Topic topic = optional.get();
             // if exist, update zhihu topic
@@ -147,7 +144,7 @@ public class TopicServiceImpl implements TopicService {
 
     @Override
     public void saveZhihuTopicChildren(String topicId, Set<ZhihuTopic> children) {
-        Optional<Topic> optional = topicRepository.findFirstByDataIdAndType(topicId, ZHIHU_TOPIC);
+        Optional<Topic> optional = topicRepository.findFirstByExcerptsContains(TopicDataExcerpt.of(ZHIHU_TOPIC, topicId));
         if (optional.isPresent()) {
             Topic topic = optional.get();
             // if exist, update zhihu topic
@@ -165,7 +162,7 @@ public class TopicServiceImpl implements TopicService {
 
     @Override
     public Optional<Topic> findByZhihuTopicId(String topicId) {
-        Optional<Topic> topic = topicRepository.findFirstByDataIdAndType(topicId, ZHIHU_QUESTION);
+        Optional<Topic> topic = topicRepository.findFirstByExcerptsContains(TopicDataExcerpt.of(ZHIHU_TOPIC, topicId));
         if (!topic.isPresent()) {
             zhihuTopicApiClient.getTopicById(topicId);
         }
@@ -179,7 +176,7 @@ public class TopicServiceImpl implements TopicService {
 
     @Override
     public Topic find(ZhihuColumn zhihuColumn) {
-        Optional<Topic> exist = topicRepository.findFirstByDataIdAndType(zhihuColumn.getId(), ZHIHU_COLUMN);
+        Optional<Topic> exist = topicRepository.findFirstByExcerptsContains(TopicDataExcerpt.of(ZHIHU_COLUMN, zhihuColumn.getId()));
         if (exist.isPresent()) {
             return exist.get();
         }
@@ -189,19 +186,17 @@ public class TopicServiceImpl implements TopicService {
     }
 
     private Topic createFromZhihuColumn(ZhihuColumn zhihuColumn) {
-        TopicDataExcerpt excerpt = TopicDataExcerpt.of(ZHIHU_COLUMN, zhihuColumn.getId());
         Topic topic = new Topic();
-        topic.addExcerpt(excerpt);
         topic.setName(zhihuColumn.getTitle());
+        topic.addExcerpt(TopicDataExcerpt.of(ZHIHU_COLUMN, zhihuColumn.getId()));
         topic.setZhihuColumn(zhihuColumn);
         return topic;
     }
 
     @Override
     public Topic save(ZhihuColumn zhihuColumn) {
-        TopicDataExcerpt excerpt = TopicDataExcerpt.of(ZHIHU_COLUMN, zhihuColumn.getId());
         // find existing topic if any
-        Optional<Topic> exist = topicRepository.findFirstByExcerptsContains(excerpt);
+        Optional<Topic> exist = topicRepository.findFirstByExcerptsContains(TopicDataExcerpt.of(ZHIHU_COLUMN, zhihuColumn.getId()));
         if (exist.isPresent()) {
             Topic existTopic = exist.get();
             // if exist, merge with exist
@@ -217,7 +212,7 @@ public class TopicServiceImpl implements TopicService {
 
     @Override
     public Optional<Topic> findByZhihuColumnId(String columnId) {
-        Optional<Topic> topic = topicRepository.findFirstByDataIdAndType(columnId, ZHIHU_COLUMN);
+        Optional<Topic> topic = topicRepository.findFirstByExcerptsContains(TopicDataExcerpt.of(ZHIHU_COLUMN, columnId));
         if (!topic.isPresent()) {
             zhihuColumnApiClient.getColumnById(columnId);
         }

@@ -10,15 +10,6 @@ import java.util.Optional;
 
 public interface TopicRepository extends CrudRepository<Topic, String>, HubRepository<Topic, TopicType> {
     /**
-     * find topic by Topic#getDataId()
-     *
-     * @param dataId
-     * @return
-     */
-    @Deprecated
-    Optional<Topic> findFirstByDataIdAndType(String dataId, TopicType type);
-
-    /**
      * Find Topic by excerpt information
      *
      * @param excerpt
