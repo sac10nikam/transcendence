@@ -1,10 +1,9 @@
-package com.nobodyhub.transcendence.hub.domain.abstr;
+package com.nobodyhub.transcendence.common.domain;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.springframework.lang.NonNull;
 
 /**
  * An excerpt of data that used for retrieving from database
@@ -19,12 +18,10 @@ public abstract class DataExcerpt<T> {
     /**
      * type of data
      */
-    @NonNull
     protected T type;
 
     /**
      * the unique for data of given {@link #type}
      */
-    @NonNull
     protected String id;
 }

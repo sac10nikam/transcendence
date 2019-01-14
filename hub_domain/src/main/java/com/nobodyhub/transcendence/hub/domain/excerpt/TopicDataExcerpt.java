@@ -1,5 +1,6 @@
-package com.nobodyhub.transcendence.hub.domain.abstr;
+package com.nobodyhub.transcendence.hub.domain.excerpt;
 
+import com.nobodyhub.transcendence.common.domain.DataExcerpt;
 import com.nobodyhub.transcendence.hub.domain.Topic;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

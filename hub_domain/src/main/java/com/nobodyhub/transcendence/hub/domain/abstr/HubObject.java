@@ -1,6 +1,7 @@
 package com.nobodyhub.transcendence.hub.domain.abstr;
 
 import com.google.common.collect.Sets;
+import com.nobodyhub.transcendence.common.domain.DataExcerpt;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.joda.time.DateTime;
