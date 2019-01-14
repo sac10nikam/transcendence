@@ -10,7 +10,6 @@ import lombok.EqualsAndHashCode;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.lang.NonNull;
 
 import java.util.Set;
 
@@ -34,7 +33,6 @@ public class Topic extends HubObject<TopicDataExcerpt> {
      * not-null
      */
     @Indexed
-    @NonNull
     private String name;
 
     /**

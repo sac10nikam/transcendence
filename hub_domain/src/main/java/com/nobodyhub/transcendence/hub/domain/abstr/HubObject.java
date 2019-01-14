@@ -2,6 +2,7 @@ package com.nobodyhub.transcendence.hub.domain.abstr;
 
 import com.google.common.collect.Sets;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.joda.time.DateTime;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.mongodb.core.index.Indexed;
