@@ -2,7 +2,7 @@ package com.nobodyhub.transcendence.hub.topic.controller.dto;
 
 import com.google.common.collect.Lists;
 import com.nobodyhub.transcendence.hub.domain.Topic;
-import com.nobodyhub.transcendence.hub.domain.abstr.TopicDataExcerpt;
+import com.nobodyhub.transcendence.hub.domain.excerpt.TopicDataExcerpt;
 
 import java.util.List;
 import java.util.stream.Stream;

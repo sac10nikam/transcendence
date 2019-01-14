@@ -2,7 +2,7 @@ package com.nobodyhub.transcendence.hub.topic.service.impl;
 
 import com.nobodyhub.transcendence.common.merge.MergeUtils;
 import com.nobodyhub.transcendence.hub.domain.Topic;
-import com.nobodyhub.transcendence.hub.domain.abstr.TopicDataExcerpt;
+import com.nobodyhub.transcendence.hub.domain.excerpt.TopicDataExcerpt;
 import com.nobodyhub.transcendence.hub.topic.client.ZhihuColumnApiClient;
 import com.nobodyhub.transcendence.hub.topic.client.ZhihuQuestionApiClient;
 import com.nobodyhub.transcendence.hub.topic.client.ZhihuTopicApiClient;
