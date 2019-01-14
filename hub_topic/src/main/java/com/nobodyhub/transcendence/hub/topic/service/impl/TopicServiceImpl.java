@@ -2,6 +2,7 @@ package com.nobodyhub.transcendence.hub.topic.service.impl;
 
 import com.nobodyhub.transcendence.common.merge.MergeUtils;
 import com.nobodyhub.transcendence.hub.domain.Topic;
+import com.nobodyhub.transcendence.hub.domain.abstr.TopicDataExcerpt;
 import com.nobodyhub.transcendence.hub.topic.client.ZhihuColumnApiClient;
 import com.nobodyhub.transcendence.hub.topic.client.ZhihuQuestionApiClient;
 import com.nobodyhub.transcendence.hub.topic.client.ZhihuTopicApiClient;
@@ -66,16 +67,15 @@ public class TopicServiceImpl implements TopicService {
 
     @Override
     public Topic save(ZhihuTopic zhihuTopic) {
+        TopicDataExcerpt excerpt = TopicDataExcerpt.of(ZHIHU_TOPIC, zhihuTopic.getId());
         // find existing topic if any
-        Optional<Topic> exist = topicRepository.findFirstByDataIdAndType(zhihuTopic.getId(), ZHIHU_TOPIC);
+        Optional<Topic> exist = topicRepository.findFirstByExcerptsContains(excerpt);
         if (exist.isPresent()) {
             Topic existTopic = exist.get();
-            if (existTopic.getType() == ZHIHU_TOPIC) {
-                // if exist, merge with exist
-                ZhihuTopic existZhihuTopic = existTopic.getZhihuTopic();
-                existTopic.setZhihuTopic(MergeUtils.merge(zhihuTopic, existZhihuTopic));
-                return this.topicRepository.save(existTopic);
-            }
+            // if exist, merge with exist
+            ZhihuTopic existZhihuTopic = existTopic.getZhihuTopic();
+            existTopic.setZhihuTopic(MergeUtils.merge(zhihuTopic, existZhihuTopic));
+            return this.topicRepository.save(existTopic);
         }
         // if non-exist, create new one with zhihu topic
         Topic topic = createFromZhihuTopic(zhihuTopic);
@@ -84,16 +84,16 @@ public class TopicServiceImpl implements TopicService {
 
     @Override
     public Topic save(ZhihuQuestion zhihuQuestion) {
+        TopicDataExcerpt excerpt = TopicDataExcerpt.of(ZHIHU_QUESTION, zhihuQuestion.getId());
         // find existing topic if any
-        Optional<Topic> exist = topicRepository.findFirstByDataIdAndType(zhihuQuestion.getId(), ZHIHU_QUESTION);
+        Optional<Topic> exist = topicRepository.findFirstByExcerptsContains(excerpt);
         if (exist.isPresent()) {
             Topic existTopic = exist.get();
-            if (existTopic.getType() == ZHIHU_QUESTION) {
-                // if exist, merge with exist
-                ZhihuQuestion existZhihuQuestion = existTopic.getZhihuQuestion();
-                existTopic.setZhihuQuestion(MergeUtils.merge(zhihuQuestion, existZhihuQuestion));
-                return this.topicRepository.save(existTopic);
-            }
+            // if exist, merge with exist
+            ZhihuQuestion existZhihuQuestion = existTopic.getZhihuQuestion();
+            existTopic.setZhihuQuestion(MergeUtils.merge(zhihuQuestion, existZhihuQuestion));
+            return this.topicRepository.save(existTopic);
+
         }
         // if non-exist, create new one with zhihu topic
         Topic topic = createFromZhihuQuestion(zhihuQuestion);
@@ -110,13 +110,19 @@ public class TopicServiceImpl implements TopicService {
     }
 
     private Topic createFromZhihuTopic(ZhihuTopic zhihuTopic) {
-        Topic topic = new Topic(zhihuTopic.getName(), ZHIHU_TOPIC, zhihuTopic.getId());
+        TopicDataExcerpt excerpt = TopicDataExcerpt.of(ZHIHU_TOPIC, zhihuTopic.getId());
+        Topic topic = new Topic();
+        topic.addExcerpt(excerpt);
+        topic.setName(zhihuTopic.getName());
         topic.setZhihuTopic(zhihuTopic);
         return topic;
     }
 
     private Topic createFromZhihuQuestion(ZhihuQuestion zhihuQuestion) {
-        Topic topic = new Topic(zhihuQuestion.getTitle(), ZHIHU_QUESTION, zhihuQuestion.getId());
+        TopicDataExcerpt excerpt = TopicDataExcerpt.of(ZHIHU_QUESTION, zhihuQuestion.getId());
+        Topic topic = new Topic();
+        topic.addExcerpt(excerpt);
+        topic.setName(zhihuQuestion.getTitle());
         topic.setZhihuQuestion(zhihuQuestion);
         return topic;
     }
@@ -183,23 +189,26 @@ public class TopicServiceImpl implements TopicService {
     }
 
     private Topic createFromZhihuColumn(ZhihuColumn zhihuColumn) {
-        Topic topic = new Topic(zhihuColumn.getTitle(), ZHIHU_COLUMN, zhihuColumn.getId());
+        TopicDataExcerpt excerpt = TopicDataExcerpt.of(ZHIHU_COLUMN, zhihuColumn.getId());
+        Topic topic = new Topic();
+        topic.addExcerpt(excerpt);
+        topic.setName(zhihuColumn.getTitle());
         topic.setZhihuColumn(zhihuColumn);
         return topic;
     }
 
     @Override
     public Topic save(ZhihuColumn zhihuColumn) {
+        TopicDataExcerpt excerpt = TopicDataExcerpt.of(ZHIHU_COLUMN, zhihuColumn.getId());
         // find existing topic if any
-        Optional<Topic> exist = topicRepository.findFirstByDataIdAndType(zhihuColumn.getId(), ZHIHU_COLUMN);
+        Optional<Topic> exist = topicRepository.findFirstByExcerptsContains(excerpt);
         if (exist.isPresent()) {
             Topic existTopic = exist.get();
-            if (existTopic.getType() == ZHIHU_TOPIC) {
-                // if exist, merge with exist
-                ZhihuColumn existZhihuColumn = existTopic.getZhihuColumn();
-                existTopic.setZhihuColumn(MergeUtils.merge(zhihuColumn, existZhihuColumn));
-                return this.topicRepository.save(existTopic);
-            }
+            // if exist, merge with exist
+            ZhihuColumn existZhihuColumn = existTopic.getZhihuColumn();
+            existTopic.setZhihuColumn(MergeUtils.merge(zhihuColumn, existZhihuColumn));
+            return this.topicRepository.save(existTopic);
+
         }
         // if non-exist, create new one with zhihu topic
         Topic topic = createFromZhihuColumn(zhihuColumn);
