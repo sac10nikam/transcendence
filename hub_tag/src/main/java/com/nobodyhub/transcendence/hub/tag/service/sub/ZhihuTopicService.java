@@ -1,4 +1,4 @@
-package com.nobodyhub.transcendence.hub.topic.service.sub;
+package com.nobodyhub.transcendence.hub.tag.service.sub;
 
 import com.nobodyhub.transcendence.hub.domain.Topic;
 import com.nobodyhub.transcendence.zhihu.domain.ZhihuTopic;

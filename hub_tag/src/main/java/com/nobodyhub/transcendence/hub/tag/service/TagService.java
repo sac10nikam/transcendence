@@ -1,13 +1,12 @@
-package com.nobodyhub.transcendence.hub.topic.service;
+package com.nobodyhub.transcendence.hub.tag.service;
 
 import com.nobodyhub.transcendence.hub.domain.Topic;
-import com.nobodyhub.transcendence.hub.topic.service.sub.ZhihuColumnService;
-import com.nobodyhub.transcendence.hub.topic.service.sub.ZhihuQuestionService;
+import com.nobodyhub.transcendence.hub.tag.service.sub.ZhihuTopicService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 
-public interface TopicService extends ZhihuQuestionService, ZhihuColumnService {
+public interface TagService extends ZhihuTopicService {
     /**
      * Find Topic by given name
      *

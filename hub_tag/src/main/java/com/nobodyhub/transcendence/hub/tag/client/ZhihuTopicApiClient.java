@@ -1,4 +1,4 @@
-package com.nobodyhub.transcendence.hub.topic.client;
+package com.nobodyhub.transcendence.hub.tag.client;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.scheduling.annotation.Async;

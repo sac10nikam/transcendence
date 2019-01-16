@@ -1,7 +1,7 @@
-package com.nobodyhub.transcendence.hub.topic.controller.sub.zhihu;
+package com.nobodyhub.transcendence.hub.tag.controller.sub.zhihu;
 
 import com.nobodyhub.transcendence.hub.domain.Topic;
-import com.nobodyhub.transcendence.hub.topic.service.TopicService;
+import com.nobodyhub.transcendence.hub.tag.service.TagService;
 import com.nobodyhub.transcendence.zhihu.domain.ZhihuTopic;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -13,11 +13,11 @@ import java.util.Set;
  */
 @RestController
 @RequestMapping("/topics/zhihu/topic")
-public class TopicZhihuTopicController {
-    private final TopicService topicService;
+public class TagZhihuTopicController {
+    private final TagService tagService;
 
-    public TopicZhihuTopicController(TopicService topicService) {
-        this.topicService = topicService;
+    public TagZhihuTopicController(TagService tagService) {
+        this.tagService = tagService;
     }
 
     /**
@@ -27,7 +27,7 @@ public class TopicZhihuTopicController {
      */
     @PostMapping(path = "/get")
     Topic getByZhihuTopic(@RequestBody ZhihuTopic zhihuTopic) {
-        return topicService.find(zhihuTopic);
+        return tagService.find(zhihuTopic);
     }
 
     /**
@@ -37,7 +37,7 @@ public class TopicZhihuTopicController {
      */
     @PostMapping(path = "/save")
     Topic saveZhihuTopic(@RequestBody ZhihuTopic zhihuTopic) {
-        return topicService.save(zhihuTopic);
+        return tagService.save(zhihuTopic);
     }
 
     /**
@@ -48,7 +48,7 @@ public class TopicZhihuTopicController {
     @PostMapping(path = "/topic/save/no-return")
     @ResponseStatus(HttpStatus.OK)
     void saveZhihuTopicNoReturn(@RequestBody ZhihuTopic zhihuTopic) {
-        topicService.save(zhihuTopic);
+        tagService.save(zhihuTopic);
     }
 
     /**
@@ -61,7 +61,7 @@ public class TopicZhihuTopicController {
     @ResponseStatus(HttpStatus.OK)
     void saveZhihuParentsTopic(@PathVariable("topicId") String topicId,
                                @RequestBody Set<ZhihuTopic> parents) {
-        topicService.saveZhihuTopicParents(topicId, parents);
+        tagService.saveZhihuTopicParents(topicId, parents);
     }
 
     /**
@@ -74,6 +74,6 @@ public class TopicZhihuTopicController {
     @ResponseStatus(HttpStatus.OK)
     void saveZhihuChildrenTopic(@PathVariable("topicId") String topicId,
                                 @RequestBody Set<ZhihuTopic> children) {
-        topicService.saveZhihuTopicChildren(topicId, children);
+        tagService.saveZhihuTopicChildren(topicId, children);
     }
 }
