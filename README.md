@@ -16,6 +16,7 @@ A Generic Web Crawler.
 |9810|hub-topic|Topic Hub|
 |9820|hub-people|People Hub|
 |9830|hub-deed|Deed Hub|
+|9840|hub-tag|Tag Hub|
 |9900|api-executor|API Request Executor|
 
 ## Category

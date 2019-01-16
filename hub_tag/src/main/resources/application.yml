@@ -1,0 +1,17 @@
+# Server configuraion
+server:
+  port: 9840
+
+# Database Configuration
+spring:
+  data:
+    mongodb:
+      host: javis-server
+      port: 27017
+      database: transcendence
+      #username:
+      #password:
+
+feign.client.config.default:
+  connectTimeout: 60000
+  readTimeout: 60000
