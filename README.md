@@ -23,19 +23,23 @@ The information collected is classified into 3 categories, topic, people, and de
 **Topic**: a subject or matter towards which people can express their opinions.
 **People**: the individual that performs independently on expressing their opinions.
 **Deed**: the verbal actions of each individual showing their attitudes towards topics. 
+**Tag**: a label added to Topic/People/Deed for classification.  
 
 ### Topic
-* Zhihu Topic(知乎话题)
 * Zhihu Question(知乎问题)
 * Zhihu Column(知乎专栏)
 
 ### People
-* Zhihu Member
+* Zhihu Member(知乎会员)
 
 ### Deed
-* Zhihu Answer
-* Zhihu Comment
-* Zhihu Article
+* Zhihu Answer(知乎回答)
+* Zhihu Comment(知乎评论)
+* Zhihu Article(知乎专栏文章)
+
+### Tag
+* Zhihu Topic(知乎话题)
+
 
 ## How to Start
 1. Start Kafka Service
