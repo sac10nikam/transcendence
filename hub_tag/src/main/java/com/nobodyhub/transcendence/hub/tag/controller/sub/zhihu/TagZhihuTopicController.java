@@ -12,7 +12,7 @@ import java.util.Set;
  * Controller for Zhihu Topic
  */
 @RestController
-@RequestMapping("/topics/zhihu/topic")
+@RequestMapping("/tags/zhihu/topic")
 public class TagZhihuTopicController {
     private final TagService tagService;
 
