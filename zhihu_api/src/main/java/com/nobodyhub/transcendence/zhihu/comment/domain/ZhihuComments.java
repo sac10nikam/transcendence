@@ -1,6 +1,7 @@
-package com.nobodyhub.transcendence.zhihu.common.domain;
+package com.nobodyhub.transcendence.zhihu.comment.domain;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.nobodyhub.transcendence.zhihu.common.domain.ZhihuApiPaging;
 import com.nobodyhub.transcendence.zhihu.domain.ZhihuComment;
 import lombok.Data;
 
