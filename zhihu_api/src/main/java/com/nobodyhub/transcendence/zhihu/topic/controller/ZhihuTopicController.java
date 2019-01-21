@@ -52,7 +52,7 @@ public class ZhihuTopicController {
      */
     @GetMapping(path = "/admin/refresh")
     @ResponseStatus(HttpStatus.OK)
-    void refreshTopics() {
-        topicApiService.getTopicCategories();
+    void refreshTopics(@RequestParam(value = "fetchTopics", defaultValue = "false") boolean fetchTopics) {
+        topicApiService.getTopicCategories(fetchTopics);
     }
 }

@@ -93,16 +93,16 @@ public class ZhihuTopicApiService extends ZhihuApiChannelBaseService<ZhihuTopicA
                                      @Headers MessageHeaders messageHeaders) {
         Optional<ApiRequestMessage> origReq = headerHandler.getOriginRequest(messageHeaders);
         Optional<String> html = converter.convert(message, String.class);
-        if (html.isPresent()) {
-            Document doc = Jsoup.parse(html.get());
-            Elements categories = doc.select(".zm-topic-cat-item");
-            for (Element c : categories) {
-                ZhihuTopicCategory topicCategory = new ZhihuTopicCategory(Integer.valueOf(c.attr("data-id")), c.text());
-                if (origReq.isPresent()) {
-                    Optional<Boolean> fetchTopic = origReq.get().getProperty(FETCH_TOPICS_IN_CATEGORY, Boolean.class);
-                    if (fetchTopic.isPresent() && fetchTopic.get()) {
-                        getTopicIdsByCategory(topicCategory.getDataId(), 0);
-                    }
+        if (origReq.isPresent()) {
+            Optional<Boolean> fetchTopic = origReq.get().getProperty(FETCH_TOPICS_IN_CATEGORY, Boolean.class);
+            if (fetchTopic.isPresent()
+                && fetchTopic.get()
+                && html.isPresent()) {
+                Document doc = Jsoup.parse(html.get());
+                Elements categories = doc.select(".zm-topic-cat-item");
+                for (Element c : categories) {
+                    ZhihuTopicCategory topicCategory = new ZhihuTopicCategory(Integer.valueOf(c.attr("data-id")), c.text());
+                    getTopicIdsByCategory(topicCategory.getDataId(), 0);
                 }
             }
         }
