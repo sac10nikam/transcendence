@@ -8,9 +8,14 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 
 @Configuration
 public class ApiRedisConfiguration {
+    /**
+     * TODO: remove hard-coded redis server and handle redis server in a more decent way
+     *
+     * @return
+     */
     @Bean
     public LettuceConnectionFactory redisConnectionFactory() {
-        return new LettuceConnectionFactory(new RedisStandaloneConfiguration("server", 6379));
+        return new LettuceConnectionFactory(new RedisStandaloneConfiguration("javis-server", 6379));
     }
 
     @Bean
