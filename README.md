@@ -18,6 +18,7 @@ A Generic Web Crawler.
 |9210|zhihu-api|Zhihu API|
 |9300-9399|---|API Service|
 |9310|zhihu-api-throttle|Zhihu API Throttle|
+|9800|hub-admin|Topic Administration|
 |9810|hub-topic|Topic Hub|
 |9820|hub-people|People Hub|
 |9830|hub-deed|Deed Hub|

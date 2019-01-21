@@ -1,0 +1,7 @@
+# Server configuraion
+server:
+  port: 9800
+
+feign.client.config.default:
+  connectTimeout: 60000
+  readTimeout: 60000
