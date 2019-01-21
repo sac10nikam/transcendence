@@ -54,6 +54,8 @@ public class ZhihuTopicApiService extends ZhihuApiChannelBaseService<ZhihuTopicA
     private final TopicHubClient topicHubClient;
     private final DeedHubClient deedHubClient;
 
+    private static final String FETCH_TOPICS_IN_CATEGORY = "fetch-topics-in-category";
+
 
     public ZhihuTopicApiService(ZhihuTopicApiChannel channel,
                                 ApiResponseConverter converter,
@@ -71,21 +73,37 @@ public class ZhihuTopicApiService extends ZhihuApiChannelBaseService<ZhihuTopicA
      * Send request to get topics page(HTML)
      */
     public void getTopicCategories() {
+        getTopicCategories(true);
+    }
+
+    /**
+     * Make request to get HTML contains categories for topics
+     *
+     * @param fetchTopics continue to fetch topic information after get topic ids
+     */
+    public void getTopicCategories(boolean fetchTopics) {
         String url = "https://www.zhihu.com/topics";
         ApiRequestMessage message = new ApiRequestMessage(ZhihuTopicApiChannel.IN_ZHIHU_TOPIC_CALLBACK_TOPIC_PAGE, url);
+        message.addProperty(FETCH_TOPICS_IN_CATEGORY, fetchTopics);
         channel.sendTopicRequest().send(MessageBuilder.withPayload(message).build());
     }
 
     @StreamListener(IN_ZHIHU_TOPIC_CALLBACK_TOPIC_PAGE)
-    public void receiveTopicHtmlPage(@Payload byte[] message) {
-
+    public void receiveTopicHtmlPage(@Payload byte[] message,
+                                     @Headers MessageHeaders messageHeaders) {
+        Optional<ApiRequestMessage> origReq = headerHandler.getOriginRequest(messageHeaders);
         Optional<String> html = converter.convert(message, String.class);
         if (html.isPresent()) {
             Document doc = Jsoup.parse(html.get());
             Elements categories = doc.select(".zm-topic-cat-item");
             for (Element c : categories) {
                 ZhihuTopicCategory topicCategory = new ZhihuTopicCategory(Integer.valueOf(c.attr("data-id")), c.text());
-                getTopicIdsByCategory(topicCategory.getDataId(), 0);
+                if (origReq.isPresent()) {
+                    Optional<Boolean> fetchTopic = origReq.get().getProperty(FETCH_TOPICS_IN_CATEGORY, Boolean.class);
+                    if (fetchTopic.isPresent() && fetchTopic.get()) {
+                        getTopicIdsByCategory(topicCategory.getDataId(), 0);
+                    }
+                }
             }
         }
     }
