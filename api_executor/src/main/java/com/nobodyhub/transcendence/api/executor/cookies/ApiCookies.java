@@ -47,7 +47,7 @@ public class ApiCookies {
     public void inject(@NotNull ApiRequestMessage message) {
         String cookie = redisTemplate.<String, String>boundHashOps(HASH_KEY).get(message.getTopic());
         if (cookie != null) {
-            message.addCookies(cookie);
+            ApiRequestMessageHelper.addCookies(message, cookie);
         }
     }
 }

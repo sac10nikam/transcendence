@@ -11,7 +11,6 @@ import org.springframework.util.LinkedMultiValueMap;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.Map;
-import java.util.Optional;
 
 @ToString
 public class ApiRequestMessage {
@@ -58,6 +57,7 @@ public class ApiRequestMessage {
      * <p>
      * can be used to pass information from sender to receiver
      */
+    @Getter
     private Map<String, Object> properties = Maps.newHashMap();
 
     /**
@@ -74,26 +74,5 @@ public class ApiRequestMessage {
             this.urlTemplate = urlTemplate;
         }
         this.urlVariables = urlVariables;
-    }
-
-    public void addCookies(String cookies) {
-        this.headers.add(HttpHeaders.COOKIE, cookies);
-    }
-
-    public void addHeader(String key, String value) {
-        this.headers.add(key, value);
-    }
-
-    public void addProperty(String key, Object value) {
-        properties.put(key, value);
-    }
-
-    @SuppressWarnings("unchecked")
-    public <T> Optional<T> getProperty(String key, Class<T> clz) {
-        Object value = properties.get(key);
-        if (value != null && clz.isAssignableFrom(value.getClass())) {
-            return Optional.of((T) value);
-        }
-        return Optional.empty();
     }
 }

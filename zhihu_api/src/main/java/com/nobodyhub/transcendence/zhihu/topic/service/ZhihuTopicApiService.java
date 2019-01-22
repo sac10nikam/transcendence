@@ -7,6 +7,7 @@ import com.nobodyhub.transcendence.api.common.converter.ApiResponseConverter;
 import com.nobodyhub.transcendence.api.common.executor.ApiAsyncExecutor;
 import com.nobodyhub.transcendence.api.common.kafka.KafkaHeaderHandler;
 import com.nobodyhub.transcendence.api.common.message.ApiRequestMessage;
+import com.nobodyhub.transcendence.api.common.message.ApiRequestMessageHelper;
 import com.nobodyhub.transcendence.zhihu.common.client.DeedHubClient;
 import com.nobodyhub.transcendence.zhihu.common.client.TopicHubClient;
 import com.nobodyhub.transcendence.zhihu.common.service.ZhihuApiChannelBaseService;
@@ -84,7 +85,7 @@ public class ZhihuTopicApiService extends ZhihuApiChannelBaseService<ZhihuTopicA
     public void getTopicCategories(boolean fetchTopics) {
         String url = "https://www.zhihu.com/topics";
         ApiRequestMessage message = new ApiRequestMessage(ZhihuTopicApiChannel.IN_ZHIHU_TOPIC_CALLBACK_TOPIC_PAGE, url);
-        message.addProperty(FETCH_TOPICS_IN_CATEGORY, fetchTopics);
+        ApiRequestMessageHelper.addProperty(message, FETCH_TOPICS_IN_CATEGORY, fetchTopics);
         channel.sendTopicRequest().send(MessageBuilder.withPayload(message).build());
     }
 
@@ -94,7 +95,7 @@ public class ZhihuTopicApiService extends ZhihuApiChannelBaseService<ZhihuTopicA
         Optional<ApiRequestMessage> origReq = headerHandler.getOriginRequest(messageHeaders);
         Optional<String> html = converter.convert(message, String.class);
         if (origReq.isPresent()) {
-            Optional<Boolean> fetchTopic = origReq.get().getProperty(FETCH_TOPICS_IN_CATEGORY, Boolean.class);
+            Optional<Boolean> fetchTopic = ApiRequestMessageHelper.getProperty(origReq.get(), FETCH_TOPICS_IN_CATEGORY, Boolean.class);
             if (fetchTopic.isPresent()
                 && fetchTopic.get()
                 && html.isPresent()) {
@@ -132,7 +133,7 @@ public class ZhihuTopicApiService extends ZhihuApiChannelBaseService<ZhihuTopicA
         }
         ApiRequestMessage message = new ApiRequestMessage(ZhihuTopicApiChannel.IN_ZHIHU_TOPIC_CALLBACK_PLAZZA_LIST, url);
         message.setMethod(HttpMethod.POST);
-        message.addHeader(HttpHeaders.CONTENT_TYPE, MediaType.MULTIPART_FORM_DATA.toString());
+        ApiRequestMessageHelper.addHeader(message, HttpHeaders.CONTENT_TYPE, MediaType.MULTIPART_FORM_DATA.toString());
         message.setBody(body);
         channel.sendTopicRequest().send(MessageBuilder.withPayload(message).build());
     }
