@@ -53,6 +53,7 @@ public class ApiExecutorService {
         HttpHeaders respHeaders = null;
         URI url = restTemplate.getUriTemplateHandler().expand(requestMessage.getUrlTemplate(), (Object[]) requestMessage.getUrlVariables());
         try {
+            long requestedAt = System.currentTimeMillis();
             log.info("Proceed to {} {}.", requestMessage.getMethod(), url.toString());
             ResponseEntity<byte[]> responseEntity = this.restTemplate.exchange(
                 url,
@@ -61,7 +62,7 @@ public class ApiExecutorService {
                 byte[].class);
             respBody = responseEntity.getBody();
             respHeaders = responseEntity.getHeaders();
-            this.cookies.extract(respHeaders, requestMessage.getTopic());
+            this.cookies.extract(respHeaders, requestMessage, requestedAt);
         } catch (RestClientException e) {
             log.error("Fail to process request message {}!", requestMessage);
             log.error("with error", e);

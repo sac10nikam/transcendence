@@ -66,7 +66,7 @@ public final class ApiRequestMessageHelper {
      * The key for property of {@link ApiRequestMessage}.
      * This property is used to invalid the cookies that get from request sent before this one
      */
-    private static final String PROP_REFRESH_COOKIES = "$prop-refresh-cookies";
+    private static final String PROP_FLUSH_COOKIES = "$prop-refresh-cookies";
 
     /**
      * check whether the message will force to refresh the cookies
@@ -74,15 +74,20 @@ public final class ApiRequestMessageHelper {
      * @param message
      * @return
      */
-    public static boolean isRefreshCookies(ApiRequestMessage message) {
-        Optional<Boolean> isRefresh = getProperty(message, PROP_REFRESH_COOKIES, Boolean.class);
+    public static boolean isFlushCookies(ApiRequestMessage message) {
+        Optional<Boolean> isRefresh = getProperty(message, PROP_FLUSH_COOKIES, Boolean.class);
         if (isRefresh.isPresent() && isRefresh.get()) {
             return true;
         }
         return false;
     }
 
-    public static void setRefreshCookies(ApiRequestMessage message) {
-        addProperty(message, PROP_REFRESH_COOKIES, true);
+    /**
+     * set the message property to flush the cookies
+     *
+     * @param message
+     */
+    public static void setFlushCookies(ApiRequestMessage message) {
+        addProperty(message, PROP_FLUSH_COOKIES, true);
     }
 }
