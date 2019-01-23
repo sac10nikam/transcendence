@@ -5,6 +5,8 @@ import com.nobodyhub.transcendence.api.common.kafka.KafkaHeaderHandler;
 import com.nobodyhub.transcendence.api.common.message.ApiRequestMessage;
 import com.nobodyhub.transcendence.api.executor.cookies.ApiCookies;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cloud.stream.annotation.EnableBinding;
+import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.cloud.stream.binding.BinderAwareChannelResolver;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -24,10 +26,12 @@ import java.net.URI;
 
 import static com.nobodyhub.transcendence.api.common.kafka.KafkaMessageHeader.ORIGIN_REQUEST;
 import static com.nobodyhub.transcendence.api.common.kafka.KafkaMessageHeader.RESPONSE_HEADERS;
+import static com.nobodyhub.transcendence.api.executor.service.ApiExecutorChannel.IN_ADMIN_PRIORITY_REQUEST_CHANNEL;
 
 
 @Slf4j
 @Service
+@EnableBinding(ApiExecutorChannel.class)
 public class ApiExecutorService {
     private final RestTemplate restTemplate;
     private final BinderAwareChannelResolver resolver;
@@ -93,4 +97,15 @@ public class ApiExecutorService {
             )
         );
     }
+
+    /**
+     * handle request from admin priority request channel
+     *
+     * @param message
+     */
+    @StreamListener(IN_ADMIN_PRIORITY_REQUEST_CHANNEL)
+    public void receiveAdminPriorityRequest(ApiRequestMessage message) {
+        fetchAndDispatch(message);
+    }
+
 }

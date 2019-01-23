@@ -1,0 +1,15 @@
+# Kafka Configuration
+spring.cloud.stream.kafka:
+  streams:
+    default:
+      consumer:
+        startOffset: latest
+  binder:
+    brokers: javis-server
+
+# Channel configuration
+spring.cloud.stream.bindings:
+  admin-priority-request-channel:
+    content-type: application/json
+    group: zhihu-topic
+

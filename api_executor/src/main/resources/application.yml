@@ -1,7 +1,2 @@
+# Server Configuration
 server.port: 9900
-spring:
-  cloud:
-    stream:
-      kafka:
-        binder:
-          brokers: localhost
