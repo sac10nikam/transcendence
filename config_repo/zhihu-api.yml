@@ -71,17 +71,18 @@ spring.cloud.stream.bindings:
   out-zhihu-comment-request:
     content-type: application/json
   in-zhihu-comment-callback-answer-comment:
-    in-zhihu-column-callback-column:
     content-type: application/octet-stream
     group: zhihu-comment
   in-zhihu-comment-callback-article-comment:
-    in-zhihu-column-callback-column:
     content-type: application/octet-stream
     group: zhihu-comment
   in-zhihu-comment-callback-question-comment:
-    in-zhihu-column-callback-column:
     content-type: application/octet-stream
     group: zhihu-comment
+  # Admin
+  out-admin-priority-request-channel:
+    destination: admin-priority-request-channel
+    content-type: application/json
 
 # Feign Client Configuration
 feign.client.config.default:

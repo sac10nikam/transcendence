@@ -87,7 +87,7 @@ public class ZhihuTopicApiService extends ZhihuApiChannelBaseService<ZhihuTopicA
         ApiRequestMessage message = new ApiRequestMessage(ZhihuTopicApiChannel.IN_ZHIHU_TOPIC_CALLBACK_TOPIC_PAGE, url);
         ApiRequestMessageHelper.setFlushCookies(message);
         ApiRequestMessageHelper.addProperty(message, FETCH_TOPICS_IN_CATEGORY, fetchTopics);
-        channel.sendTopicRequest().send(MessageBuilder.withPayload(message).build());
+        channel.sendAdminRequest().send(MessageBuilder.withPayload(message).build());
     }
 
     @StreamListener(IN_ZHIHU_TOPIC_CALLBACK_TOPIC_PAGE)

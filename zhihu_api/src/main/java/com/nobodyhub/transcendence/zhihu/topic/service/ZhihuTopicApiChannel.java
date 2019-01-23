@@ -13,6 +13,14 @@ import org.springframework.messaging.SubscribableChannel;
 
 public interface ZhihuTopicApiChannel extends ApiChannel {
     /**
+     * Request sent as admin
+     */
+    String OUT_ADMIN_PRIORITY_REQUEST_CHANNEL = "admin-priority-request-channel";
+
+    @Output(OUT_ADMIN_PRIORITY_REQUEST_CHANNEL)
+    MessageChannel sendAdminRequest();
+
+    /**
      * Request sent to fetch Topic information
      */
     String OUT_ZHIHU_TOPIC_REQUEST = "out-zhihu-topic-request";
