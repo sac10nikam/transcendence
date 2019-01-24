@@ -11,9 +11,23 @@ import org.springframework.util.LinkedMultiValueMap;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.Map;
+import java.util.UUID;
 
 @ToString
 public class ApiRequestMessage {
+    /**
+     * unique id of the message
+     */
+    @Getter
+    private final String uid = UUID.randomUUID().toString();
+
+    /**
+     * status of the message
+     */
+    @Getter
+    @Setter
+    private MessageStatus status = MessageStatus.NEW;
+
     /**
      * Request Method
      */
@@ -47,7 +61,7 @@ public class ApiRequestMessage {
     private LinkedMultiValueMap<String, Object> body;
 
     /**
-     * topic to cache the response
+     * channel to cache the response
      */
     @Getter
     private String topic;
