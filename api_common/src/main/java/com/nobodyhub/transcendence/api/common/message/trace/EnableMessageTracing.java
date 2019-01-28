@@ -1,8 +1,10 @@
 package com.nobodyhub.transcendence.api.common.message.trace;
 
 import com.nobodyhub.transcendence.api.common.message.ApiRequestMessage;
+import com.nobodyhub.transcendence.api.common.message.trace.config.MessageTracingConfiguration;
 import com.nobodyhub.transcendence.api.common.message.trace.extractor.DefaultTraceTargetExtractor;
 import com.nobodyhub.transcendence.api.common.message.trace.extractor.TraceTargetExtractor;
+import org.springframework.context.annotation.Import;
 
 import java.lang.annotation.*;
 
@@ -12,6 +14,7 @@ import java.lang.annotation.*;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
+@Import({MessageTracingConfiguration.class})
 public @interface EnableMessageTracing {
     /**
      * Default extractor to parse {@link ApiRequestMessage} from given payload, if extractor is not specified by individual {@link MessageTracer}
