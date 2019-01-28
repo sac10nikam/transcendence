@@ -1,10 +1,15 @@
 package com.nobodyhub.transcendence.api.common.message.trace.config;
 
-import org.springframework.context.annotation.Configuration;
+import com.nobodyhub.transcendence.api.common.message.trace.aop.MessageTraceAspect;
+import org.springframework.context.annotation.Bean;
 
 /**
  * Configuration for message tracing
  */
-@Configuration
 public class MessageTracingConfiguration {
+
+    @Bean
+    public MessageTraceAspect messageTraceAspect() {
+        return new MessageTraceAspect();
+    }
 }
