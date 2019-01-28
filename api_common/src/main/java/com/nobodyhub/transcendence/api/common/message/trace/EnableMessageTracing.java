@@ -1,9 +1,14 @@
 package com.nobodyhub.transcendence.api.common.message.trace;
 
 import com.nobodyhub.transcendence.api.common.message.ApiRequestMessage;
+import com.nobodyhub.transcendence.api.common.message.trace.config.MessageTracingBeansResigtrar;
 import com.nobodyhub.transcendence.api.common.message.trace.config.MessageTracingConfiguration;
 import com.nobodyhub.transcendence.api.common.message.trace.extractor.DefaultTraceTargetExtractor;
 import com.nobodyhub.transcendence.api.common.message.trace.extractor.TraceTargetExtractor;
+import com.nobodyhub.transcendence.api.common.message.trace.processor.MessageTracingPostProcessor;
+import com.nobodyhub.transcendence.api.common.message.trace.processor.MessageTracingPreProcessor;
+import com.nobodyhub.transcendence.api.common.message.trace.processor.impl.DefaultMessageTracingPostProcessor;
+import com.nobodyhub.transcendence.api.common.message.trace.processor.impl.DefaultMessageTracingPreProcessor;
 import org.springframework.context.annotation.Import;
 
 import java.lang.annotation.*;
@@ -14,7 +19,7 @@ import java.lang.annotation.*;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-@Import({MessageTracingConfiguration.class})
+@Import({MessageTracingConfiguration.class, MessageTracingBeansResigtrar.class})
 public @interface EnableMessageTracing {
     /**
      * Default extractor to parse {@link ApiRequestMessage} from given payload, if extractor is not specified by individual {@link MessageTracer}
@@ -29,4 +34,16 @@ public @interface EnableMessageTracing {
      * @return
      */
     Class<?> payloadType() default ApiRequestMessage.class;
+
+    /**
+     * Pre-processor for message tracing
+     * <p>
+     * By default, doing nothing(all process is done by the {@link #postProcessor() post-processor}
+     */
+    Class<? extends MessageTracingPreProcessor> preProcessor() default DefaultMessageTracingPreProcessor.class;
+
+    /**
+     * Post-processor for message tracing
+     */
+    Class<? extends MessageTracingPostProcessor> postProcessor() default DefaultMessageTracingPostProcessor.class;
 }
