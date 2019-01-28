@@ -38,6 +38,7 @@ public class MessageTracingBeansResigtrar implements ImportBeanDefinitionRegistr
             manager.setDefaultExtractor(defaultExtractor.newInstance());
         } catch (InstantiationException | IllegalAccessException e) {
             log.error("{} needs to have public non-arg contrstuctor!", defaultExtractor.getName());
+            log.error("Fail to register bean due to error: ", e);
         }
 
         // pre-processor
