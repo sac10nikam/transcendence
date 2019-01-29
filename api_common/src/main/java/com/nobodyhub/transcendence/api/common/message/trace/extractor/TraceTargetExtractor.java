@@ -4,6 +4,7 @@ import com.nobodyhub.transcendence.api.common.message.ApiRequestMessage;
 
 /**
  * Extract {@link ApiRequestMessage} from given target
+ * The extractor needs to have a public non-arg constructor
  *
  * @param <T> payload type
  */

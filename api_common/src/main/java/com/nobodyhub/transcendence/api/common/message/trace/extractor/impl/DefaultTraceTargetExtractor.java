@@ -1,6 +1,7 @@
-package com.nobodyhub.transcendence.api.common.message.trace.extractor;
+package com.nobodyhub.transcendence.api.common.message.trace.extractor.impl;
 
 import com.nobodyhub.transcendence.api.common.message.ApiRequestMessage;
+import com.nobodyhub.transcendence.api.common.message.trace.extractor.TraceTargetExtractor;
 
 /**
  * The default message extractor

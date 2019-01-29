@@ -37,5 +37,5 @@ public @interface MessageTracer {
      *
      * @return
      */
-    Class<? extends TraceTargetExtractor> extractor() default TraceTargetExtractor.class;
+    Class<TraceTargetExtractor> extractor() default TraceTargetExtractor.class;
 }
