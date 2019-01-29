@@ -1,6 +1,7 @@
 package com.nobodyhub.transcendence.api.common.message.trace.config;
 
 import com.nobodyhub.transcendence.api.common.message.trace.EnableMessageTracing;
+import com.nobodyhub.transcendence.api.common.message.trace.exception.MessageTracingInitializationException;
 import com.nobodyhub.transcendence.api.common.message.trace.extractor.MessageExtractorManager;
 import com.nobodyhub.transcendence.api.common.message.trace.extractor.TraceTargetExtractor;
 import com.nobodyhub.transcendence.api.common.message.trace.processor.MessageTracingPostProcessor;
@@ -39,6 +40,7 @@ public class MessageTracingBeansResigtrar implements ImportBeanDefinitionRegistr
         } catch (InstantiationException | IllegalAccessException e) {
             log.error("{} needs to have public non-arg contrstuctor!", defaultExtractor.getName());
             log.error("Fail to register bean due to error: ", e);
+            throw new MessageTracingInitializationException(e);
         }
 
         // pre-processor
