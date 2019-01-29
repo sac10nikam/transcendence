@@ -1,15 +1,15 @@
 package com.nobodyhub.transcendence.api.common.message.trace.config;
 
 import com.nobodyhub.transcendence.api.common.message.trace.EnableMessageTracing;
-import com.nobodyhub.transcendence.api.common.message.trace.exception.MessageTracingInitializationException;
-import com.nobodyhub.transcendence.api.common.message.trace.extractor.MessageExtractorManager;
 import com.nobodyhub.transcendence.api.common.message.trace.extractor.TraceTargetExtractor;
 import com.nobodyhub.transcendence.api.common.message.trace.processor.MessageTracingPostProcessor;
 import com.nobodyhub.transcendence.api.common.message.trace.processor.MessageTracingPreProcessor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.support.AutowireCandidateQualifier;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
+import org.springframework.beans.factory.support.RootBeanDefinition;
+import org.springframework.cloud.stream.binding.BindableProxyFactory;
 import org.springframework.context.annotation.ImportBeanDefinitionRegistrar;
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.core.annotation.AnnotationAttributes;
@@ -17,11 +17,10 @@ import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.util.ClassUtils;
 
+import static com.nobodyhub.transcendence.api.common.message.trace.common.MessageTracingConst.DEFAULT_EXTRACTOR_QUALIFIER;
+
 @Slf4j
 public class MessageTracingBeansResigtrar implements ImportBeanDefinitionRegistrar {
-
-    @Autowired
-    private MessageExtractorManager manager;
 
     @Override
     public void registerBeanDefinitions(AnnotationMetadata metadata,
@@ -35,12 +34,10 @@ public class MessageTracingBeansResigtrar implements ImportBeanDefinitionRegistr
 
         // default extractor
         Class<? extends TraceTargetExtractor> defaultExtractor = enableMessageTracing.messageExtractor();
-        try {
-            manager.setDefaultExtractor(defaultExtractor.newInstance());
-        } catch (InstantiationException | IllegalAccessException e) {
-            log.error("{} needs to have public non-arg contrstuctor!", defaultExtractor.getName());
-            log.error("Fail to register bean due to error: ", e);
-            throw new MessageTracingInitializationException(e);
+        if (!registry.containsBeanDefinition(defaultExtractor.getName())) {
+            RootBeanDefinition defaultExtractorBean = new RootBeanDefinition(BindableProxyFactory.class);
+            defaultExtractorBean.addQualifier(new AutowireCandidateQualifier(DEFAULT_EXTRACTOR_QUALIFIER));
+            registry.registerBeanDefinition(defaultExtractor.getName(), defaultExtractorBean);
         }
 
         // pre-processor
