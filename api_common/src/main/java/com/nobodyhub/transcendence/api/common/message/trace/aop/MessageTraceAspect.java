@@ -1,5 +1,6 @@
 package com.nobodyhub.transcendence.api.common.message.trace.aop;
 
+import com.google.common.collect.Maps;
 import com.nobodyhub.transcendence.api.common.message.ApiRequestMessage;
 import com.nobodyhub.transcendence.api.common.message.trace.MessageTracer;
 import com.nobodyhub.transcendence.api.common.message.trace.TraceTarget;
@@ -11,10 +12,16 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.util.StringUtils;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
+
+import static com.nobodyhub.transcendence.api.common.message.trace.common.MessageTracingConst.*;
 
 /**
  * Aspect for message tracing
@@ -24,22 +31,50 @@ public class MessageTraceAspect {
     @Autowired
     private TraceTargetExtractorManager traceTargetExtractorManager;
 
+    @Autowired
+    private StringRedisTemplate redisTemplate;
+
+    @Value("${message.trace.delay.remove}")
+    private long removeDelay;
+
     @Around("@annotation(com.nobodyhub.transcendence.api.common.message.trace.MessageTracer)")
     public Object traceMessage(ProceedingJoinPoint joinPoint) throws Throwable {
         MessageTracer messageTracer = getMessageTracer(joinPoint);
         TraceTargetExtractor extractor = getExtractor(joinPoint);
         Object payload = getPayload(joinPoint);
+        @SuppressWarnings("unchecked")
         ApiRequestMessage message = extractor.from(payload);
-        if (!StringUtils.isEmpty(messageTracer.beginStatus())) {
-            // TODO: process begin status
+        // create for new trace
+        if (messageTracer.isStart()) {
+            Map<String, String> updates = Maps.newHashMap();
+            updates.put(TRACE_GROUP, message.getGroup());
+            updates.put(TRACE_CREATED_AT, String.valueOf(message.getCreatedAt()));
+
+            redisTemplate.<String, String>boundHashOps(message.getUid())
+                .putAll(updates);
         }
 
+        // update begin status
+        if (!StringUtils.isEmpty(messageTracer.beginStatus())) {
+            redisTemplate.<String, String>boundHashOps(message.getUid())
+                .put(TRACE_STATUS, messageTracer.beginStatus());
+        }
 
+        // process the message
         Object rVal = joinPoint.proceed();
+
+        // update end status
         if (!StringUtils.isEmpty(messageTracer.status())
             || !StringUtils.isEmpty(messageTracer.endStatus())) {
             String endStatus = StringUtils.isEmpty(messageTracer.status()) ? messageTracer.status() : messageTracer.endStatus();
-            // TODO: process end status
+            redisTemplate.<String, String>boundHashOps(message.getUid())
+                .put(TRACE_STATUS, endStatus);
+        }
+
+        // expire the message when message lifecycle ends
+        if (messageTracer.isEnd()) {
+            redisTemplate.<String, String>boundHashOps(message.getUid())
+                .expire(removeDelay, TimeUnit.SECONDS);
         }
         return rVal;
     }

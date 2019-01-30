@@ -12,6 +12,7 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface MessageTracer {
+
     /**
      * The message status after being processed by annotated method
      *
@@ -38,4 +39,14 @@ public @interface MessageTracer {
      * @return
      */
     Class<TraceTargetExtractor> extractor() default TraceTargetExtractor.class;
+
+    /**
+     * whether annotated method is the end of message
+     */
+    boolean isEnd() default false;
+
+    /**
+     * whether annotated method is the start of message
+     */
+    boolean isStart() default false;
 }
