@@ -22,11 +22,11 @@ public class ApiRequestMessage {
     private final String uid = UUID.randomUUID().toString();
 
     /**
-     * status of the message
+     * the group message
      */
     @Getter
     @Setter
-    private MessageStatus status = MessageStatus.NEW;
+    private String group = "";
 
     /**
      * Request Method
@@ -73,6 +73,12 @@ public class ApiRequestMessage {
      */
     @Getter
     private Map<String, Object> properties = Maps.newHashMap();
+
+    /**
+     * The time when the original mesage created
+     */
+    @Getter
+    private Long createdAt = System.currentTimeMillis();
 
     /**
      * Used by Json serializer
