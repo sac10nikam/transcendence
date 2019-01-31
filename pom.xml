@@ -58,6 +58,11 @@
     <dependencies>
       <dependency>
         <groupId>com.nobodyhub.transcendence</groupId>
+        <artifactId>message-core</artifactId>
+        <version>${transcendence.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.nobodyhub.transcendence</groupId>
         <artifactId>api_common</artifactId>
         <version>${transcendence.version}</version>
       </dependency>
