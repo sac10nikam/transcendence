@@ -1,6 +1,6 @@
 package com.nobodyhub.transcendence.api.common.executor;
 
-import com.nobodyhub.transcendence.api.common.message.ApiRequestMessage;
+import com.nobodyhub.transcendence.message.ApiRequestMessage;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 

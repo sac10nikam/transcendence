@@ -4,7 +4,7 @@ import com.nobodyhub.transcendence.api.common.converter.ApiResponseConverter;
 import com.nobodyhub.transcendence.api.common.executor.ApiAsyncExecutor;
 import com.nobodyhub.transcendence.api.common.kafka.KafkaHeaderHandler;
 import com.nobodyhub.transcendence.api.common.message.ApiChannelBaseService;
-import com.nobodyhub.transcendence.api.common.message.ApiRequestMessage;
+import com.nobodyhub.transcendence.message.ApiRequestMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cloud.stream.annotation.EnableBinding;

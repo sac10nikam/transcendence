@@ -1,7 +1,7 @@
 package com.nobodyhub.transcendence.api.executor.controller;
 
-import com.nobodyhub.transcendence.api.common.message.ApiRequestMessage;
 import com.nobodyhub.transcendence.api.executor.service.ApiExecutorService;
+import com.nobodyhub.transcendence.message.ApiRequestMessage;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 

@@ -3,7 +3,7 @@ package com.nobodyhub.transcendence.api.common.kafka;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Maps;
-import com.nobodyhub.transcendence.api.common.message.ApiRequestMessage;
+import com.nobodyhub.transcendence.message.ApiRequestMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;

@@ -1,6 +1,6 @@
 package com.nobodyhub.transcendence.api.common.kafka;
 
-import com.nobodyhub.transcendence.api.common.message.ApiRequestMessage;
+import com.nobodyhub.transcendence.message.ApiRequestMessage;
 import lombok.Getter;
 import org.springframework.http.HttpHeaders;
 

@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nobodyhub.transcendence.api.common.converter.ApiResponseConverter;
 import com.nobodyhub.transcendence.api.common.executor.ApiAsyncExecutor;
 import com.nobodyhub.transcendence.api.common.kafka.KafkaHeaderHandler;
-import com.nobodyhub.transcendence.api.common.message.ApiRequestMessage;
+import com.nobodyhub.transcendence.message.ApiRequestMessage;
 import com.nobodyhub.transcendence.zhihu.answer.domain.ZhihuAnswerList;
 import com.nobodyhub.transcendence.zhihu.common.client.DeedHubClient;
 import com.nobodyhub.transcendence.zhihu.common.domain.ZhihuApiPaging;

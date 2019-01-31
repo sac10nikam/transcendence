@@ -2,8 +2,8 @@ package com.nobodyhub.transcendence.api.executor.service;
 
 
 import com.nobodyhub.transcendence.api.common.kafka.KafkaHeaderHandler;
-import com.nobodyhub.transcendence.api.common.message.ApiRequestMessage;
 import com.nobodyhub.transcendence.api.executor.cookies.ApiCookies;
+import com.nobodyhub.transcendence.message.ApiRequestMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.annotation.StreamListener;

@@ -6,7 +6,7 @@ import com.nobodyhub.transcendence.api.common.executor.ApiAsyncExecutor;
 import com.nobodyhub.transcendence.api.common.kafka.KafkaHeaderHandler;
 import com.nobodyhub.transcendence.api.common.message.ApiChannel;
 import com.nobodyhub.transcendence.api.common.message.ApiChannelBaseService;
-import com.nobodyhub.transcendence.api.common.message.ApiRequestMessage;
+import com.nobodyhub.transcendence.message.ApiRequestMessage;
 import com.nobodyhub.transcendence.zhihu.common.domain.ZhihuApiPaging;
 import lombok.extern.slf4j.Slf4j;
 

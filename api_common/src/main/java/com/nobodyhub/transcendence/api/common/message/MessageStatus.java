@@ -1,5 +1,6 @@
 package com.nobodyhub.transcendence.api.common.message;
 
+import com.nobodyhub.transcendence.message.ApiRequestMessage;
 import lombok.Getter;
 
 /**

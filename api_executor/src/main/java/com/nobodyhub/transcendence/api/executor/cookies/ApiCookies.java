@@ -1,8 +1,8 @@
 package com.nobodyhub.transcendence.api.executor.cookies;
 
 import com.google.common.collect.Lists;
-import com.nobodyhub.transcendence.api.common.message.ApiRequestMessage;
-import com.nobodyhub.transcendence.api.common.message.ApiRequestMessageHelper;
+import com.nobodyhub.transcendence.message.ApiRequestMessage;
+import com.nobodyhub.transcendence.message.ApiRequestMessageHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.HttpHeaders;
