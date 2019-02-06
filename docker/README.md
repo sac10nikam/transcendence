@@ -33,7 +33,7 @@ sudo docker exec -it <CONTAINER_ID> /bin/bash
 ## [Redis](https://hub.docker.com/_/redis?tab=description)
 ### How to Run
 ```bash
-docker run --name redis-server -d redis
+docker run --name redis-server -d -p 6379:6379 redis 
 ```
 
 
